@@ -7,7 +7,7 @@ const LoginElev = () => {
             <LoginForm />
 
             <div className="absolute right-8 bottom-8 text-md">
-                <Link href="bibliotecara">Bibliotecara?</Link>
+                <Link href="/login/bibliotecara">Bibliotecara?</Link>
             </div>
         </div>
     );
