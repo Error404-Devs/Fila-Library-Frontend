@@ -7,7 +7,7 @@ const LoginElev = () => {
             <LoginForm />
 
             <div className="absolute right-8 bottom-8 text-md">
-                <Link href="elev">Elev?</Link>
+                <Link href="/login/elev">Elev?</Link>
             </div>
         </div>
     );
