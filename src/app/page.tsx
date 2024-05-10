@@ -1,9 +1,12 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-
-    </main>
+    <div className="flex justify-center items-center h-[90vh]">
+        <Link href="/login/elev">
+            <h1 className="text-7xl font-bold tracking-widesr">Fila Library</h1>
+        </Link>
+    </div>
   );
 }
