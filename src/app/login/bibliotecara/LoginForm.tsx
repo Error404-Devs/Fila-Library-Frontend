@@ -14,17 +14,21 @@ export function LoginForm() {
     return (
         <Card className="w-full max-w-sm">
             <CardHeader>
-                <CardTitle className="text-2xl">Login Elev</CardTitle>
+                <CardTitle className="text-2xl">Login Bibliotecara</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4">
                 <div className="grid gap-2">
-                    <Label htmlFor="nrmatricol">Nr. Matricol</Label>
+                    <Label htmlFor="email">Email</Label>
                     <Input
-                        id="nrmatricol"
-                        type="text"
-                        placeholder="39 VIII L"
+                        id="email"
+                        type="email"
+                        placeholder="liceu@filadelfia.com"
                         required
                     />
+                </div>
+                <div className="grid gap-2">
+                    <Label htmlFor="password">Password</Label>
+                    <Input id="password" type="password" required />
                 </div>
             </CardContent>
             <CardFooter>
