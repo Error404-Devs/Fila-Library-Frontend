@@ -2,6 +2,7 @@ import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import Sidebar from './Sidebar';
 import MobileSidebar from './MobileSidebar';
+import BooksTable from './BooksTable';
 
 const Dashboard = () => {
     return (
@@ -30,7 +31,7 @@ const Dashboard = () => {
                         </h1>
                     </div>
                     <div>
-                        
+                        <BooksTable />
                     </div>
                 </main>
             </div>
