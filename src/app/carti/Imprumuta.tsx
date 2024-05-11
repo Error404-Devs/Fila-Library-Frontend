@@ -1,11 +1,10 @@
 'use client';
 
-import { Copy } from 'lucide-react';
+import { ArrowBigRight } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -16,41 +15,45 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-const Imprumuta = () => {
+const Imprumuta = ({ bookName }: { bookName: string }) => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">Share</Button>
+                <Button variant="outline" size="icon">
+                    <ArrowBigRight className="h-4 w-4" />
+                </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Share link</DialogTitle>
+                    <DialogTitle>Imprumuta Cartea: {bookName}</DialogTitle>
                     <DialogDescription>
-                        Anyone who has this link will be able to view this.
+                        Completetati datele elevelui care imprumuta cartea
                     </DialogDescription>
                 </DialogHeader>
-                <div className="flex items-center space-x-2">
-                    <div className="grid flex-1 gap-2">
-                        <Label htmlFor="link" className="sr-only">
-                            Link
+                <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="name" className="text-right">
+                            Prenume
                         </Label>
                         <Input
-                            id="link"
-                            defaultValue="https://ui.shadcn.com/docs/installation"
-                            readOnly
+                            id="name"
+                            defaultValue="David"
+                            className="col-span-3"
                         />
                     </div>
-                    <Button type="submit" size="sm" className="px-3">
-                        <span className="sr-only">Copy</span>
-                        <Copy className="h-4 w-4" />
-                    </Button>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="username" className="text-right">
+                            Nume
+                        </Label>
+                        <Input
+                            id="username"
+                            defaultValue="Rotariu"
+                            className="col-span-3"
+                        />
+                    </div>
                 </div>
-                <DialogFooter className="sm:justify-start">
-                    <DialogClose asChild>
-                        <Button type="button" variant="secondary">
-                            Close
-                        </Button>
-                    </DialogClose>
+                <DialogFooter>
+                    <Button type="submit">Save changes</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

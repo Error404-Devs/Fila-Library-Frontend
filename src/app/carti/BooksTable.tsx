@@ -48,7 +48,7 @@ const BooksTable = ({ books }: any) => {
                             {book.LocAparitie}
                         </TableCell>
                         <TableCell className="p-[10px]">
-                            <Imprumuta />
+                            <Imprumuta bookName={book.Titlu} />
                         </TableCell>
                     </TableRow>
                 ))}

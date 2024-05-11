@@ -2,9 +2,15 @@ import Sidebar from './Sidebar';
 import MobileSidebar from './MobileSidebar';
 import BooksTable from './BooksTable';
 import SearchArea from './SearchArea';
+import BASE_URL from '@/api/BASE_URL';
 import books from './carti.json';
 
-const Dashboard = () => {
+const Dashboard = async () => {
+    // const response = await fetch(`${BASE_URL}/books`);
+    // const books = await response.json();
+
+    // console.log(books);
+
     return (
         <div className="grid min-h-screen w-full md:grid-cols-[180px_1fr] lg:grid-cols-[220px_1fr]">
             <Sidebar />
@@ -19,6 +25,7 @@ const Dashboard = () => {
                             Carti
                         </h1>
                     </div>
+
                     <div>
                         <BooksTable books={books} />
                     </div>
