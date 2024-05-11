@@ -7,6 +7,8 @@ import {
     TableRow
 } from '@/components/ui/table';
 import Imprumuta from './Imprumuta';
+import { ArrowBigLeft } from 'lucide-react';
+import Restituie from './Restituie';
 
 interface Book {
     id: string;
@@ -36,7 +38,7 @@ const BooksTable = ({ books }: BooksTableProps) => {
                     <TableHead>Editura</TableHead>
                     <TableHead>An Aparitie</TableHead>
                     <TableHead>Loc Aparitie</TableHead>
-                    <TableHead>Imprumuta</TableHead>
+                    <TableHead>Imprumutare/Restituire</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -58,6 +60,7 @@ const BooksTable = ({ books }: BooksTableProps) => {
                         </TableCell>
                         <TableCell className="p-[10px]">
                             <Imprumuta bookName={book.title} />
+                            <Restituie bookName={book.title} />
                         </TableCell>
                     </TableRow>
                 ))}

@@ -1,6 +1,7 @@
 'use client';
 
-import { ArrowBigRight } from 'lucide-react';
+import { ArrowBigLeft } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -20,7 +21,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-const Imprumuta = ({ bookName }: { bookName: string }) => {
+const Restituie = ({ bookName }: { bookName: string }) => {
     return (
         <Dialog>
             <TooltipProvider>
@@ -32,20 +33,20 @@ const Imprumuta = ({ bookName }: { bookName: string }) => {
                                 size="icon"
                                 className="mx-2"
                             >
-                                <ArrowBigRight className="h-4 w-4" />
+                                <ArrowBigLeft className="h-4 w-4" />
                             </Button>
                         </DialogTrigger>
                     </TooltipTrigger>
                     <TooltipContent>
-                        <p>Imprumuta</p>
+                        <p>Restituie</p>
                     </TooltipContent>
                 </Tooltip>
             </TooltipProvider>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Imprumuta Cartea: {bookName}</DialogTitle>
+                    <DialogTitle>Restituie Cartea: {bookName}</DialogTitle>
                     <DialogDescription>
-                        Completetati datele elevelui care imprumuta cartea
+                        Completetati datele elevelui care Restituie cartea
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
@@ -78,4 +79,4 @@ const Imprumuta = ({ bookName }: { bookName: string }) => {
     );
 };
 
-export default Imprumuta;
+export default Restituie;
