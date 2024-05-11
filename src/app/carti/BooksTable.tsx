@@ -6,8 +6,7 @@ import {
     TableHeader,
     TableRow
 } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { ArrowBigRight } from 'lucide-react';
+import Imprumuta from './Imprumuta';
 
 interface Book {
     IDCarte: number;
@@ -37,15 +36,19 @@ const BooksTable = ({ books }: any) => {
                         key={book.IDCarte}
                         className="bg-white hover:bg-gray-100"
                     >
-                        <TableCell>{book.Titlu}</TableCell>
-                        <TableCell>{book.Cota}</TableCell>
-                        <TableCell>{book.Editura}</TableCell>
-                        <TableCell>{book.AnAparitie || 'N/A'}</TableCell>
-                        <TableCell>{book.LocAparitie}</TableCell>
-                        <TableCell>
-                            <Button variant="outline" size="icon">
-                                <ArrowBigRight className="h-4 w-4" />
-                            </Button>
+                        <TableCell className="p-[10px]">{book.Titlu}</TableCell>
+                        <TableCell className="p-[10px]">{book.Cota}</TableCell>
+                        <TableCell className="p-[10px]">
+                            {book.Editura}
+                        </TableCell>
+                        <TableCell className="p-[10px]">
+                            {book.AnAparitie || 'N/A'}
+                        </TableCell>
+                        <TableCell className="p-[10px]">
+                            {book.LocAparitie}
+                        </TableCell>
+                        <TableCell className="p-[10px]">
+                            <Imprumuta />
                         </TableCell>
                     </TableRow>
                 ))}
