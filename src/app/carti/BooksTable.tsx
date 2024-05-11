@@ -9,15 +9,24 @@ import {
 import Imprumuta from './Imprumuta';
 
 interface Book {
-    IDCarte: number;
-    Titlu: string;
-    Cota: string;
-    Editura: string;
-    AnAparitie?: string;
-    LocAparitie: string;
+    id: string;
+    title: string;
+    category: string;
+    collection_id: string;
+    publisher_id: string;
+    author_id: string;
+    UDC: string;
+    year_of_publication: string;
+    place_of_publication: string;
+    ISBN: string;
+    price: string;
 }
 
-const BooksTable = ({ books }: any) => {
+interface BooksTableProps {
+    books: Book[];
+}
+
+const BooksTable = ({ books }: BooksTableProps) => {
     return (
         <Table>
             <TableHeader>
@@ -31,9 +40,9 @@ const BooksTable = ({ books }: any) => {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {books.map((book: any) => (
+                {books.map((book: Book) => (
                     <TableRow
-                        key={book.IDCarte}
+                        key={book.id}
                         className="bg-white hover:bg-gray-100"
                     >
                         <TableCell className="p-[10px]">{book.title}</TableCell>

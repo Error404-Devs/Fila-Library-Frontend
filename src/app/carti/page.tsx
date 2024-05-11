@@ -4,6 +4,8 @@ import BooksTable from './BooksTable';
 import SearchArea from './SearchArea';
 import BASE_URL from '@/api/BASE_URL';
 
+
+
 const Dashboard = async () => {
     const response = await fetch(`${BASE_URL}/books`);
     const books = await response.json();
