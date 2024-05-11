@@ -6,10 +6,19 @@ import {
     TableHeader,
     TableRow
 } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import books from './carti.json';
+import { Button } from '@/components/ui/button';
+import { ArrowBigRight } from 'lucide-react';
 
-const BooksTable = () => {
+interface Book {
+    IDCarte: number;
+    Titlu: string;
+    Cota: string;
+    Editura: string;
+    AnAparitie?: string;
+    LocAparitie: string;
+}
+
+const BooksTable = ({ books }: any) => {
     return (
         <Table>
             <TableHeader>
@@ -19,10 +28,11 @@ const BooksTable = () => {
                     <TableHead>Editura</TableHead>
                     <TableHead>An Aparitie</TableHead>
                     <TableHead>Loc Aparitie</TableHead>
+                    <TableHead>Imprumuta</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {books.map((book) => (
+                {books.map((book: any) => (
                     <TableRow
                         key={book.IDCarte}
                         className="bg-white hover:bg-gray-100"
@@ -32,6 +42,11 @@ const BooksTable = () => {
                         <TableCell>{book.Editura}</TableCell>
                         <TableCell>{book.AnAparitie || 'N/A'}</TableCell>
                         <TableCell>{book.LocAparitie}</TableCell>
+                        <TableCell>
+                            <Button variant="outline" size="icon">
+                                <ArrowBigRight className="h-4 w-4" />
+                            </Button>
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>
