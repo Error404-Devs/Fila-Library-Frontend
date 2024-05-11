@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowBigRight } from 'lucide-react';
+import { ArrowBigRight, Book, UserRound } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -29,10 +29,11 @@ const Imprumuta = ({ bookName }: { bookName: string }) => {
                         <DialogTrigger asChild>
                             <Button
                                 variant="outline"
-                                size="icon"
-                                className="mx-2"
+                                className="h-[40px] w-[80px] p-1 mx-2"
                             >
-                                <ArrowBigRight className="h-4 w-4" />
+                                <Book className="h-5 w-5" />
+                                <ArrowBigRight className="h-5 w-5" />
+                                <UserRound className="h-5 w-5" />
                             </Button>
                         </DialogTrigger>
                     </TooltipTrigger>
@@ -50,22 +51,22 @@ const Imprumuta = ({ bookName }: { bookName: string }) => {
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">
-                            Prenume
-                        </Label>
-                        <Input
-                            id="name"
-                            defaultValue="David"
-                            className="col-span-3"
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="username" className="text-right">
                             Nume
                         </Label>
                         <Input
                             id="username"
                             defaultValue="Rotariu"
+                            className="col-span-3"
+                        />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="name" className="text-right">
+                            Prenume
+                        </Label>
+                        <Input
+                            id="name"
+                            defaultValue="David"
                             className="col-span-3"
                         />
                     </div>

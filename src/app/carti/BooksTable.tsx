@@ -38,7 +38,7 @@ const BooksTable = ({ books }: BooksTableProps) => {
                     <TableHead>Editura</TableHead>
                     <TableHead>An Aparitie</TableHead>
                     <TableHead>Loc Aparitie</TableHead>
-                    <TableHead>Imprumutare/Restituire</TableHead>
+                    <TableHead>Imprumutare / Restituire</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>

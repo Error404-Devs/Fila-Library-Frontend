@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowBigLeft } from 'lucide-react';
+import { ArrowBigLeft, Book, UserRound } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -30,10 +30,11 @@ const Restituie = ({ bookName }: { bookName: string }) => {
                         <DialogTrigger asChild>
                             <Button
                                 variant="outline"
-                                size="icon"
-                                className="mx-2"
+                                className="h-[40px] w-[80px] p-1 mx-2"
                             >
-                                <ArrowBigLeft className="h-4 w-4" />
+                                <Book className="h-5 w-5" />
+                                <ArrowBigLeft className="h-5 w-5" />
+                                <UserRound className="h-5 w-5" />
                             </Button>
                         </DialogTrigger>
                     </TooltipTrigger>
