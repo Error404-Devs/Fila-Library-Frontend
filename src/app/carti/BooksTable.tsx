@@ -36,19 +36,19 @@ const BooksTable = ({ books }: any) => {
                         key={book.IDCarte}
                         className="bg-white hover:bg-gray-100"
                     >
-                        <TableCell className="p-[10px]">{book.Titlu}</TableCell>
-                        <TableCell className="p-[10px]">{book.Cota}</TableCell>
+                        <TableCell className="p-[10px]">{book.title}</TableCell>
                         <TableCell className="p-[10px]">
-                            {book.Editura}
+                            {book.category}
+                        </TableCell>
+                        <TableCell className="p-[10px]">{book.UDC}</TableCell>
+                        <TableCell className="p-[10px]">
+                            {book.year_of_publication || 'N/A'}
                         </TableCell>
                         <TableCell className="p-[10px]">
-                            {book.AnAparitie || 'N/A'}
+                            {book.place_of_publication || 'N/A'}
                         </TableCell>
                         <TableCell className="p-[10px]">
-                            {book.LocAparitie}
-                        </TableCell>
-                        <TableCell className="p-[10px]">
-                            <Imprumuta bookName={book.Titlu} />
+                            <Imprumuta bookName={book.title} />
                         </TableCell>
                     </TableRow>
                 ))}
