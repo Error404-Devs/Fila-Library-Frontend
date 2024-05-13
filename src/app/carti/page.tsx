@@ -33,30 +33,34 @@ export default async function Dashboard({
     searchParams?: {
         page?: number;
         title?: string;
-        publisher?: string;
         author_id?: string; // TODO: Implement select by id
-        location?: string;
+        category?: string;
+        publisher?: string;
         year?: string;
+        location?: string;
     };
 }) {
     const currentPage = searchParams?.page || 1;
     const title = searchParams?.title || '';
-    const publisher = searchParams?.publisher || '';
     const author_id = searchParams?.author_id || '';
-    const location = searchParams?.location || '';
+    const category = searchParams?.category || '';
+    const publisher = searchParams?.publisher || '';
     const year = searchParams?.year || '';
+    const location = searchParams?.location || '';
 
     const params: Record<string, string> = {};
 
     if (currentPage) params.page = String(currentPage);
     if (title) params.title = title;
-    if (publisher) params.publisher = publisher;
     if (author_id) params.author_id = author_id;
-    if (location) params.location = location;
+    if (category) params.category = category;
+    if (publisher) params.publisher = publisher;
     if (year) params.year = year;
+    if (location) params.location = location;
 
     const queryString = new URLSearchParams(params).toString();
     const url = `${BASE_URL}/books?${queryString}`;
+
     console.log(url);
     const response = await fetch(url, { cache: 'no-store' });
 
