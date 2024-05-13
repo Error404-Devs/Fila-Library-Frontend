@@ -30,8 +30,9 @@ export default async function BooksTable({ books }: { books: Book[] }) {
                 <TableHeader>
                     <TableRow>
                         <TableHead>Titlu</TableHead>
+                        <TableHead>Autor</TableHead>
                         <TableHead>Cota</TableHead>
-                        <TableHead>Editura</TableHead>
+                        {/* <TableHead>Editura</TableHead> */}
                         <TableHead>An Aparitie</TableHead>
                         <TableHead>Loc Aparitie</TableHead>
                         <TableHead>Imprumutare / Restituire</TableHead>
@@ -48,11 +49,14 @@ export default async function BooksTable({ books }: { books: Book[] }) {
                                     {book.title}
                                 </TableCell>
                                 <TableCell className="p-[10px]">
-                                    {book.category}
+                                    {book.author}
                                 </TableCell>
                                 <TableCell className="p-[10px]">
-                                    {book.UDC}
+                                    {book.category}
                                 </TableCell>
+                                {/* <TableCell className="p-[10px]">
+                                    {book.UDC}
+                                </TableCell> */}
                                 <TableCell className="p-[10px]">
                                     {book.year_of_publication || 'N/A'}
                                 </TableCell>

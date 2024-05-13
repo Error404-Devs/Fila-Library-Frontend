@@ -25,63 +25,96 @@ const BooksPagination = ({ totalPages, currentPage }: BooksPaginationProps) => {
     return (
         <Pagination>
             <PaginationContent>
-                {currentPage < 4 && (
+                {totalPages <= 6 &&
+                    Array.from(
+                        { length: totalPages }, // loops through totalPages times
+                        (_, index) => (
+                            <BookPaginationItem
+                                key={index}
+                                page={index + 1}
+                                activePage={currentPage}
+                            />
+                        )
+                    )}
+                {totalPages > 6 && (
                     <>
-                        <BookPaginationItem page={1} activePage={currentPage} />
-                        <BookPaginationItem page={2} activePage={currentPage} />
-                        <BookPaginationItem page={3} activePage={currentPage} />
-                        <BookPaginationItem page={4} activePage={currentPage} />
-                        <BookPaginationItem page={0} />
-                        <BookPaginationItem
-                            page={totalPages}
-                            activePage={currentPage}
-                        />
-                    </>
-                )}
-                {4 <= currentPage && currentPage <= totalPages - 3 && (
-                    <>
-                        <BookPaginationItem page={1} activePage={currentPage} />
-                        <BookPaginationItem page={0} />
-                        <BookPaginationItem
-                            page={currentPage - 1}
-                            activePage={currentPage}
-                        />
-                        <BookPaginationItem
-                            page={currentPage}
-                            activePage={currentPage}
-                        />
-                        <BookPaginationItem
-                            page={currentPage - -1}
-                            activePage={currentPage}
-                        />
-                        <BookPaginationItem page={0} />
+                        {currentPage < 4 && (
+                            <>
+                                <BookPaginationItem
+                                    page={1}
+                                    activePage={currentPage}
+                                />
+                                <BookPaginationItem
+                                    page={2}
+                                    activePage={currentPage}
+                                />
+                                <BookPaginationItem
+                                    page={3}
+                                    activePage={currentPage}
+                                />
+                                <BookPaginationItem
+                                    page={4}
+                                    activePage={currentPage}
+                                />
+                                <BookPaginationItem page={0} />
+                                <BookPaginationItem
+                                    page={totalPages}
+                                    activePage={currentPage}
+                                />
+                            </>
+                        )}
+                        {4 <= currentPage && currentPage <= totalPages - 3 && (
+                            <>
+                                <BookPaginationItem
+                                    page={1}
+                                    activePage={currentPage}
+                                />
+                                <BookPaginationItem page={0} />
+                                <BookPaginationItem
+                                    page={currentPage - 1}
+                                    activePage={currentPage}
+                                />
+                                <BookPaginationItem
+                                    page={currentPage}
+                                    activePage={currentPage}
+                                />
+                                <BookPaginationItem
+                                    page={currentPage - -1}
+                                    activePage={currentPage}
+                                />
+                                <BookPaginationItem page={0} />
 
-                        <BookPaginationItem
-                            page={totalPages}
-                            activePage={currentPage}
-                        />
-                    </>
-                )}
-                {currentPage > totalPages - 3 && (
-                    <>
-                        <BookPaginationItem page={1} activePage={currentPage} />
-                        <BookPaginationItem page={0} />
-                        <BookPaginationItem
-                            page={totalPages - 3}
-                            activePage={currentPage}
-                        />
-                        <BookPaginationItem
-                            page={totalPages - 2}
-                            activePage={currentPage}
-                        />
-                        <BookPaginationItem
-                            page={totalPages - 1}
-                            activePage={currentPage}
-                        />
-                        <BookPaginationItem
-                            page={totalPages}
-                            activePage={currentPage}
-                        />
+                                <BookPaginationItem
+                                    page={totalPages}
+                                    activePage={currentPage}
+                                />
+                            </>
+                        )}
+                        {currentPage > totalPages - 3 && (
+                            <>
+                                <BookPaginationItem
+                                    page={1}
+                                    activePage={currentPage}
+                                />
+                                <BookPaginationItem page={0} />
+                                <BookPaginationItem
+                                    page={totalPages - 3}
+                                    activePage={currentPage}
+                                />
+                                <BookPaginationItem
+                                    page={totalPages - 2}
+                                    activePage={currentPage}
+                                />
+                                <BookPaginationItem
+                                    page={totalPages - 1}
+                                    activePage={currentPage}
+                                />
+                                <BookPaginationItem
+                                    page={totalPages}
+                                    activePage={currentPage}
+                                />
+                            </>
+                        )}
                     </>
                 )}
             </PaginationContent>
