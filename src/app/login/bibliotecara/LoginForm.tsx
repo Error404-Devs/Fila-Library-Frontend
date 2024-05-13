@@ -33,7 +33,7 @@ export function LoginForm() {
                 </div>
             </CardContent>
             <CardFooter>
-                <Link className="w-full" href="/carti" passHref>
+                <Link className="w-full" href="/carti?page=1" passHref>
                     <Button className="w-full">Sign in</Button>
                 </Link>
             </CardFooter>

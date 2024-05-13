@@ -14,6 +14,7 @@ const SearchArea = () => {
     const handleSearchTitle = (title: string) => {
         console.log(`Cautam titlul: ${title}`);
         const params = new URLSearchParams(searchParams);
+        params.set('page', '1');
         if (title) {
             params.set('title', title);
         } else {
@@ -21,19 +22,21 @@ const SearchArea = () => {
         }
         replace(`${pathname}?${params.toString()}`);
     };
-    const handleSearchAuthor = (author_id: string) => {
-        console.log(`Cautam autorul: ${author_id}`);
+    const handleSearchAuthor = (author: string) => {
+        console.log(`Cautam autorul: ${author}`);
         const params = new URLSearchParams(searchParams);
-        if (author_id) {
-            params.set('author_id', author_id);
+        params.set('page', '1');
+        if (author) {
+            params.set('author', author);
         } else {
-            params.delete('author_id');
+            params.delete('author');
         }
         replace(`${pathname}?${params.toString()}`);
     };
     const handleSearchCategory = (category: string) => {
         console.log(`Cautam cota: ${category}`);
         const params = new URLSearchParams(searchParams);
+        params.set('page', '1');
         if (category) {
             params.set('category', category);
         } else {
@@ -44,6 +47,7 @@ const SearchArea = () => {
     const handleSearchPublisher = (publisher: string) => {
         console.log(`Cautam editura: ${publisher}`);
         const params = new URLSearchParams(searchParams);
+        params.set('page', '1');
         if (publisher) {
             params.set('publisher', publisher);
         } else {
@@ -54,6 +58,7 @@ const SearchArea = () => {
     const handleSearchYear = (year: string) => {
         console.log(`Cautam anul: ${year}`);
         const params = new URLSearchParams(searchParams);
+        params.set('page', '1');
         if (year) {
             params.set('year', year);
         } else {
@@ -64,6 +69,7 @@ const SearchArea = () => {
     const handleSearchLocation = (location: string) => {
         console.log(`Cautam locul: ${location}`);
         const params = new URLSearchParams(searchParams);
+        params.set('page', '1');
         if (location) {
             params.set('location', location);
         } else {
@@ -98,9 +104,7 @@ const SearchArea = () => {
                                 onChange={(e) => {
                                     handleSearchAuthor(e.target.value);
                                 }}
-                                value={searchParams
-                                    .get('author_id')
-                                    ?.toString()}
+                                value={searchParams.get('author')?.toString()}
                             />
                         </div>
                     </div>

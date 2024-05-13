@@ -33,16 +33,16 @@ export default async function Dashboard({
     searchParams?: {
         page?: number;
         title?: string;
-        author_id?: string; // TODO: Implement select by id
+        author?: string;
         category?: string;
         publisher?: string;
         year?: string;
         location?: string;
     };
 }) {
-    const currentPage = searchParams?.page || 1;
+    const page = searchParams?.page || 1;
     const title = searchParams?.title || '';
-    const author_id = searchParams?.author_id || '';
+    const author = searchParams?.author || '';
     const category = searchParams?.category || '';
     const publisher = searchParams?.publisher || '';
     const year = searchParams?.year || '';
@@ -50,9 +50,9 @@ export default async function Dashboard({
 
     const params: Record<string, string> = {};
 
-    if (currentPage) params.page = String(currentPage);
+    if (page) params.page = String(page);
     if (title) params.title = title;
-    if (author_id) params.author_id = author_id;
+    if (author) params.author = author;
     if (category) params.category = category;
     if (publisher) params.publisher = publisher;
     if (year) params.year = year;
@@ -63,10 +63,11 @@ export default async function Dashboard({
 
     console.log(url);
     const response = await fetch(url, { cache: 'no-store' });
-
+    console.log(response);
     const books_and_pages: BooksAndPages = await response.json();
     const totalPages = books_and_pages?.pages || 0;
-    const books: Book[] = await books_and_pages.items;
+    const currentPage = books_and_pages?.page || 1;
+    const books: Book[] = await books_and_pages?.items;
 
     return (
         <div className="grid min-h-screen w-full md:grid-cols-[180px_1fr] lg:grid-cols-[220px_1fr]">
@@ -89,7 +90,7 @@ export default async function Dashboard({
                             <>
                                 <BooksTable books={books} />
                                 <BooksPagination
-                                    totalPages={books_and_pages.pages}
+                                    totalPages={totalPages}
                                     currentPage={currentPage}
                                 />
                             </>
