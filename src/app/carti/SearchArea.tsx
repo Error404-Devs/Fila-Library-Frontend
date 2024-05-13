@@ -4,8 +4,9 @@ import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useState, ChangeEvent, FormEvent } from 'react';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
-const SearchArea = () => {
+const SearchArea = ({ title }: { title: string }) => {
     const [searchTitlu, setSearchTitlu] = useState('');
     const [searchAutori, setSearchAutori] = useState('');
     const [searchCota, setSearchCota] = useState('');
@@ -13,10 +14,21 @@ const SearchArea = () => {
     const [searchAn, setSearchAn] = useState('');
     const [searchLoc, setSearchLoc] = useState('');
 
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const { replace } = useRouter();
+
     type ChangeEventType = ChangeEvent<HTMLInputElement>;
     type FormEventType = FormEvent<HTMLFormElement>;
-    const handleSearchTitluChange = (event: ChangeEventType) => {
+    const handleSearchTitle = (event: ChangeEventType) => {
         setSearchTitlu(event.target.value);
+        const params = new URLSearchParams(searchParams);
+        if (event.target.value) {
+            params.set('title', event.target.value);
+        } else {
+            params.delete('title');
+        }
+        replace(`${pathname}?${params.toString()}`);
     };
     const handleSearchAutoriChange = (event: ChangeEventType) => {
         setSearchAutori(event.target.value);
@@ -56,10 +68,12 @@ const SearchArea = () => {
                                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                                 <Input
                                     type="search"
-                                    placeholder="Search titlu..."
                                     className="w-full appearance-none bg-background pl-8 shadow-none"
-                                    value={searchTitlu}
-                                    onChange={handleSearchTitluChange}
+                                    placeholder={title}
+                                    onChange={handleSearchTitle}
+                                    value={searchParams
+                                        .get('title')
+                                        ?.toString()}
                                 />
                             </div>
                             <div className="flex-1 relative">
