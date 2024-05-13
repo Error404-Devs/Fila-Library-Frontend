@@ -2,12 +2,67 @@ import Sidebar from './Sidebar';
 import MobileSidebar from './MobileSidebar';
 import BooksTable from './BooksTable';
 import SearchArea from './SearchArea';
-import BASE_URL from '@/api/BASE_URL';
 import BooksPagination from './BooksPagination';
+import BASE_URL from '@/api/BASE_URL';
 
-const Dashboard = async () => {
-    const response = await fetch(`${BASE_URL}/books`);
-    const books = await response.json();
+interface Book {
+    id: string;
+    title: string;
+    category: string;
+    collection: string;
+    publisher: string;
+    author: string;
+    UDC: string;
+    year_of_publication: string;
+    place_of_publication: string;
+    ISBN: string;
+    price: string;
+}
+
+interface BooksAndPages {
+    items: Book[];
+    total: number;
+    page: number;
+    size: number;
+    pages: number;
+}
+
+export default async function Dashboard({
+    searchParams
+}: {
+    searchParams?: {
+        page?: number;
+        title?: string;
+        publisher?: string;
+        author_id?: string; // TODO: Implement select by id
+        location?: string;
+        year?: string;
+    };
+}) {
+    const currentPage = searchParams?.page || 1;
+    const title = searchParams?.title || '';
+    const publisher = searchParams?.publisher || '';
+    const author_id = searchParams?.author_id || '';
+    const location = searchParams?.location || '';
+    const year = searchParams?.year || '';
+
+    const params: Record<string, string> = {};
+
+    if (currentPage) params.page = String(currentPage);
+    if (title) params.title = title;
+    if (publisher) params.publisher = publisher;
+    if (author_id) params.author_id = author_id;
+    if (location) params.location = location;
+    if (year) params.year = year;
+
+    const queryString = new URLSearchParams(params).toString();
+    const url = `${BASE_URL}/books?${queryString}`;
+    console.log(url);
+    const response = await fetch(url, { cache: 'no-store' });
+
+    const books_and_pages: BooksAndPages = await response.json();
+    const totalPages = books_and_pages?.pages || 0;
+    const books: Book[] = await books_and_pages.items;
 
     return (
         <div className="grid min-h-screen w-full md:grid-cols-[180px_1fr] lg:grid-cols-[220px_1fr]">
@@ -25,12 +80,26 @@ const Dashboard = async () => {
                     </div>
 
                     <div>
-                        <BooksTable books={books} />
-                        <BooksPagination />
+                        {/* TODO: Add suspense */}
+                        {totalPages ? (
+                            <>
+                                <BooksTable books={books} />
+                                <BooksPagination
+                                    totalPages={books_and_pages.pages}
+                                    currentPage={currentPage}
+                                />
+                            </>
+                        ) : (
+                            <div className="flex justify-center items-center h-[50vh]">
+                                <p>
+                                    Nu există cărți care să îndeplinească
+                                    criteriile
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </main>
             </div>
         </div>
     );
-};
-export default Dashboard;
+}
