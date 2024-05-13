@@ -1,12 +1,8 @@
 'use client';
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink
-} from '@/components/ui/pagination';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { Pagination, PaginationContent } from '@/components/ui/pagination';
+import { usePathname, useSearchParams, redirect } from 'next/navigation';
+import { useEffect } from 'react';
+import BookPaginationItem from './BookPaginationItem';
 
 interface BooksPaginationProps {
     totalPages: number;
@@ -17,45 +13,77 @@ const BooksPagination = ({ totalPages, currentPage }: BooksPaginationProps) => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const createPageURL = (pageNumber: number) => {
-        const params = new URLSearchParams(searchParams);
-        params.set('page', pageNumber.toString());
-        return `${pathname}?${params.toString()}`;
-    };
+    useEffect(() => {
+        if (currentPage > totalPages) {
+            const params = new URLSearchParams(searchParams);
+            params.set('page', totalPages.toString());
+            redirect(`${pathname}?${params.toString()}`);
+        }
+    }, []);
 
+    // * page = 0 means ellipsis
     return (
         <Pagination>
             <PaginationContent>
-                <PaginationItem>
-                    <PaginationLink href={createPageURL(1)}>1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink href={createPageURL(currentPage - 1)}>
-                        {currentPage - 1}
-                    </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink href={createPageURL(currentPage)} isActive>
-                        {currentPage}
-                    </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    {/* ? for some reason doing +1 turns it into a string */}
-                    <PaginationLink href={createPageURL(currentPage - -1)}>
-                        {currentPage - -1}
-                    </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink href={createPageURL(totalPages)}>
-                        {totalPages}
-                    </PaginationLink>
-                </PaginationItem>
+                {currentPage < 4 && (
+                    <>
+                        <BookPaginationItem page={1} activePage={currentPage} />
+                        <BookPaginationItem page={2} activePage={currentPage} />
+                        <BookPaginationItem page={3} activePage={currentPage} />
+                        <BookPaginationItem page={4} activePage={currentPage} />
+                        <BookPaginationItem page={0} />
+                        <BookPaginationItem
+                            page={totalPages}
+                            activePage={currentPage}
+                        />
+                    </>
+                )}
+                {4 <= currentPage && currentPage <= totalPages - 3 && (
+                    <>
+                        <BookPaginationItem page={1} activePage={currentPage} />
+                        <BookPaginationItem page={0} />
+                        <BookPaginationItem
+                            page={currentPage - 1}
+                            activePage={currentPage}
+                        />
+                        <BookPaginationItem
+                            page={currentPage}
+                            activePage={currentPage}
+                        />
+                        <BookPaginationItem
+                            page={currentPage - -1}
+                            activePage={currentPage}
+                        />
+                        <BookPaginationItem page={0} />
+
+                        <BookPaginationItem
+                            page={totalPages}
+                            activePage={currentPage}
+                        />
+                    </>
+                )}
+                {currentPage > totalPages - 3 && (
+                    <>
+                        <BookPaginationItem page={1} activePage={currentPage} />
+                        <BookPaginationItem page={0} />
+                        <BookPaginationItem
+                            page={totalPages - 3}
+                            activePage={currentPage}
+                        />
+                        <BookPaginationItem
+                            page={totalPages - 2}
+                            activePage={currentPage}
+                        />
+                        <BookPaginationItem
+                            page={totalPages - 1}
+                            activePage={currentPage}
+                        />
+                        <BookPaginationItem
+                            page={totalPages}
+                            activePage={currentPage}
+                        />
+                    </>
+                )}
             </PaginationContent>
         </Pagination>
     );
