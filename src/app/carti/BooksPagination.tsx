@@ -17,7 +17,7 @@ const BooksPagination = ({ totalPages, currentPage }: BooksPaginationProps) => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const createPageURL = (pageNumber: number | string) => {
+    const createPageURL = (pageNumber: number) => {
         const params = new URLSearchParams(searchParams);
         params.set('page', pageNumber.toString());
         return `${pathname}?${params.toString()}`;
