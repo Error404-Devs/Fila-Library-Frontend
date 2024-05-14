@@ -2,16 +2,15 @@
 
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { useState, ChangeEvent, FormEvent } from 'react';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { useDebouncedCallback } from 'use-debounce';
 
 const SearchArea = () => {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
 
-    const handleSearchTitle = (title: string) => {
+    const handleSearchTitle = useDebouncedCallback((title: string) => {
         console.log(`Cautam titlul: ${title}`);
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
@@ -21,8 +20,8 @@ const SearchArea = () => {
             params.delete('title');
         }
         replace(`${pathname}?${params.toString()}`);
-    };
-    const handleSearchAuthor = (author: string) => {
+    }, 300);
+    const handleSearchAuthor = useDebouncedCallback((author: string) => {
         console.log(`Cautam autorul: ${author}`);
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
@@ -32,8 +31,8 @@ const SearchArea = () => {
             params.delete('author');
         }
         replace(`${pathname}?${params.toString()}`);
-    };
-    const handleSearchCategory = (category: string) => {
+    }, 300);
+    const handleSearchCategory = useDebouncedCallback((category: string) => {
         console.log(`Cautam cota: ${category}`);
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
@@ -43,8 +42,8 @@ const SearchArea = () => {
             params.delete('category');
         }
         replace(`${pathname}?${params.toString()}`);
-    };
-    const handleSearchPublisher = (publisher: string) => {
+    }, 300);
+    const handleSearchPublisher = useDebouncedCallback((publisher: string) => {
         console.log(`Cautam editura: ${publisher}`);
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
@@ -54,8 +53,8 @@ const SearchArea = () => {
             params.delete('publisher');
         }
         replace(`${pathname}?${params.toString()}`);
-    };
-    const handleSearchYear = (year: string) => {
+    }, 300);
+    const handleSearchYear = useDebouncedCallback((year: string) => {
         console.log(`Cautam anul: ${year}`);
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
@@ -65,8 +64,8 @@ const SearchArea = () => {
             params.delete('year');
         }
         replace(`${pathname}?${params.toString()}`);
-    };
-    const handleSearchLocation = (location: string) => {
+    }, 300);
+    const handleSearchLocation = useDebouncedCallback((location: string) => {
         console.log(`Cautam locul: ${location}`);
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
@@ -76,7 +75,7 @@ const SearchArea = () => {
             params.delete('location');
         }
         replace(`${pathname}?${params.toString()}`);
-    };
+    }, 300);
 
     return (
         <>

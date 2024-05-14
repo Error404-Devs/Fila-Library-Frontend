@@ -61,9 +61,7 @@ export default async function Dashboard({
     const queryString = new URLSearchParams(params).toString();
     const url = `${BASE_URL}/books?${queryString}`;
 
-    console.log(url);
     const response = await fetch(url, { cache: 'no-store' });
-    console.log(response);
     const books_and_pages: BooksAndPages = await response.json();
     const totalPages = books_and_pages?.pages || 0;
     const currentPage = books_and_pages?.page || 1;
