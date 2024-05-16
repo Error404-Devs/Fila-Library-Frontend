@@ -16,7 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 export function LoginForm() {
-    const [email, setEmail] = useState('admin@email.com');
+    const [email, setEmail] = useState('admin@fila.com');
     const [password, setPassword] = useState('Password123!');
     const [error, setError] = useState('');
     const router = useRouter();
@@ -39,7 +39,7 @@ export function LoginForm() {
         });
 
         if (result?.error) {
-            setError(result.error);
+            setError('Invalid email or password');
         } else if (result?.url) {
             router.push(result.url);
         }

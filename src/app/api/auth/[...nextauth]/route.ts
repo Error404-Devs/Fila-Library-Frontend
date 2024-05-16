@@ -2,7 +2,7 @@ import BASE_URL from '@/api/BASE_URL';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-export default NextAuth({
+const handler = NextAuth({
     providers: [
         CredentialsProvider({
             name: 'Credentials',
@@ -36,21 +36,24 @@ export default NextAuth({
             }
         })
     ],
-    // ? secret: process.env.NEXTAUTH_SECRET,
+    // secret: process.env.NEXTAUTH_SECRET,
     session: {
         strategy: 'jwt'
     },
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token.id = user.id;
                 token.access_token = user.access_token;
+                token.refresh_token = user.refresh_token;
+                token.email = user.email;
             }
             return token;
         },
         async session({ session, token }) {
             session.user = session.user ?? {};
-            session.access_token = token.access_token as string | undefined; // ? weird type error
+            session.user.email = token.email;
+            session.access_token = token.access_token as string;
+            session.refresh_token = token.refresh_token as string;
             return session;
         }
     },
@@ -59,3 +62,5 @@ export default NextAuth({
         error: '/auth/error'
     }
 });
+
+export { handler as GET, handler as POST };
