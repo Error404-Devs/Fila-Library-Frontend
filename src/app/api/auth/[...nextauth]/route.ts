@@ -14,7 +14,7 @@ async function refreshAccessToken(token: any) {
         return {
             ...token,
             accessToken: refreshedToken.access_token,
-            accessTokenExpires: Date.now() + 1000 * 10, // * refreshedToken.expires_in,
+            accessTokenExpires: Date.now() + 1000 * refreshedToken.expires_in,
             refreshToken: refreshedToken.refresh_token ?? token.refresh_token // Fall back to old refresh token
         };
     } catch (error) {
@@ -35,12 +35,11 @@ const handler = NextAuth({
                 email: {
                     label: 'admin@email.com',
                     type: 'text',
-                    placeholder: 'jsmith'
+                    placeholder: 'Email...'
                 },
                 password: { label: 'Password', type: 'password' }
             },
             async authorize(credentials, req) {
-                console.log(credentials?.email, credentials?.password);
                 const res = await fetch(`${BASE_URL}/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -73,10 +72,8 @@ const handler = NextAuth({
                 token.email = user.email;
             }
             if (Date.now() < (token.expires_in as number)) {
-                console.log('kept access token');
                 return token;
             }
-            console.log('refreshed token', token);
             return await refreshAccessToken(token);
         },
         async session({ session, token }) {
