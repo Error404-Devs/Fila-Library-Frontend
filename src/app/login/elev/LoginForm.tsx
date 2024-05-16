@@ -1,3 +1,4 @@
+'use client'
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -10,8 +11,18 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
+import { useState } from 'react';
+
 
 export function LoginForm() {
+
+    const [nr_crt, setNrCrt] = useState('')
+
+    const handleNrCrtChange = (e:any) => {
+        setNrCrt(e.target.value);
+        console.log(nr_crt)
+    };
+
     return (
         <Card className="w-full max-w-sm">
             <CardHeader>
@@ -25,11 +36,13 @@ export function LoginForm() {
                         type="text"
                         placeholder="39 VIII L"
                         required
+                        value={nr_crt}
+                        onChange={handleNrCrtChange}
                     />
                 </div>
             </CardContent>
             <CardFooter>
-                <Link className="w-full" href="/situatie" passHref>
+                <Link className="w-full" href={`/situatie?nr_crt=${nr_crt}`} passHref >
                     <Button className="w-full">Sign in</Button>
                 </Link>
             </CardFooter>

@@ -10,6 +10,7 @@ export default function SearchBar() {
                     type="search"
                     className="w-full appearance-none bg-background pl-8 shadow-none"
                     placeholder="Search"
+                    required
                 />
             </div>
         </>

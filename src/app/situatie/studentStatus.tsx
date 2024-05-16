@@ -1,3 +1,4 @@
+'use client'
 import {
     Dialog,
     DialogContent,
@@ -17,16 +18,21 @@ import {
     CardTitle,
   } from "@/components/ui/card"
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import BASE_URL from "@/api/BASE_URL"
-import * as booksData from "./data.json"
 
 
-
-
-export async function StudentStatus() {
+export async function StudentStatus(
+    {
+        searchParams
+    }: {
+        searchParams?: {
+            nr_crt?: string;
+        };
+    }
+) {
+    const nr_test = searchParams?.nr_crt;
+    console.log(nr_test)
     const nr_crt:string = '12345'
         const url = `${BASE_URL}/borrows?person_id=${nr_crt}`;
     
@@ -35,9 +41,9 @@ export async function StudentStatus() {
         const situatie = await response.json()
         console.log(situatie);
 
-        for(let i = 0; i < situatie.length; i++)
+        for(let i = 0; i < situatie.items.length; i++)
         {
-            situatie[i].due_date = situatie[i].due_date.split('T')[0]; // Update due_date
+            situatie.items[i].due_date = situatie.items[i].due_date.split('T')[0]; // Update due_date
         }
 
     return (
@@ -49,8 +55,9 @@ export async function StudentStatus() {
         }}
         className="py-10" 
         >
-           
-            {situatie.map((elev:any, index: number) => (
+           <p>Hello back, {situatie.first_name} {situatie.last_name}</p>
+           <button onClick={() => console.log(nr_test)}>click</button>
+            {situatie.items.map((elev:any, index: number) => (
                  <Dialog>
                     <DialogTrigger asChild>
                         <Card key={index} className="w-[20rem]" style={{ overflow: 'hidden' }}>
