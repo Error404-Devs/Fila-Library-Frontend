@@ -20,20 +20,13 @@ import {
 
 import { Label } from "@/components/ui/label"
 import BASE_URL from "@/api/BASE_URL"
+import { useSearchParams } from 'next/navigation'
 
 
-export async function StudentStatus(
-    {
-        searchParams
-    }: {
-        searchParams?: {
-            nr_crt?: string;
-        };
-    }
-) {
-    const nr_test = searchParams?.nr_crt;
-    console.log(nr_test)
-    const nr_crt:string = '12345'
+export async function StudentStatus()
+ {
+    const searchParams = useSearchParams()
+    const nr_crt = searchParams.get('nr_crt')
         const url = `${BASE_URL}/borrows?person_id=${nr_crt}`;
     
         console.log(url);
@@ -56,7 +49,6 @@ export async function StudentStatus(
         className="py-10" 
         >
            <p>Hello back, {situatie.first_name} {situatie.last_name}</p>
-           <button onClick={() => console.log(nr_test)}>click</button>
             {situatie.items.map((elev:any, index: number) => (
                  <Dialog>
                     <DialogTrigger asChild>
