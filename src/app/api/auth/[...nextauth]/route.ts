@@ -1,11 +1,11 @@
-import BASE_URL from '@/api/BASE_URL';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+const baseUrl = process.env.BASE_URL;
 
 async function refreshAccessToken(token: any) {
     console.log('called function');
     try {
-        const url = `${BASE_URL}/auth/refresh_token?refresh_token=${token.refresh_token}`;
+        const url = `${baseUrl}/auth/refresh_token?refresh_token=${token.refresh_token}`;
         const response = await fetch(url);
         const refreshedToken = await response.json();
         if (!response.ok) {
@@ -40,7 +40,7 @@ const handler = NextAuth({
                 password: { label: 'Password', type: 'password' }
             },
             async authorize(credentials, req) {
-                const res = await fetch(`${BASE_URL}/auth/login`, {
+                const res = await fetch(`${baseUrl}/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

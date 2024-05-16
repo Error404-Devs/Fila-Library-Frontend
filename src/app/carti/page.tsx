@@ -3,7 +3,7 @@ import MobileSidebar from './MobileSidebar';
 import BooksTable from './BooksTable';
 import SearchArea from './SearchArea';
 import BooksPagination from './BooksPagination';
-import BASE_URL from '@/api/BASE_URL';
+const baseUrl = process.env.BASE_URL;
 
 interface Book {
     id: string;
@@ -59,7 +59,7 @@ export default async function Dashboard({
     if (location) params.location = location;
 
     const queryString = new URLSearchParams(params).toString();
-    const url = `${BASE_URL}/books?${queryString}`;
+    const url = `${baseUrl}/books?${queryString}`;
 
     const response = await fetch(url, { cache: 'no-store' });
     const books_and_pages: BooksAndPages = await response.json();
