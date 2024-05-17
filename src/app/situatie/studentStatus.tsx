@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import {
     Dialog,
     DialogContent,
@@ -6,8 +6,8 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
-  } from "@/components/ui/dialog"
+    DialogTrigger
+} from '@/components/ui/dialog';
 
 import {
     Card,
@@ -15,8 +15,8 @@ import {
     CardDescription,
     CardFooter,
     CardHeader,
-    CardTitle,
-  } from "@/components/ui/card"
+    CardTitle
+} from '@/components/ui/card';
 
 import { Label } from "@/components/ui/label"
 import BASE_URL from "@/api/BASE_URL"
@@ -34,47 +34,87 @@ export async function StudentStatus()
         const situatie = await response.json()
         console.log(situatie);
 
-        for(let i = 0; i < situatie.items.length; i++)
-        {
-            situatie.items[i].due_date = situatie.items[i].due_date.split('T')[0]; // Update due_date
-        }
+    console.log(url);
+    const response = await fetch(url, { cache: 'no-store' });
+    const situatie = await response.json();
+    console.log(situatie);
+
+    for (let i = 0; i < situatie.items.length; i++) {
+        situatie.items[i].due_date = situatie.items[i].due_date.split('T')[0]; // Update due_date
+    }
 
     return (
-        <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '20px', 
-            flexWrap: 'wrap'
-        }}
-        className="py-10" 
+        <div
+            style={{
+                display: 'flex',
+                justifyContent: 'center',
+                gap: '20px',
+                flexWrap: 'wrap'
+            }}
+            className="py-10"
         >
            <p>Hello back, {situatie.first_name} {situatie.last_name}</p>
             {situatie.items.map((elev:any, index: number) => (
                  <Dialog>
                     <DialogTrigger asChild>
-                        <Card key={index} className="w-[20rem]" style={{ overflow: 'hidden' }}>
+                        <Card
+                            key={index}
+                            className="w-[20rem]"
+                            style={{ overflow: 'hidden' }}
+                        >
                             <CardHeader className="pt-5">
-                                <CardTitle style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} className="py-1">
+                                <CardTitle
+                                    style={{
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap'
+                                    }}
+                                    className="py-1"
+                                >
                                     {elev.book_name}
                                 </CardTitle>
-                                <CardDescription style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                <CardDescription
+                                    style={{
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap'
+                                    }}
+                                >
                                     {elev.author_name}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                {elev.status &&
-                                    <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                {elev.status && (
+                                    <p
+                                        style={{
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap'
+                                        }}
+                                    >
                                         Status: Imprumtat
                                     </p>
-                                }
-                                {!elev.status &&
-                                    <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                )}
+                                {!elev.status && (
+                                    <p
+                                        style={{
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap'
+                                        }}
+                                    >
                                         Status: Restituit
                                     </p>
-                                }
+                                )}
                             </CardContent>
                             <CardFooter>
-                                <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                <p
+                                    style={{
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap'
+                                    }}
+                                >
                                     Data: {elev.due_date}
                                 </p>
                             </CardFooter>
@@ -82,18 +122,28 @@ export async function StudentStatus()
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
-                            <DialogTitle className="text-xl">{elev.book_name}</DialogTitle>
-                            <DialogDescription>{elev.autor_name}</DialogDescription>
+                            <DialogTitle className="text-xl">
+                                {elev.book_name}
+                            </DialogTitle>
+                            <DialogDescription>
+                                {elev.autor_name}
+                            </DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-4 py-4">
                             <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="name" className="text-left text-md">    
+                                <Label
+                                    htmlFor="name"
+                                    className="text-left text-md"
+                                >
                                     Status:
                                 </Label>
                                 <p>{elev.status}</p>
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="name" className="text-left  text-md">
+                                <Label
+                                    htmlFor="name"
+                                    className="text-left  text-md"
+                                >
                                     Data:
                                 </Label>
                                 <p>{elev.due_date}</p>
