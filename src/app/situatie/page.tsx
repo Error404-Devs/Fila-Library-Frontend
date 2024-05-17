@@ -2,6 +2,7 @@ import { StudentStatus } from "./studentStatus";
 import { Library } from 'lucide-react';
 import SearchBar from "./SearchArea";
 import Link from 'next/link';
+import ParamsUrl from "./params";
 
 function Dashboard() {
 
@@ -21,7 +22,7 @@ function Dashboard() {
                     </div>
                 </header>
             </div>
-            <StudentStatus/>
+            <ParamsUrl/>
         </>
     );
 };
