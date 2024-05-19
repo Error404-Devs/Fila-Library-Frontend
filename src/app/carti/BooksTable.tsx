@@ -21,6 +21,9 @@ interface Book {
     place_of_publication: string;
     ISBN: string;
     price: string;
+    total_copies: number;
+    available_copies: number;
+    borrowed_copies: number;
 }
 
 export default async function BooksTable({ books }: { books: Book[] }) {
@@ -64,8 +67,14 @@ export default async function BooksTable({ books }: { books: Book[] }) {
                                     {book.place_of_publication || 'N/A'}
                                 </TableCell>
                                 <TableCell className="p-[10px]">
-                                    <Imprumuta bookName={book.title} />
-                                    <Restituie bookName={book.title} />
+                                    <Imprumuta
+                                        bookName={book.title}
+                                        availableCopies={book.available_copies}
+                                    />
+                                    <Restituie
+                                        bookName={book.title}
+                                        borrowedCopies={book.borrowed_copies}
+                                    />
                                 </TableCell>
                             </TableRow>
                         ))}

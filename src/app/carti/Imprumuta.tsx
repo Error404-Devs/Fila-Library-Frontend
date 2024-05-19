@@ -2,25 +2,22 @@
 
 import { ArrowBigRight, Book, UserRound } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
-} from '@/components/ui/dialog';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger
 } from '@/components/ui/tooltip';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import ImprumutaModal from './ImprumutaModal';
 
-const Imprumuta = ({ bookName }: { bookName: string }) => {
+interface ImprumutaProps {
+    bookName: string;
+    availableCopies: number;
+}
+
+const Imprumuta = ({ bookName, availableCopies }: ImprumutaProps) => {
     return (
         <Dialog>
             <TooltipProvider>
@@ -30,10 +27,16 @@ const Imprumuta = ({ bookName }: { bookName: string }) => {
                             <Button
                                 variant="outline"
                                 className="h-[40px] w-[80px] p-1 mx-2"
+                                disabled={availableCopies === 0}
                             >
-                                <Book className="h-5 w-5" />
+                                <div className="relative h-7 w-7">
+                                    <Book className="static h-6 w-6 mt-1 mr-1" />
+                                    <Badge className="absolute top-0 right-0 flex h-4 w-4 p-1 shrink-0 items-center justify-center rounded-full bg-black">
+                                        {availableCopies}
+                                    </Badge>
+                                </div>
                                 <ArrowBigRight className="h-5 w-5" />
-                                <UserRound className="h-5 w-5" />
+                                <UserRound className="h-6 w-6" />
                             </Button>
                         </DialogTrigger>
                     </TooltipTrigger>
@@ -42,39 +45,7 @@ const Imprumuta = ({ bookName }: { bookName: string }) => {
                     </TooltipContent>
                 </Tooltip>
             </TooltipProvider>
-            <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>Imprumuta Cartea: {bookName}</DialogTitle>
-                    <DialogDescription>
-                        Completetati datele elevelui care imprumuta cartea
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="username" className="text-right">
-                            Nume
-                        </Label>
-                        <Input
-                            id="username"
-                            defaultValue="Rotariu"
-                            className="col-span-3"
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">
-                            Prenume
-                        </Label>
-                        <Input
-                            id="name"
-                            defaultValue="David"
-                            className="col-span-3"
-                        />
-                    </div>
-                </div>
-                <DialogFooter>
-                    <Button type="submit">Save changes</Button>
-                </DialogFooter>
-            </DialogContent>
+            <ImprumutaModal bookName={bookName} />
         </Dialog>
     );
 };
