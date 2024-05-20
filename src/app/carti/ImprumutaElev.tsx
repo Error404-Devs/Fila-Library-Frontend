@@ -10,41 +10,45 @@ import {
     SelectValue,
     SelectGroup
 } from '@/components/ui/select';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-const ImprumutaModalElev = () => {
-    const [nrMatricol, setNrMatricol] = useState('');
-    const [error, setError] = useState(0);
+const ImprumutaModalElev = ({
+    nrMatricol,
+    setNrMatricol,
+    error,
+    setError,
+    nume,
+    setNume,
+    prenume,
+    setPrenume,
+    gender,
+    setGender,
+    year,
+    setYear,
+    group,
+    setGroup,
+    mediu,
+    setMediu,
+    phone,
+    setPhone
+}: any) => {
+    useEffect(() => {
+        if (nrMatricol === '') setError(0);
+        fetchNrMatricol();
+    }, [nrMatricol]);
 
-    const [nume, setNume] = useState('');
-    const [prenume, setPrenume] = useState('');
-    const [gender, setGender] = useState('');
-    const [year, setYear] = useState('');
-    const [group, setGroup] = useState('');
-    const [mediu, setMediu] = useState('');
-    const [phone, setPhone] = useState('');
-
-    const resetFields = () => {
-        setNume('');
-        setPrenume('');
-        setGender('');
-        setYear('');
-        setGroup('');
-        setMediu('');
-        setPhone('');
-    };
-
-    const fetchNrMatricol = async (input: string) => {
+    const fetchNrMatricol = async () => {
         try {
             const response = await fetch(
-                `${baseUrl}/borrows?person_id=${input}`
+                `${baseUrl}/borrows?person_id=${nrMatricol}`
             );
             if (response.ok) {
                 const result = await response.json();
                 console.log(result);
 
                 setError(200);
+
                 setNume(result.last_name);
                 setPrenume(result.first_name);
                 setGender(result.gender);
@@ -54,7 +58,14 @@ const ImprumutaModalElev = () => {
                 setPhone(result.phone_number);
             } else if (response.status === 401) {
                 setError(401);
-                resetFields();
+
+                setNume('');
+                setPrenume('');
+                setGender('');
+                setYear('');
+                setGroup('');
+                setMediu('');
+                setPhone('');
             } else {
                 console.error(`Error: ${response.statusText}`);
             }
@@ -62,15 +73,6 @@ const ImprumutaModalElev = () => {
             console.error('Fetching elev error:', err);
         }
     };
-
-    function handleUpdateMatricol(input: string) {
-        if (input == '') {
-            setError(0);
-        } else {
-            setNrMatricol(input);
-            fetchNrMatricol(input);
-        }
-    }
 
     return (
         <div>
@@ -81,11 +83,9 @@ const ImprumutaModalElev = () => {
             <div className="grid grid-cols-4 items-center gap-4 py-2">
                 <Label className="text-right">Nr matricol{'\n'}</Label>
                 <Input
-                    defaultValue={nrMatricol}
+                    value={nrMatricol}
                     className="col-span-3"
-                    onChange={(e) => {
-                        handleUpdateMatricol(e.target.value);
-                    }}
+                    onChange={(e) => setNrMatricol(e.target.value)}
                 />
             </div>
             <div className="grid grid-cols-4 items-center gap-4 pb-1">
@@ -104,16 +104,18 @@ const ImprumutaModalElev = () => {
                 <Label className="text-right">Nume</Label>
                 <Input
                     className="col-span-3"
-                    defaultValue={nume}
+                    value={nume}
                     disabled={error === 200}
+                    onChange={(e) => setNume(e.target.value)}
                 />
             </div>
             <div className="grid grid-cols-4 items-center gap-4 py-1">
                 <Label className="text-right">Prenume</Label>
                 <Input
                     className="col-span-3"
-                    defaultValue={prenume}
+                    value={prenume}
                     disabled={error === 200}
+                    onChange={(e) => setPrenume(e.target.value)}
                 />
             </div>
             <div className="grid grid-cols-4 items-center gap-4 py-1">
@@ -209,7 +211,7 @@ const ImprumutaModalElev = () => {
                 <Label className="text-right">Nr telefon</Label>
                 <Input
                     className="col-span-3"
-                    defaultValue={prenume}
+                    value={phone}
                     disabled={error === 200}
                     onChange={(e) => setPhone(e.target.value)}
                 />

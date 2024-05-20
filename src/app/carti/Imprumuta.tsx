@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import ImprumutaModal from './ImprumutaModal';
 
 interface ImprumutaProps {
+    bookId: string;
     bookName: string;
     bookAuthor: string;
     bookCategory: string;
@@ -20,6 +21,7 @@ interface ImprumutaProps {
 }
 
 const Imprumuta = ({
+    bookId,
     bookName,
     bookAuthor,
     bookCategory,
@@ -53,6 +55,7 @@ const Imprumuta = ({
                 </Tooltip>
             </TooltipProvider>
             <ImprumutaModal
+                bookId={bookId}
                 bookName={bookName}
                 bookAuthor={bookAuthor}
                 bookCategory={bookCategory}
