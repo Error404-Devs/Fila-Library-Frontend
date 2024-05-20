@@ -14,10 +14,15 @@ import ImprumutaModal from './ImprumutaModal';
 
 interface ImprumutaProps {
     bookName: string;
+    bookAuthor: string;
     availableCopies: number;
 }
 
-const Imprumuta = ({ bookName, availableCopies }: ImprumutaProps) => {
+const Imprumuta = ({
+    bookName,
+    bookAuthor,
+    availableCopies
+}: ImprumutaProps) => {
     return (
         <Dialog>
             <TooltipProvider>
@@ -45,7 +50,7 @@ const Imprumuta = ({ bookName, availableCopies }: ImprumutaProps) => {
                     </TooltipContent>
                 </Tooltip>
             </TooltipProvider>
-            <ImprumutaModal bookName={bookName} />
+            <ImprumutaModal bookName={bookName} bookAuthor={bookAuthor}/>
         </Dialog>
     );
 };

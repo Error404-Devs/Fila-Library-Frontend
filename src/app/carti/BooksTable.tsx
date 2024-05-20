@@ -69,6 +69,7 @@ export default async function BooksTable({ books }: { books: Book[] }) {
                                 <TableCell className="p-[10px]">
                                     <Imprumuta
                                         bookName={book.title}
+                                        bookAuthor={book.author}
                                         availableCopies={book.available_copies}
                                     />
                                     <Restituie
