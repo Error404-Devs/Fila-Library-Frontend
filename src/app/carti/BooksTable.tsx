@@ -71,11 +71,14 @@ export default async function BooksTable({ books }: { books: Book[] }) {
                                         bookId={book.id}
                                         bookName={book.title}
                                         bookAuthor={book.author}
-                                        availableCopies={book.available_copies}
                                         bookCategory={book.category}
+                                        availableCopies={book.available_copies}
                                     />
                                     <Restituie
+                                        bookId={book.id}
                                         bookName={book.title}
+                                        bookAuthor={book.author}
+                                        bookCategory={book.category}
                                         borrowedCopies={book.borrowed_copies}
                                     />
                                 </TableCell>
