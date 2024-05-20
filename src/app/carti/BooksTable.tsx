@@ -71,6 +71,7 @@ export default async function BooksTable({ books }: { books: Book[] }) {
                                         bookName={book.title}
                                         bookAuthor={book.author}
                                         availableCopies={book.available_copies}
+                                        bookCategory={book.category}
                                     />
                                     <Restituie
                                         bookName={book.title}

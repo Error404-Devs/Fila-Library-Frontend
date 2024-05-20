@@ -14,9 +14,14 @@ import ImprumutaModalElev from './ImprumutaModalElev';
 interface ImprumutaModalProps {
     bookName: string;
     bookAuthor: string;
+    bookCategory: string;
 }
 
-const ImprumutaModal = ({ bookName, bookAuthor }: ImprumutaModalProps) => {
+const ImprumutaModal = ({
+    bookName,
+    bookAuthor,
+    bookCategory
+}: ImprumutaModalProps) => {
     return (
         <DialogContent className="max-w-[90vh]">
             <DialogHeader>
@@ -52,11 +57,18 @@ const ImprumutaModal = ({ bookName, bookAuthor }: ImprumutaModalProps) => {
                     <div className="grid grid-cols-4 items-center gap-4 py-2">
                         <Label className="text-right">Cota</Label>
                         <Input
-                            defaultValue=""
+                            defaultValue={bookCategory}
                             className="col-span-3"
                             disabled
                         />
                     </div>
+                    
+                    <h4 className="my-6 text-xl font-semibold tracking-tight">
+                        Date despre{' '}
+                        <span className="underline underline-offset-4">
+                            imprumut
+                        </span>
+                    </h4>
                 </div>
                 <Separator orientation="vertical" />
                 <ImprumutaModalElev />
