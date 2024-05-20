@@ -34,8 +34,11 @@ const ImprumutaModalElev = ({
     setPhone
 }: any) => {
     useEffect(() => {
-        if (nrMatricol === '') setError(0);
-        fetchNrMatricol();
+        if (nrMatricol === '') {
+            setError(0);
+        } else {
+            fetchNrMatricol();
+        }
     }, [nrMatricol]);
 
     const fetchNrMatricol = async () => {

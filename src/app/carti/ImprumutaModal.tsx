@@ -1,16 +1,19 @@
+'use client';
+
+import { useState } from 'react';
 import {
     DialogContent,
     DialogDescription,
     DialogFooter,
     DialogHeader,
-    DialogTitle
+    DialogTitle,
+    DialogClose
 } from '@/components/ui/dialog';
-
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import ImprumutaModalElev from './ImprumutaElev';
-import { useState } from 'react';
 import ImprumutaCalendar from './ImprumutaCalendar';
+import { useToast } from '@/components/ui/use-toast';
+import ImprumutaModalElev from './ImprumutaElev';
 import ImprumutaCarte from './ImprumutaCarte';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -37,6 +40,7 @@ const ImprumutaModal = ({
     const [group, setGroup] = useState('');
     const [mediu, setMediu] = useState('');
     const [phone, setPhone] = useState('');
+    const { toast } = useToast();
 
     const isFormValid = () => {
         return (
@@ -56,7 +60,6 @@ const ImprumutaModal = ({
         if (!isFormValid()) {
             return;
         }
-
         const borrowData = {
             person_id: nrMatricol,
             first_name: prenume,
@@ -69,7 +72,6 @@ const ImprumutaModal = ({
             book_id: bookId,
             due_date: dueDate?.toISOString()
         };
-
         try {
             const response = await fetch(`${baseUrl}/borrows`, {
                 method: 'POST',
@@ -78,9 +80,11 @@ const ImprumutaModal = ({
                 },
                 body: JSON.stringify(borrowData)
             });
-
             if (response.ok) {
-                console.log('Borrow created successfully');
+                toast({
+                    title: 'Cartea a fost imprumutata cu succes!',
+                    description: `${nume} ${prenume} a imprumutat cartea ${bookName}`
+                });
             } else {
                 console.error(`Error: ${response.statusText}`);
             }
@@ -129,13 +133,15 @@ const ImprumutaModal = ({
                 />
             </div>
             <DialogFooter>
-                <Button
-                    type="submit"
-                    disabled={!isFormValid()}
-                    onClick={handleImprumuta}
-                >
-                    Imprumuta
-                </Button>
+                <DialogClose asChild>
+                    <Button
+                        type="submit"
+                        disabled={!isFormValid()}
+                        onClick={handleImprumuta}
+                    >
+                        Imprumuta
+                    </Button>
+                </DialogClose>
             </DialogFooter>
         </DialogContent>
     );
