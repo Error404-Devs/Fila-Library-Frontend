@@ -17,6 +17,9 @@ interface Book {
     place_of_publication: string;
     ISBN: string;
     price: string;
+    total_copies: number;
+    available_copies: number;
+    borrowed_copies: number;
 }
 
 interface BooksAndPages {

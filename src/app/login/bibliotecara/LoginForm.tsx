@@ -12,14 +12,15 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
 export function LoginForm() {
     const [email, setEmail] = useState('admin@fila.com');
     const [password, setPassword] = useState('Password123!');
     const [error, setError] = useState('');
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
 
     const handleEmailChange = (e: any) => {
         setEmail(e.target.value);
@@ -31,12 +32,16 @@ export function LoginForm() {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+        setLoading(true);
+
         const result = await signIn('credentials', {
-            redirect: false, // Prevent NextAuth from redirecting automatically
+            redirect: false,
             email: email,
             password: password,
-            callbackUrl: `${window.location.origin}/carti?page=9` // Specify where to redirect on success
+            callbackUrl: `${window.location.origin}/carti?page=1`
         });
+
+        setLoading(false);
 
         if (result?.error) {
             setError('Invalid email or password');
@@ -79,8 +84,19 @@ export function LoginForm() {
                         </div>
                     )}
                     <CardFooter>
-                        <Button type="submit" className="w-full">
-                            Sign in
+                        <Button
+                            type="submit"
+                            className="w-full"
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Please wait
+                                </>
+                            ) : (
+                                'Sign in'
+                            )}
                         </Button>
                     </CardFooter>
                 </form>
