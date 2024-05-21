@@ -17,16 +17,17 @@ import {
 } from '@/components/ui/card';
 
 import { Label } from "@/components/ui/label";
-// const baseUrl = process.env.BASE_URL;
 
 
 export async function StudentStatus({nr_crt}:any) {
-
+    
+    // const baseUrl = process.env.BASE_URL;
     const baseUrl = "https://fila-library-backend.onrender.com/api" 
+
     const url = `${baseUrl}/borrows?person_id=${nr_crt}`;
     const response = await fetch(url, { cache: 'no-store' });
     const situatie = await response.json();
-
+    
     for (let i = 0; i < situatie.items.length; i++) {
         situatie.items[i].due_date = situatie.items[i].due_date.split('T')[0]; // Update due_date
     }
