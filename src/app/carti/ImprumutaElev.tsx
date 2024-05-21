@@ -122,7 +122,7 @@ const ImprumutaModalElev = ({
                 />
             </div>
             <div className="grid grid-cols-4 items-center gap-4 py-1">
-                <Label className="text-right">Sex</Label>
+                <Label className="text-right">Gen</Label>
                 <Select
                     value={gender}
                     onValueChange={setGender}
