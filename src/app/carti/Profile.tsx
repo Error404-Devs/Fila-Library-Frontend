@@ -15,12 +15,12 @@ import { redirect } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 
 const Profile = () => {
-    const { data: session } = useSession({
-        required: true,
-        onUnauthenticated() {
-            redirect('/api/auth/signin?callbackUrl=/client');
-        }
-    });
+    // const { data: session } = useSession({
+    //     required: true,
+    //     onUnauthenticated() {
+    //         redirect('/api/auth/signin?callbackUrl=/client');
+    //     }
+    // });
 
     return (
         <DropdownMenu>
@@ -41,9 +41,9 @@ const Profile = () => {
                 <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                    onClick={() =>
-                        signOut({ callbackUrl: '/login/bibliotecara' })
-                    }
+                    // onClick={() =>
+                    //     signOut({ callbackUrl: '/login/bibliotecara' })
+                    // }
                 >
                     Logout
                 </DropdownMenuItem>
