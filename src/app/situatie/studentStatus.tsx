@@ -1,9 +1,7 @@
-'use client';
 import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger
@@ -18,27 +16,18 @@ import {
     CardTitle
 } from '@/components/ui/card';
 
-import { Label } from "@/components/ui/label"
-import BASE_URL from "@/api/BASE_URL"
-import { useSearchParams } from 'next/navigation'
+import { Label } from "@/components/ui/label";
 
 
-export async function StudentStatus()
- {
-    const searchParams = useSearchParams()
-    const nr_crt = searchParams.get('nr_crt')
-        const url = `${BASE_URL}/borrows?person_id=${nr_crt}`;
+export async function StudentStatus({nr_crt}:any) {
     
-        console.log(url);
-        const response = await fetch(url, { cache: 'no-store' });
-        const situatie = await response.json()
-        console.log(situatie);
+    // const baseUrl = process.env.BASE_URL;
+    const baseUrl = "https://fila-library-backend.onrender.com/api" 
 
-    console.log(url);
+    const url = `${baseUrl}/borrows?person_id=${nr_crt}`;
     const response = await fetch(url, { cache: 'no-store' });
     const situatie = await response.json();
-    console.log(situatie);
-
+    
     for (let i = 0; i < situatie.items.length; i++) {
         situatie.items[i].due_date = situatie.items[i].due_date.split('T')[0]; // Update due_date
     }
@@ -53,12 +42,11 @@ export async function StudentStatus()
             }}
             className="py-10"
         >
-           <p>Hello back, {situatie.first_name} {situatie.last_name}</p>
-            {situatie.items.map((elev:any, index: number) => (
-                 <Dialog>
+            <p>Hello back, {situatie.first_name} {situatie.last_name}</p>
+            {situatie.items.map((elev: any, index: number) => (
+                <Dialog key={index}>
                     <DialogTrigger asChild>
                         <Card
-                            key={index}
                             className="w-[20rem]"
                             style={{ overflow: 'hidden' }}
                         >
@@ -126,7 +114,7 @@ export async function StudentStatus()
                                 {elev.book_name}
                             </DialogTitle>
                             <DialogDescription>
-                                {elev.autor_name}
+                                {elev.author_name}
                             </DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-4 py-4">
@@ -142,7 +130,7 @@ export async function StudentStatus()
                             <div className="grid grid-cols-4 items-center gap-4">
                                 <Label
                                     htmlFor="name"
-                                    className="text-left  text-md"
+                                    className="text-left text-md"
                                 >
                                     Data:
                                 </Label>
