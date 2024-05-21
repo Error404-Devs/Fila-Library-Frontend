@@ -4,6 +4,7 @@ import Link from 'next/link';
 export default function Home() {
     return (
         <>
+        
             <div className="relative flex flex-col items-center w-full h-screen">
                 <Image
                     src="/backgroundtop.svg"
