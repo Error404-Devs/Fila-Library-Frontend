@@ -21,8 +21,8 @@ import { Label } from "@/components/ui/label";
 
 export async function StudentStatus({nr_crt}:any) {
     
-    // const baseUrl = process.env.BASE_URL;
-    const baseUrl = "https://fila-library-backend.onrender.com/api" 
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    // const baseUrl = "https://fila-library-backend.onrender.com/api" 
 
     const url = `${baseUrl}/borrows?person_id=${nr_crt}`;
     const response = await fetch(url, { cache: 'no-store' });
