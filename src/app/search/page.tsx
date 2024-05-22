@@ -11,6 +11,7 @@ export default async function Dashboard(
     }: {
         searchParams?: {
             nr_crt?: string;
+            display?:string;
             page?: number;
             title?: string;
         };
@@ -45,6 +46,7 @@ export default async function Dashboard(
     const params: Record<string, string> = {};
     const page = searchParams?.page || 1;
     const title = searchParams?.title || '';
+    const display = searchParams?.display || '';
 
     if (page) params.page = String(page);
     if (title) params.title = title;
@@ -57,10 +59,6 @@ export default async function Dashboard(
     const totalPages = books_and_pages?.pages || 0;
     const currentPage = books_and_pages?.page || 1;
     const books: Book[] = await books_and_pages?.items;
-    // const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-    // const url = `${baseUrl}/borrows?person_id=${searchParams?.nr_crt}`;
-    // const response = await fetch(url, { cache: 'no-store' });
-    // const situatie = await response.json();
     
     return (
         <div className="flex min-h-screen">
@@ -76,29 +74,26 @@ export default async function Dashboard(
                         <SearchBar />
                     </div>
                 </header>
-
-                    <div>
-                        {/* TODO: Add suspense */}
-                        {totalPages ? (
-                            <>
-                                <AvalaibleBooks books={books} />
-                                <AvalaiblePagination
-                                    totalPages={totalPages}
-                                    currentPage={currentPage}
-                                />
-                            </>
+                <div>
+                    {display !== "false"? (
+                        totalPages ? (
+                        <>
+                            <AvalaibleBooks books={books} />
+                            <AvalaiblePagination
+                            totalPages={totalPages}
+                            currentPage={currentPage}
+                            />
+                        </>
                         ) : (
-                            <div className="flex justify-center items-center h-[50vh]">
-                                <p>
-                                    Nu există cărți care să îndeplinească
-                                    criteriile
-                                </p>
-                            </div>
-                        )}
+                        <div className="flex justify-center items-center h-[50vh]">
+                            <p>
+                            Nu există cărți care să îndeplinească
+                            criteriile
+                            </p>
+                        </div>
+                        )
+                    ) : null}
                     </div>
-                {/* <div className="flex-1 overflow-auto p-4">
-                    <AvalaibleBooks />
-                </div> */}
             </div>
         </div>
 

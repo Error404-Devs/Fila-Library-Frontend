@@ -22,7 +22,6 @@ const AvalaiblePagination = ({ totalPages, currentPage }: AvalaiblePaginationPro
         }
     }, []);
 
-    // * page = 0 means ellipsis
     return (
         <Pagination>
             <PaginationContent>

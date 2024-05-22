@@ -17,11 +17,13 @@ const SearchBar = () => {
         params.set('page', '1');
         if (title) {
             params.set('title', title);
+            params.set('display', 'true')
         } else {
             params.delete('title');
+            params.set('display', 'false')
         }
         replace(`${pathname}?${params.toString()}`);
-    }, 300);
+    }, 100);
 
     useEffect(() => {
         handleSearchTitle(searchValue);

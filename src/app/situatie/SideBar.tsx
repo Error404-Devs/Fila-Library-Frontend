@@ -26,7 +26,7 @@ const Sidebar = ({nr_crt}:any) =>{
                             Situatie{' '}
                         </Link>
                         <Link
-                            href={`/search?nr_crt=${nr_crt}`}
+                            href={`/search?nr_crt=${nr_crt}&display=false`}
                             className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                         >
                             <Search className="h-4 w-4" />

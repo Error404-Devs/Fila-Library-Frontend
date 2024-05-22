@@ -52,7 +52,7 @@ export default function AvalaibleBooks({ books }: { books: Book[] }){
                         <TableHead>Autor</TableHead>
                         <TableHead>Categorie</TableHead>
                         <TableHead>An Aparitie</TableHead>
-                        <TableHead>Cantitate</TableHead>
+                        <TableHead>Disponibile</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
