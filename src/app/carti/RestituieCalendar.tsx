@@ -76,10 +76,10 @@ const RestituieCalendar = ({
             return (
                 <Button
                     variant={'outline'}
-                    className="w-[280px] justify-start text-left font-normal my-2 text-green-600"
+                    className="w-[280px] justify-start text-left font-normal my-2 text-red-600"
                 >
                     {' '}
-                    <CalendarX2 className="mr-2 h-4 w-4 text-red-600" />;{' '}
+                    <CalendarX2 className="mr-2 h-4 w-4 text-red-600" />
                     {formatDate(dueDate)}
                 </Button>
             );

@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
 import ImprumutaModal from './ImprumutaModal';
+import { useState } from 'react';
 
 interface ImprumutaProps {
     bookId: string;
@@ -27,6 +28,8 @@ const Imprumuta = ({
     bookCategory,
     availableCopies
 }: ImprumutaProps) => {
+    const [available, setAvailable] = useState(availableCopies);
+
     return (
         <Dialog>
             <TooltipProvider>
@@ -36,12 +39,12 @@ const Imprumuta = ({
                             <Button
                                 variant="outline"
                                 className="h-[40px] w-[80px] p-1 mx-2"
-                                disabled={availableCopies === 0}
+                                disabled={available === 0}
                             >
                                 <div className="relative h-7 w-7">
                                     <Book className="static h-6 w-6 mt-1 mr-1" />
                                     <Badge className="absolute top-0 right-0 flex h-4 w-4 p-1 shrink-0 items-center justify-center rounded-full bg-black">
-                                        {availableCopies}
+                                        {available}
                                     </Badge>
                                 </div>
                                 <ArrowBigRight className="h-5 w-5" />
