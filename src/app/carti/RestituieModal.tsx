@@ -1,18 +1,29 @@
 'use client';
 
 import {
-    DialogContent,
     DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogClose
 } from '@/components/ui/dialog';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+    SelectGroup
+} from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Calendar as CalendarIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import RestituieCarte from './RestituieCarte';
+import RestituieCalendar from './RestituieCalendar';
+import { useToast } from '@/components/ui/use-toast';
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 interface RestituieModalProps {
     bookId: string;
@@ -26,8 +37,83 @@ const RestituieModal = ({
     bookAuthor,
     bookCategory
 }: RestituieModalProps) => {
+    const [elevi, setElevi] = useState([]);
+    const [chosenElev, setChosenElev] = useState('');
+    const [nume, setNume] = useState('');
+    const [prenume, setPrenume] = useState('');
+    const [gender, setGender] = useState('');
+    const [year, setYear] = useState('');
+    const [group, setGroup] = useState('');
+    const [mediu, setMediu] = useState('');
+    const [phone, setPhone] = useState('');
+    const [borrowedDate, setBorrowedDate] = useState('');
+    const [dueDate, setDueDate] = useState('');
+    const [borrowId, setBorrowId] = useState('');
+    const { toast } = useToast();
+
+    useEffect(() => {
+        fetchElevi();
+    }, []);
+
+    const fetchElevi = async () => {
+        try {
+            const response = await fetch(
+                `${baseUrl}/borrows/book?book_id=${bookId}`
+            );
+            if (response.ok) {
+                const result = await response.json();
+                console.log(result);
+                setElevi(result);
+            }
+        } catch (err: any) {
+            console.error('Fetching elev error:', err);
+        }
+    };
+
+    const handleSelectChange = (id: string) => {
+        setChosenElev(id);
+        const selectedElev: any = elevi.find((elev: any) => elev.id === id);
+        if (selectedElev) {
+            setNume(selectedElev.last_name);
+            setPrenume(selectedElev.first_name);
+            setGender(selectedElev.gender);
+            setYear(selectedElev.year);
+            setGroup(selectedElev.group);
+            setMediu(selectedElev.address);
+            setPhone(selectedElev.phone_number);
+            setBorrowedDate(selectedElev.borrow_date);
+            setDueDate(selectedElev.due_date);
+            setBorrowId(selectedElev.borrow_id);
+        }
+    };
+
+    const handleRestituire = async () => {
+        const returnData = {
+            borrow_id: borrowId
+        };
+        try {
+            const response = await fetch(`${baseUrl}/return`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(returnData)
+            });
+            if (response.ok) {
+                toast({
+                    title: 'Cartea a fost restituita cu succes!',
+                    description: `${nume} ${prenume} a restituit cartea ${bookName}`
+                });
+            } else {
+                console.error(`Error: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Error submitting borrow request:', error);
+        }
+    };
+
     return (
-        <DialogContent className="max-w-[90vh]">
+        <>
             <DialogHeader>
                 <DialogTitle>Restituie Cartea: {bookName}</DialogTitle>
                 <DialogDescription>
@@ -36,49 +122,15 @@ const RestituieModal = ({
             </DialogHeader>
             <div className="flex gap-4 py-4">
                 <div>
-                    <h4 className="mb-6 text-xl font-semibold tracking-tight">
-                        Date despre{' '}
-                        <span className="underline underline-offset-4">
-                            carte
-                        </span>
-                    </h4>
-                    <div className="grid grid-cols-4 items-center gap-4 py-2">
-                        <Label className="text-right">Titlu</Label>
-                        <Input
-                            defaultValue={bookName}
-                            className="col-span-3"
-                            disabled
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4 py-2">
-                        <Label className="text-right">Autor</Label>
-                        <Input
-                            defaultValue={bookAuthor}
-                            className="col-span-3"
-                            disabled
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4 py-2">
-                        <Label className="text-right">Cota</Label>
-                        <Input
-                            defaultValue={bookCategory}
-                            className="col-span-3"
-                            disabled
-                        />
-                    </div>
-                    <h4 className="my-8 text-xl font-semibold tracking-tight">
-                        Date despre{' '}
-                        <span className="underline underline-offset-4">
-                            imprumut
-                        </span>
-                    </h4>
-                    <Button
-                        variant={'outline'}
-                        className="w-[280px] justify-start text-left font-normal"
-                    >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        12/34/56789
-                    </Button>
+                    <RestituieCarte
+                        bookName={bookName}
+                        bookAuthor={bookAuthor}
+                        bookCategory={bookCategory}
+                    />
+                    <RestituieCalendar
+                        dueDate={dueDate}
+                        borrowedDate={borrowedDate}
+                    />
                 </div>
                 <Separator orientation="vertical" />
                 <div>
@@ -90,17 +142,29 @@ const RestituieModal = ({
                     </h4>
                     <div className="grid grid-cols-4 items-center gap-4 py-2">
                         <Label className="text-right">Nr matricol{'\n'}</Label>
-                        <Input
-                            // value={nrMatricol}
-                            className="col-span-3"
-                            // onChange={(e) => setNrMatricol(e.target.value)}
-                        />
+                        <Select onValueChange={handleSelectChange}>
+                            <SelectTrigger className="col-span-3">
+                                <SelectValue placeholder="Alege un elev" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    {elevi.map((elev: any) => (
+                                        <SelectItem
+                                            key={elev.id}
+                                            value={elev.id}
+                                        >
+                                            {elev.id}
+                                        </SelectItem>
+                                    ))}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4 py-1">
                         <Label className="text-right">Nume</Label>
                         <Input
                             className="col-span-3"
-                            // value={nume}
+                            value={nume}
                             disabled={true}
                         />
                     </div>
@@ -108,7 +172,7 @@ const RestituieModal = ({
                         <Label className="text-right">Prenume</Label>
                         <Input
                             className="col-span-3"
-                            // value={nume}
+                            value={prenume}
                             disabled={true}
                         />
                     </div>
@@ -116,7 +180,7 @@ const RestituieModal = ({
                         <Label className="text-right">Gen</Label>
                         <Input
                             className="col-span-3"
-                            // value={nume}
+                            value={gender}
                             disabled={true}
                         />
                     </div>
@@ -124,12 +188,12 @@ const RestituieModal = ({
                         <Label className="text-right col-span-2">Clasa</Label>
                         <Input
                             className="col-span-3"
-                            // value={nume}
+                            value={year}
                             disabled={true}
                         />
                         <Input
                             className="col-span-3"
-                            // value={nume}
+                            value={group}
                             disabled={true}
                         />
                     </div>
@@ -137,7 +201,7 @@ const RestituieModal = ({
                         <Label className="text-right">Mediu</Label>
                         <Input
                             className="col-span-3"
-                            // value={nume}
+                            value={mediu}
                             disabled={true}
                         />
                     </div>
@@ -145,16 +209,20 @@ const RestituieModal = ({
                         <Label className="text-right">Nr telefon</Label>
                         <Input
                             className="col-span-3"
-                            // value={nume}
+                            value={phone}
                             disabled={true}
                         />
                     </div>
                 </div>
             </div>
             <DialogFooter>
-                <Button type="submit">Restituie</Button>
+                <DialogClose asChild>
+                    <Button type="submit" onClick={handleRestituire}>
+                        Restituie
+                    </Button>
+                </DialogClose>
             </DialogFooter>
-        </DialogContent>
+        </>
     );
 };
 

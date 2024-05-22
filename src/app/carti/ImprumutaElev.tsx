@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import { Input } from '@/components/ui/input';
@@ -10,7 +11,7 @@ import {
     SelectValue,
     SelectGroup
 } from '@/components/ui/select';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const ImprumutaModalElev = ({
@@ -37,11 +38,11 @@ const ImprumutaModalElev = ({
         if (nrMatricol === '') {
             setError(0);
         } else {
-            fetchNrMatricol();
+            fetchElev();
         }
     }, [nrMatricol]);
 
-    const fetchNrMatricol = async () => {
+    const fetchElev = async () => {
         try {
             const response = await fetch(
                 `${baseUrl}/borrows?person_id=${nrMatricol}`
@@ -78,7 +79,7 @@ const ImprumutaModalElev = ({
     };
 
     return (
-        <div>
+        <div className="w-full">
             <h4 className="mb-6 text-xl font-semibold tracking-tight">
                 Date despre{' '}
                 <span className="underline underline-offset-4">elev</span>
