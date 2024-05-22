@@ -11,7 +11,7 @@ import {
     SelectValue,
     SelectGroup
 } from '@/components/ui/select';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const ImprumutaModalElev = ({
@@ -32,15 +32,34 @@ const ImprumutaModalElev = ({
     mediu,
     setMediu,
     phone,
-    setPhone
+    setPhone,
+    changed,
+    setChanged
 }: any) => {
     useEffect(() => {
         if (nrMatricol === '') {
             setError(0);
-        } else {
+        } else if (!changed) {
             fetchElev();
         }
-    }, [nrMatricol]);
+    }, [nrMatricol, changed]);
+
+    const [fetchedNume, setFetchedNume] = useState('');
+    const [fetchedPrenume, setFetchedPrenume] = useState('');
+    const [fetchedGender, setFetchedGender] = useState('');
+    const [fetchedYear, setFetchedYear] = useState('');
+    const [fetchedGroup, setFetchedGroup] = useState('');
+    const [fetchedMediu, setFetchedMediu] = useState('');
+    const [fetchedPhone, setFetchedPhone] = useState('');
+
+    setChanged(false);
+    if (fetchedNume != nume) setChanged(true);
+    if (fetchedPrenume != prenume) setChanged(true);
+    if (fetchedGender != gender) setChanged(true);
+    if (fetchedYear != year) setChanged(true);
+    if (fetchedGroup != group) setChanged(true);
+    if (fetchedMediu != mediu) setChanged(true);
+    if (fetchedPhone != phone) setChanged(true);
 
     const fetchElev = async () => {
         try {
@@ -53,6 +72,14 @@ const ImprumutaModalElev = ({
 
                 setError(200);
 
+                setFetchedNume(result.last_name);
+                setFetchedPrenume(result.first_name);
+                setFetchedGender(result.gender);
+                setFetchedYear(result.year.toString());
+                setFetchedGroup(result.group);
+                setFetchedMediu(result.address);
+                setFetchedPhone(result.phone_number);
+
                 setNume(result.last_name);
                 setPrenume(result.first_name);
                 setGender(result.gender);
@@ -62,6 +89,14 @@ const ImprumutaModalElev = ({
                 setPhone(result.phone_number);
             } else if (response.status === 401) {
                 setError(401);
+
+                setFetchedNume('');
+                setFetchedPrenume('');
+                setFetchedGender('');
+                setFetchedYear('');
+                setFetchedGroup('');
+                setFetchedMediu('');
+                setFetchedPhone('');
 
                 setNume('');
                 setPrenume('');
@@ -109,7 +144,6 @@ const ImprumutaModalElev = ({
                 <Input
                     className="col-span-3"
                     value={nume}
-                    disabled={error === 200}
                     onChange={(e) => setNume(e.target.value)}
                 />
             </div>
@@ -118,17 +152,12 @@ const ImprumutaModalElev = ({
                 <Input
                     className="col-span-3"
                     value={prenume}
-                    disabled={error === 200}
                     onChange={(e) => setPrenume(e.target.value)}
                 />
             </div>
             <div className="grid grid-cols-4 items-center gap-4 py-1">
                 <Label className="text-right">Gen</Label>
-                <Select
-                    value={gender}
-                    onValueChange={setGender}
-                    disabled={error === 200}
-                >
+                <Select value={gender} onValueChange={setGender}>
                     <SelectTrigger className="col-span-3">
                         <SelectValue />
                     </SelectTrigger>
@@ -142,11 +171,7 @@ const ImprumutaModalElev = ({
             </div>
             <div className="grid grid-cols-8 items-center gap-4 py-1">
                 <Label className="text-right col-span-2">Clasa</Label>
-                <Select
-                    value={year}
-                    onValueChange={setYear}
-                    disabled={error === 200}
-                >
+                <Select value={year} onValueChange={setYear}>
                     <SelectTrigger className="col-span-3">
                         <SelectValue placeholder="An" />
                     </SelectTrigger>
@@ -174,11 +199,7 @@ const ImprumutaModalElev = ({
                         </SelectGroup>
                     </SelectContent>
                 </Select>
-                <Select
-                    value={group}
-                    onValueChange={setGroup}
-                    disabled={error === 200}
-                >
+                <Select value={group} onValueChange={setGroup}>
                     <SelectTrigger className="col-span-3">
                         <SelectValue placeholder="Grupa" />
                     </SelectTrigger>
@@ -195,11 +216,7 @@ const ImprumutaModalElev = ({
             </div>
             <div className="grid grid-cols-4 items-center gap-4 py-1">
                 <Label className="text-right">Mediu</Label>
-                <Select
-                    value={mediu}
-                    onValueChange={setMediu}
-                    disabled={error === 200}
-                >
+                <Select value={mediu} onValueChange={setMediu}>
                     <SelectTrigger className="col-span-3">
                         <SelectValue />
                     </SelectTrigger>
@@ -216,7 +233,6 @@ const ImprumutaModalElev = ({
                 <Input
                     className="col-span-3"
                     value={phone}
-                    disabled={error === 200}
                     onChange={(e) => setPhone(e.target.value)}
                 />
             </div>
