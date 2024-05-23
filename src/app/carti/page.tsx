@@ -70,10 +70,12 @@ export default async function Dashboard({
     const currentPage = books_and_pages?.page || 1;
     const books: Book[] = await books_and_pages?.items;
 
+    // const [visibleAuthor, setVisibleAuthor] = useState(true);
+
     return (
-        <div className="grid min-h-screen w-full md:grid-cols-[180px_1fr] lg:grid-cols-[220px_1fr]">
+        <div className="grid min-h-screen w-full">
             <Sidebar />
-            <div className="flex flex-col">
+            <div className="ml-60 flex-1">
                 <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 md:h-[140px] lg:h-[140px] lg:px-6">
                     <MobileSidebar />
                     <SearchArea />

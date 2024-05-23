@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/table';
 import Imprumuta from './Imprumuta';
 import Restituie from './Restituie';
+import Inventar from './Inventar';
 
 interface Book {
     id: string;
@@ -38,6 +39,7 @@ export default async function BooksTable({ books }: { books: Book[] }) {
                         {/* <TableHead>Editura</TableHead> */}
                         <TableHead>An Aparitie</TableHead>
                         <TableHead>Loc Aparitie</TableHead>
+                        <TableHead>Inventar</TableHead>
                         <TableHead>Imprumutare / Restituire</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -57,14 +59,19 @@ export default async function BooksTable({ books }: { books: Book[] }) {
                                 <TableCell className="p-[10px]">
                                     {book.category}
                                 </TableCell>
-                                {/* <TableCell className="p-[10px]">
-                                    {book.UDC}
-                                </TableCell> */}
                                 <TableCell className="p-[10px]">
                                     {book.year_of_publication || 'N/A'}
                                 </TableCell>
                                 <TableCell className="p-[10px]">
                                     {book.place_of_publication || 'N/A'}
+                                </TableCell>
+                                <TableCell className="p-[10px]">
+                                    <Inventar
+                                        bookId={book.id}
+                                        bookName={book.title}
+                                        availableCopies={book.available_copies}
+                                        totalCopies={book.total_copies}
+                                    />
                                 </TableCell>
                                 <TableCell className="p-[10px]">
                                     <Imprumuta

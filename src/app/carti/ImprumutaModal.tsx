@@ -40,6 +40,7 @@ const ImprumutaModal = ({
     const [group, setGroup] = useState('');
     const [mediu, setMediu] = useState('');
     const [phone, setPhone] = useState('');
+    const [changed, setChanged] = useState(false);
     const { toast } = useToast();
 
     const isFormValid = () => {
@@ -53,6 +54,19 @@ const ImprumutaModal = ({
             mediu.trim() !== '' &&
             phone.trim() !== '' &&
             dueDate !== undefined
+        );
+    };
+
+    const isElevValid = () => {
+        return (
+            nrMatricol.trim() !== '' &&
+            nume.trim() !== '' &&
+            prenume.trim() !== '' &&
+            gender.trim() !== '' &&
+            year.trim() !== '' &&
+            group.trim() !== '' &&
+            mediu.trim() !== '' &&
+            phone.trim() !== ''
         );
     };
 
@@ -93,6 +107,42 @@ const ImprumutaModal = ({
         }
     };
 
+    const handleSave = async () => {
+        if (!isElevValid()) {
+            return;
+        }
+        const elevData = {
+            id: nrMatricol,
+            first_name: prenume,
+            last_name: nume,
+            gender: gender,
+            year: year,
+            group: group,
+            address: mediu,
+            phone_number: phone
+        };
+        try {
+            const response = await fetch(`${baseUrl}/persons`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(elevData)
+            });
+            if (response.ok) {
+                setChanged(false);
+                toast({
+                    title: 'Elevul a fost salvat cu succes!',
+                    description: `${nume} ${prenume} a fost actualizat`
+                });
+            } else {
+                console.error(`Error: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Error updating student:', error);
+        }
+    };
+
     return (
         <DialogContent className="max-w-[90vh]">
             <DialogHeader>
@@ -130,9 +180,16 @@ const ImprumutaModal = ({
                     setMediu={setMediu}
                     phone={phone}
                     setPhone={setPhone}
+                    changed={changed}
+                    setChanged={setChanged}
                 />
             </div>
             <DialogFooter>
+                {changed && (
+                    <Button className="mr-[9rem]" onClick={handleSave}>
+                        Salveaza
+                    </Button>
+                )}
                 <DialogClose asChild>
                     <Button
                         type="submit"
