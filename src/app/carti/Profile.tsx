@@ -13,6 +13,7 @@ import { CircleUser } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import { signOut } from 'next-auth/react';
+import Link from 'next/link';
 
 const Profile = () => {
     // const { data: session } = useSession({
@@ -37,16 +38,25 @@ const Profile = () => {
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
+                <Link
+                    href="/settings">
+                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                </Link>
+                <Link
+                    href="/support">
+                    <DropdownMenuItem>Support</DropdownMenuItem>
+                </Link>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
-                    // onClick={() =>
-                    //     signOut({ callbackUrl: '/login/bibliotecara' })
-                    // }
-                >
-                    Logout
-                </DropdownMenuItem>
+                <Link
+                    href="/">
+                    <DropdownMenuItem
+                        // onClick={() =>
+                            //     signOut({ callbackUrl: '/login/bibliotecara' })
+                        // }
+                        >
+                        Logout
+                    </DropdownMenuItem>
+                </Link>
             </DropdownMenuContent>
         </DropdownMenu>
     );
