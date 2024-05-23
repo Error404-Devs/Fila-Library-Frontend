@@ -8,6 +8,16 @@ import React, {
     useEffect
 } from 'react';
 
+export const displayNames: Record<string, string> = {
+    title: 'Titlu',
+    author: 'Autor',
+    category: 'Cota',
+    year: 'An Aparitie',
+    place: 'Loc Aparitie',
+    inventory: 'Inventar',
+    borrow: 'Imprumutare / Restituire'
+};
+
 export type CheckboxKeys =
     | 'title'
     | 'author'

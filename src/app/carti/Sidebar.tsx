@@ -4,7 +4,11 @@ import { Library, Book, FileLineChart } from 'lucide-react';
 import Profile from './Profile';
 import Link from 'next/link';
 import { Checkbox } from '@/components/ui/checkbox';
-import { CheckboxKeys, useCheckboxContext } from '../context/CheckboxContext';
+import {
+    CheckboxKeys,
+    displayNames,
+    useCheckboxContext
+} from '../context/CheckboxContext';
 
 interface StateProps {
     title: boolean;
@@ -66,8 +70,7 @@ const Sidebar = () => {
                                         htmlFor={key}
                                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                        {key.charAt(0).toUpperCase() +
-                                            key.slice(1).replace('_', ' ')}
+                                        {displayNames[key as CheckboxKeys]}
                                     </label>
                                 </div>
                             </div>

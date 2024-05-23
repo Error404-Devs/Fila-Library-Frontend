@@ -11,7 +11,7 @@ import {
 import Imprumuta from './Imprumuta';
 import Restituie from './Restituie';
 import Inventar from './Inventar';
-import { useCheckboxContext } from '../context/CheckboxContext';
+import { displayNames, useCheckboxContext } from '../context/CheckboxContext';
 
 interface Book {
     id: string;
@@ -38,14 +38,26 @@ const BooksTable = ({ books }: { books: Book[] }) => {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        {state.title && <TableHead>Titlu</TableHead>}
-                        {state.author && <TableHead>Autor</TableHead>}
-                        {state.category && <TableHead>Cota</TableHead>}
-                        {state.year && <TableHead>An Aparitie</TableHead>}
-                        {state.place && <TableHead>Loc Aparitie</TableHead>}
-                        {state.inventory && <TableHead>Inventar</TableHead>}
+                        {state.title && (
+                            <TableHead>{displayNames.title}</TableHead>
+                        )}
+                        {state.author && (
+                            <TableHead>{displayNames.author}</TableHead>
+                        )}
+                        {state.category && (
+                            <TableHead>{displayNames.category}</TableHead>
+                        )}
+                        {state.year && (
+                            <TableHead>{displayNames.year}</TableHead>
+                        )}
+                        {state.place && (
+                            <TableHead>{displayNames.place}</TableHead>
+                        )}
+                        {state.inventory && (
+                            <TableHead>{displayNames.inventory}</TableHead>
+                        )}
                         {state.borrow && (
-                            <TableHead>Imprumutare / Restituire</TableHead>
+                            <TableHead>{displayNames.borrow}</TableHead>
                         )}
                     </TableRow>
                 </TableHeader>

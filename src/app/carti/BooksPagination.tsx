@@ -26,16 +26,13 @@ const BooksPagination = ({ totalPages, currentPage }: BooksPaginationProps) => {
         <Pagination>
             <PaginationContent>
                 {totalPages <= 6 &&
-                    Array.from(
-                        { length: totalPages }, // loops through totalPages times
-                        (_, index) => (
-                            <BookPaginationItem
-                                key={index}
-                                page={index + 1}
-                                activePage={currentPage}
-                            />
-                        )
-                    )}
+                    Array.from({ length: totalPages }, (_, index) => (
+                        <BookPaginationItem
+                            key={index}
+                            page={index + 1}
+                            activePage={currentPage}
+                        />
+                    ))}
                 {totalPages > 6 && (
                     <>
                         {currentPage < 4 && (
