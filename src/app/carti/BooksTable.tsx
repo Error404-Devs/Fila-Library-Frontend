@@ -1,3 +1,5 @@
+'use client';
+
 import {
     Table,
     TableBody,
@@ -6,9 +8,9 @@ import {
     TableHeader,
     TableRow
 } from '@/components/ui/table';
-import Imprumuta from './Imprumuta';
-import Restituie from './Restituie';
-import Inventar from './Inventar';
+
+import { displayNames, useCheckboxContext } from '../context/CheckboxContext';
+import Book from './Book';
 
 interface Book {
     id: string;
@@ -27,20 +29,35 @@ interface Book {
     borrowed_copies: number;
 }
 
-export default async function BooksTable({ books }: { books: Book[] }) {
+const BooksTable = ({ books }: { books: Book[] }) => {
+    const { state } = useCheckboxContext();
+
     return (
         <>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Titlu</TableHead>
-                        <TableHead>Autor</TableHead>
-                        <TableHead>Cota</TableHead>
-                        {/* <TableHead>Editura</TableHead> */}
-                        <TableHead>An Aparitie</TableHead>
-                        <TableHead>Loc Aparitie</TableHead>
-                        <TableHead>Inventar</TableHead>
-                        <TableHead>Imprumutare / Restituire</TableHead>
+                        {state.title && (
+                            <TableHead>{displayNames.title}</TableHead>
+                        )}
+                        {state.author && (
+                            <TableHead>{displayNames.author}</TableHead>
+                        )}
+                        {state.category && (
+                            <TableHead>{displayNames.category}</TableHead>
+                        )}
+                        {state.year && (
+                            <TableHead>{displayNames.year}</TableHead>
+                        )}
+                        {state.place && (
+                            <TableHead>{displayNames.place}</TableHead>
+                        )}
+                        {state.inventory && (
+                            <TableHead>{displayNames.inventory}</TableHead>
+                        )}
+                        {state.borrow && (
+                            <TableHead>{displayNames.borrow}</TableHead>
+                        )}
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -50,49 +67,12 @@ export default async function BooksTable({ books }: { books: Book[] }) {
                                 key={book.id}
                                 className="bg-white hover:bg-gray-100"
                             >
-                                <TableCell className="p-[10px]">
-                                    {book.title}
-                                </TableCell>
-                                <TableCell className="p-[10px]">
-                                    {book.author}
-                                </TableCell>
-                                <TableCell className="p-[10px]">
-                                    {book.category}
-                                </TableCell>
-                                <TableCell className="p-[10px]">
-                                    {book.year_of_publication || 'N/A'}
-                                </TableCell>
-                                <TableCell className="p-[10px]">
-                                    {book.place_of_publication || 'N/A'}
-                                </TableCell>
-                                <TableCell className="p-[10px]">
-                                    <Inventar
-                                        bookId={book.id}
-                                        bookName={book.title}
-                                        availableCopies={book.available_copies}
-                                        totalCopies={book.total_copies}
-                                    />
-                                </TableCell>
-                                <TableCell className="p-[10px]">
-                                    <Imprumuta
-                                        bookId={book.id}
-                                        bookName={book.title}
-                                        bookAuthor={book.author}
-                                        bookCategory={book.category}
-                                        availableCopies={book.available_copies}
-                                    />
-                                    <Restituie
-                                        bookId={book.id}
-                                        bookName={book.title}
-                                        bookAuthor={book.author}
-                                        bookCategory={book.category}
-                                        borrowedCopies={book.borrowed_copies}
-                                    />
-                                </TableCell>
+                                <Book book={book} />
                             </TableRow>
                         ))}
                 </TableBody>
             </Table>
         </>
     );
-}
+};
+export default BooksTable;

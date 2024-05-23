@@ -1,9 +1,27 @@
+'use client';
+
 import { Library, Book, FileLineChart } from 'lucide-react';
 import Profile from './Profile';
 import Link from 'next/link';
 import { Checkbox } from '@/components/ui/checkbox';
+import {
+    CheckboxKeys,
+    displayNames,
+    useCheckboxContext
+} from '../context/CheckboxContext';
+
+interface StateProps {
+    title: boolean;
+    author: boolean;
+    category: boolean;
+    year: boolean;
+    place: boolean;
+    inventory: boolean;
+    borrow: boolean;
+}
 
 const Sidebar = () => {
+    const { state, toggleCheckbox } = useCheckboxContext();
     return (
         <div className="fixed top-0 left-0 h-full w-60 border-r bg-muted/40 flex flex-col">
             <div className="flex flex-col gap-2 flex-1">
@@ -35,83 +53,28 @@ const Sidebar = () => {
                         </Link>
                     </nav>
                     <div className="px-4 pb-8">
-                        <div className="items-top flex space-x-2 py-2">
-                            <Checkbox id="title" checked={true} />
-                            <div className="grid gap-1.5 leading-none">
-                                <label
-                                    htmlFor="title"
-                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                    Titlu
-                                </label>
+                        {Object.keys(state).map((key) => (
+                            <div
+                                key={key}
+                                className="items-top flex space-x-2 py-2"
+                            >
+                                <Checkbox
+                                    id={key}
+                                    checked={state[key as CheckboxKeys]}
+                                    onCheckedChange={() =>
+                                        toggleCheckbox(key as CheckboxKeys)
+                                    }
+                                />
+                                <div className="grid gap-1.5 leading-none">
+                                    <label
+                                        htmlFor={key}
+                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        {displayNames[key as CheckboxKeys]}
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div className="items-top flex space-x-2 py-2">
-                            <Checkbox id="author" checked={true} />
-                            <div className="grid gap-1.5 leading-none">
-                                <label
-                                    htmlFor="author"
-                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                    Autor
-                                </label>
-                            </div>
-                        </div>
-                        <div className="items-top flex space-x-2 py-2">
-                            <Checkbox id="category" checked={true} />
-                            <div className="grid gap-1.5 leading-none">
-                                <label
-                                    htmlFor="category"
-                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                    Cota
-                                </label>
-                            </div>
-                        </div>
-                        <div className="items-top flex space-x-2 py-2">
-                            <Checkbox id="year" checked={true} />
-                            <div className="grid gap-1.5 leading-none">
-                                <label
-                                    htmlFor="year"
-                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                    An Aparitie
-                                </label>
-                            </div>
-                        </div>
-                        <div className="items-top flex space-x-2 py-2">
-                            <Checkbox id="year" checked={true} />
-                            <div className="grid gap-1.5 leading-none">
-                                <label
-                                    htmlFor="year"
-                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                    Loc Aparitie
-                                </label>
-                            </div>
-                        </div>
-                        <div className="items-top flex space-x-2 py-2">
-                            <Checkbox id="year" checked={false} />
-                            <div className="grid gap-1.5 leading-none">
-                                <label
-                                    htmlFor="year"
-                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                    Inventar
-                                </label>
-                            </div>
-                        </div>
-                        <div className="items-top flex space-x-2 py-2">
-                            <Checkbox id="year" checked={true} />
-                            <div className="grid gap-1.5 leading-none">
-                                <label
-                                    htmlFor="year"
-                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                    Imprumuta / Restituire
-                                </label>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>
