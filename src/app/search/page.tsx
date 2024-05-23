@@ -75,7 +75,7 @@ export default async function Dashboard(
                     </div>
                 </header>
                 <div>
-                    {display !== "false"? (
+                    {display !== "false" && title? (
                         totalPages ? (
                         <>
                             <AvalaibleBooks books={books} />
