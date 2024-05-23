@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/select';
 import { CalendarDays, CalendarFold } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import Number from './Number';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const months = [
@@ -39,35 +40,54 @@ const years = [
 ];
 
 interface StatisticsType {
-    female_readers?: number;
-    frequency?: number;
-    male_readers?: number;
-    over_14?: number;
-    total_readers?: number;
-    under_14?: number;
+    female_readers: number;
+    frequency: number;
+    male_readers: number;
+    over_14: number;
+    total_readers: number;
+    under_14: number;
 }
 
+const defaultValues = {
+    female_readers: 0,
+    frequency: 0,
+    male_readers: 0,
+    over_14: 0,
+    total_readers: 0,
+    under_14: 0
+};
+
 const Statistics = () => {
-    const [selectedMonth, setSelectedMonth] = useState('');
-    const [selectedYear, setSelectedYear] = useState('');
-    const [statistics, setStatistics] = useState<StatisticsType>({});
+    const currentDate = new Date();
+    const currentMonth = (currentDate.getMonth() + 1).toString(); // getMonth() returns 0-11
+    const currentYear = currentDate.getFullYear().toString();
+    const [selectedMonth, setSelectedMonth] = useState(currentMonth);
+    const [selectedYear, setSelectedYear] = useState(currentYear);
+    const [statistics, setStatistics] = useState<StatisticsType>(defaultValues);
 
     useEffect(() => {
-        if (selectedMonth && selectedYear) {
-            fetchStatistics(selectedMonth, selectedYear);
-        }
+        fetchStatistics(selectedMonth, selectedYear);
     }, [selectedMonth, selectedYear]);
 
     const fetchStatistics = async (month: string, year: string) => {
         try {
             const response = await fetch(
-                `${baseUrl}/statistics?month=${month}`
+                `${baseUrl}/statistics?month=${month}&year=${year}`
             );
-            const data = await response.json();
-            setStatistics(data);
+            if (response.ok) {
+                const data = await response.json();
+                setStatistics(data);
+            } else {
+                setStatistics(defaultValues);
+            }
         } catch (error) {
-            console.error('Error fetching statistics:', error);
+            // console.error('Error fetching statistics:', error);
         }
+    };
+
+    const getMonthLabel = (value: string) => {
+        const month = months.find((m) => m.value === value);
+        return month ? month.label : '';
     };
 
     return (
@@ -76,9 +96,12 @@ const Statistics = () => {
             <div className="ml-60 flex-1">
                 <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 md:h-[140px] lg:h-[80px] lg:px-6">
                     <div className="flex justify-around w-full">
-                        <Select onValueChange={setSelectedMonth}>
+                        <Select
+                            value={selectedMonth}
+                            onValueChange={setSelectedMonth}
+                        >
                             <SelectTrigger className="w-1/3">
-                                <SelectValue placeholder="Luna" />
+                                <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
@@ -93,9 +116,12 @@ const Statistics = () => {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        <Select onValueChange={setSelectedYear}>
+                        <Select
+                            value={selectedYear}
+                            onValueChange={setSelectedYear}
+                        >
                             <SelectTrigger className="w-1/3">
-                                <SelectValue placeholder="An" />
+                                <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
@@ -117,31 +143,40 @@ const Statistics = () => {
                         <h1 className="text-lg font-semibold md:text-2xl">
                             {Object.keys(statistics).length === 0
                                 ? 'Statistice'
-                                : `Statistice: ${selectedMonth} ${selectedYear}`}
+                                : `Statistice: ${getMonthLabel(selectedMonth)} ${selectedYear}`}
                         </h1>
                     </div>
                     {Object.keys(statistics).length !== 0 && (
-                        <div>
-                            <br></br>
-
-                            <h4 className="text-xl font-semibold">
-                                {`Numarul total de cititori in aceasta luna: ${statistics.total_readers}`}
-                            </h4>
-                            <br></br>
-                            <h4 className="text-xl font-semibold">
-                                {`Numarul total de cititori baieti în aceasta luna: ${statistics.male_readers}`}
-                            </h4>
-                            <h4 className="text-xl font-semibold">
-                                {`Numarul total de cititori fete în aceasta luna: ${statistics.female_readers}`}
-                            </h4>
-                            <br></br>
-
-                            <h4 className="text-xl font-semibold">
-                                {`Numarul total de cititori sub 14 ani în aceasta luna: ${statistics.under_14}`}
-                            </h4>
-                            <h4 className="text-xl font-semibold">
-                                {`Numarul total de cititori peste 14 ani în aceasta luna: ${statistics.over_14}`}
-                            </h4>
+                        <div className="grid grid-rows-3 h-full">
+                            <div className="flex justify-center items-center w-full py-5">
+                                <h1 className="text-4xl font-extrabold w-full text-right">
+                                    Cititori
+                                </h1>
+                                <Number value={statistics.total_readers} />
+                                <h1 className="text-4xl font-extrabold w-full">
+                                    Total
+                                </h1>
+                            </div>
+                            <div className="flex justify-center items-center w-full py-5">
+                                <h1 className="text-4xl font-extrabold w-full text-right">
+                                    Fete
+                                </h1>
+                                <Number value={statistics.female_readers} />
+                                <Number value={statistics.male_readers} />
+                                <h1 className="text-4xl font-extrabold w-full">
+                                    Baieti
+                                </h1>
+                            </div>
+                            <div className="flex justify-center items-center w-full py-5">
+                                <h1 className="text-4xl font-extrabold w-full text-right">
+                                    Sub 14 ani
+                                </h1>
+                                <Number value={statistics.under_14} />
+                                <Number value={statistics.over_14} />
+                                <h1 className="text-4xl font-extrabold w-full">
+                                    14+ ani
+                                </h1>
+                            </div>
                         </div>
                     )}
                 </main>
