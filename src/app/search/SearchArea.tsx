@@ -23,11 +23,7 @@ const SearchBar = () => {
             params.set('display', 'false')
         }
         replace(`${pathname}?${params.toString()}`);
-    }, 100);
-
-    useEffect(() => {
-        handleSearchTitle(searchValue);
-    }, [searchValue]);
+    }, 300);
 
     return (
         <div className="flex-1 relative">
@@ -36,8 +32,10 @@ const SearchBar = () => {
                 type="search"
                 className="w-full appearance-none bg-background pl-8 shadow-none"
                 placeholder="Cauta titlu"
-                onChange={(e) => setSearchValue(e.target.value)}
-                value={searchValue}
+                    onChange={(e) => {
+                        handleSearchTitle(e.target.value);
+                    }}
+                defaultValue={searchValue}
             />
         </div>
     );
