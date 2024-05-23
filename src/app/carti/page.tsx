@@ -4,6 +4,7 @@ import BooksTable from './BooksTable';
 import SearchArea from './SearchArea';
 import BooksPagination from './BooksPagination';
 import { Button } from '@/components/ui/button';
+import AddBook from './AddBook';
 const baseUrl = process.env.BASE_URL;
 
 interface Book {
@@ -84,9 +85,7 @@ export default async function Dashboard({
                         <h1 className="text-lg font-semibold md:text-2xl">
                             Carti
                         </h1>
-                        <Button variant="outline" className="mr-9">
-                            Add Book
-                        </Button>
+                        <AddBook />
                     </div>
 
                     <div>

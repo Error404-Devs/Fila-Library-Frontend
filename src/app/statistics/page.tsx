@@ -40,13 +40,22 @@ const years = [
 ];
 
 interface StatisticsType {
-    female_readers?: number;
-    frequency?: number;
-    male_readers?: number;
-    over_14?: number;
-    total_readers?: number;
-    under_14?: number;
+    female_readers: number;
+    frequency: number;
+    male_readers: number;
+    over_14: number;
+    total_readers: number;
+    under_14: number;
 }
+
+const defaultValues = {
+    female_readers: 0,
+    frequency: 0,
+    male_readers: 0,
+    over_14: 0,
+    total_readers: 0,
+    under_14: 0
+};
 
 const Statistics = () => {
     const currentDate = new Date();
@@ -54,23 +63,25 @@ const Statistics = () => {
     const currentYear = currentDate.getFullYear().toString();
     const [selectedMonth, setSelectedMonth] = useState(currentMonth);
     const [selectedYear, setSelectedYear] = useState(currentYear);
-    const [statistics, setStatistics] = useState<StatisticsType>({});
+    const [statistics, setStatistics] = useState<StatisticsType>(defaultValues);
 
     useEffect(() => {
-        // if (selectedMonth && selectedYear) {
         fetchStatistics(selectedMonth, selectedYear);
-        // }
     }, [selectedMonth, selectedYear]);
 
     const fetchStatistics = async (month: string, year: string) => {
         try {
             const response = await fetch(
-                `${baseUrl}/statistics?month=${month}`
+                `${baseUrl}/statistics?month=${month}&year=${year}`
             );
-            const data = await response.json();
-            setStatistics(data);
+            if (response.ok) {
+                const data = await response.json();
+                setStatistics(data);
+            } else {
+                setStatistics(defaultValues);
+            }
         } catch (error) {
-            console.error('Error fetching statistics:', error);
+            // console.error('Error fetching statistics:', error);
         }
     };
 
@@ -137,27 +148,6 @@ const Statistics = () => {
                     </div>
                     {Object.keys(statistics).length !== 0 && (
                         <div className="grid grid-rows-3 h-full">
-                            {/* <h4 className="text-md ">
-                                {`Numarul total de cititori in aceasta luna: `}
-                                <span className="font-semibold">{`${statistics.total_readers}`}</span>
-                            </h4>
-                            <h4 className="text-md ">
-                                {`Numarul total de cititori baieti în aceasta luna: `}
-                                <span className="font-semibold">{`${statistics.male_readers}`}</span>
-                            </h4>
-                            <h4 className="text-md ">
-                                {`Numarul total de cititori fete în aceasta luna: `}
-                                <span className="font-semibold">{`${statistics.female_readers}`}</span>
-                            </h4>
-
-                            <h4 className="text-md ">
-                                {`Numarul total de cititori sub 14 ani în aceasta luna: `}
-                                <span className="font-semibold">{`${statistics.under_14}`}</span>
-                            </h4>
-                            <h4 className="text-md ">
-                                {`Numarul total de cititori peste 14 ani în aceasta luna: `}
-                                <span className="font-semibold">{`${statistics.over_14}`}</span>
-                            </h4> */}
                             <div className="flex justify-center items-center w-full py-5">
                                 <h1 className="text-4xl font-extrabold w-full text-right">
                                     Cititori
