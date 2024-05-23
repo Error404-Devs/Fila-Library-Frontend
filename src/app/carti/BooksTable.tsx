@@ -1,3 +1,5 @@
+'use client';
+
 import {
     Table,
     TableBody,
@@ -9,6 +11,7 @@ import {
 import Imprumuta from './Imprumuta';
 import Restituie from './Restituie';
 import Inventar from './Inventar';
+import { useCheckboxContext } from '../context/CheckboxContext';
 
 interface Book {
     id: string;
@@ -27,20 +30,23 @@ interface Book {
     borrowed_copies: number;
 }
 
-export default async function BooksTable({ books }: { books: Book[] }) {
+const BooksTable = ({ books }: { books: Book[] }) => {
+    const { state } = useCheckboxContext();
+
     return (
         <>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Titlu</TableHead>
-                        <TableHead>Autor</TableHead>
-                        <TableHead>Cota</TableHead>
-                        {/* <TableHead>Editura</TableHead> */}
-                        <TableHead>An Aparitie</TableHead>
-                        <TableHead>Loc Aparitie</TableHead>
-                        <TableHead>Inventar</TableHead>
-                        <TableHead>Imprumutare / Restituire</TableHead>
+                        {state.title && <TableHead>Titlu</TableHead>}
+                        {state.author && <TableHead>Autor</TableHead>}
+                        {state.category && <TableHead>Cota</TableHead>}
+                        {state.year && <TableHead>An Aparitie</TableHead>}
+                        {state.place && <TableHead>Loc Aparitie</TableHead>}
+                        {state.inventory && <TableHead>Inventar</TableHead>}
+                        {state.borrow && (
+                            <TableHead>Imprumutare / Restituire</TableHead>
+                        )}
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -50,49 +56,70 @@ export default async function BooksTable({ books }: { books: Book[] }) {
                                 key={book.id}
                                 className="bg-white hover:bg-gray-100"
                             >
-                                <TableCell className="p-[10px]">
-                                    {book.title}
-                                </TableCell>
-                                <TableCell className="p-[10px]">
-                                    {book.author}
-                                </TableCell>
-                                <TableCell className="p-[10px]">
-                                    {book.category}
-                                </TableCell>
-                                <TableCell className="p-[10px]">
-                                    {book.year_of_publication || 'N/A'}
-                                </TableCell>
-                                <TableCell className="p-[10px]">
-                                    {book.place_of_publication || 'N/A'}
-                                </TableCell>
-                                <TableCell className="p-[10px]">
-                                    <Inventar
-                                        bookId={book.id}
-                                        bookName={book.title}
-                                        availableCopies={book.available_copies}
-                                        totalCopies={book.total_copies}
-                                    />
-                                </TableCell>
-                                <TableCell className="p-[10px]">
-                                    <Imprumuta
-                                        bookId={book.id}
-                                        bookName={book.title}
-                                        bookAuthor={book.author}
-                                        bookCategory={book.category}
-                                        availableCopies={book.available_copies}
-                                    />
-                                    <Restituie
-                                        bookId={book.id}
-                                        bookName={book.title}
-                                        bookAuthor={book.author}
-                                        bookCategory={book.category}
-                                        borrowedCopies={book.borrowed_copies}
-                                    />
-                                </TableCell>
+                                {state.title && (
+                                    <TableCell className="p-[10px]">
+                                        {book.title}
+                                    </TableCell>
+                                )}
+                                {state.author && (
+                                    <TableCell className="p-[10px]">
+                                        {book.author}
+                                    </TableCell>
+                                )}
+                                {state.category && (
+                                    <TableCell className="p-[10px]">
+                                        {book.category}
+                                    </TableCell>
+                                )}
+                                {state.year && (
+                                    <TableCell className="p-[10px]">
+                                        {book.year_of_publication || 'N/A'}
+                                    </TableCell>
+                                )}
+                                {state.place && (
+                                    <TableCell className="p-[10px]">
+                                        {book.place_of_publication || 'N/A'}
+                                    </TableCell>
+                                )}
+                                {state.inventory && (
+                                    <TableCell className="p-[10px]">
+                                        <Inventar
+                                            bookId={book.id}
+                                            bookName={book.title}
+                                            availableCopies={
+                                                book.available_copies
+                                            }
+                                            totalCopies={book.total_copies}
+                                        />
+                                    </TableCell>
+                                )}
+                                {state.borrow && (
+                                    <TableCell className="p-[10px]">
+                                        <Imprumuta
+                                            bookId={book.id}
+                                            bookName={book.title}
+                                            bookAuthor={book.author}
+                                            bookCategory={book.category}
+                                            availableCopies={
+                                                book.available_copies
+                                            }
+                                        />
+                                        <Restituie
+                                            bookId={book.id}
+                                            bookName={book.title}
+                                            bookAuthor={book.author}
+                                            bookCategory={book.category}
+                                            borrowedCopies={
+                                                book.borrowed_copies
+                                            }
+                                        />
+                                    </TableCell>
+                                )}
                             </TableRow>
                         ))}
                 </TableBody>
             </Table>
         </>
     );
-}
+};
+export default BooksTable;
