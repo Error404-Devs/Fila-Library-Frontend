@@ -180,7 +180,7 @@ const RestituieModal = ({
                         <Label className="text-right">Gen</Label>
                         <Input
                             className="col-span-3"
-                            value={gender}
+                            value={gender == 'male' ? 'Masculin' : 'Feminin'}
                             disabled={true}
                         />
                     </div>
@@ -201,7 +201,7 @@ const RestituieModal = ({
                         <Label className="text-right">Mediu</Label>
                         <Input
                             className="col-span-3"
-                            value={mediu}
+                            value={mediu == 'urban' ? 'Urban' : 'Rural'}
                             disabled={true}
                         />
                     </div>

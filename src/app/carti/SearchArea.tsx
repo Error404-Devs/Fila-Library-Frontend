@@ -91,7 +91,9 @@ const SearchArea = () => {
                                 onChange={(e) => {
                                     handleSearchTitle(e.target.value);
                                 }}
-                                value={searchParams.get('title')?.toString()}
+                                defaultValue={searchParams
+                                    .get('title')
+                                    ?.toString()}
                             />
                         </div>
                         <div className="flex-1 relative">
@@ -103,7 +105,9 @@ const SearchArea = () => {
                                 onChange={(e) => {
                                     handleSearchAuthor(e.target.value);
                                 }}
-                                value={searchParams.get('author')?.toString()}
+                                defaultValue={searchParams
+                                    .get('author')
+                                    ?.toString()}
                             />
                         </div>
                     </div>
@@ -117,7 +121,9 @@ const SearchArea = () => {
                                 onChange={(e) => {
                                     handleSearchCategory(e.target.value);
                                 }}
-                                value={searchParams.get('category')?.toString()}
+                                defaultValue={searchParams
+                                    .get('category')
+                                    ?.toString()}
                             />
                         </div>
                         <div className="flex-1 relative">
@@ -129,7 +135,7 @@ const SearchArea = () => {
                                 onChange={(e) => {
                                     handleSearchPublisher(e.target.value);
                                 }}
-                                value={searchParams
+                                defaultValue={searchParams
                                     .get('publisher')
                                     ?.toString()}
                             />
@@ -143,7 +149,9 @@ const SearchArea = () => {
                                 onChange={(e) => {
                                     handleSearchYear(e.target.value);
                                 }}
-                                value={searchParams.get('year')?.toString()}
+                                defaultValue={searchParams
+                                    .get('year')
+                                    ?.toString()}
                             />
                         </div>
                         <div className="flex-1 relative">
@@ -155,7 +163,9 @@ const SearchArea = () => {
                                 onChange={(e) => {
                                     handleSearchLocation(e.target.value);
                                 }}
-                                value={searchParams.get('location')?.toString()}
+                                defaultValue={searchParams
+                                    .get('location')
+                                    ?.toString()}
                             />
                         </div>
                     </div>
