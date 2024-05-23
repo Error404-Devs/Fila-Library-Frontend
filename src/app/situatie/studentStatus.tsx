@@ -19,18 +19,8 @@ import {
 import { Label } from "@/components/ui/label";
 
 
-export async function StudentStatus({nr_crt}:any) {
+export async function StudentStatus({ situatie }:any) {
     
-    // const baseUrl = process.env.BASE_URL;
-    const baseUrl = "https://fila-library-backend.onrender.com/api" 
-
-    const url = `${baseUrl}/borrows?person_id=${nr_crt}`;
-    const response = await fetch(url, { cache: 'no-store' });
-    const situatie = await response.json();
-    
-    for (let i = 0; i < situatie.items.length; i++) {
-        situatie.items[i].due_date = situatie.items[i].due_date.split('T')[0]; // Update due_date
-    }
 
     return (
         <div
@@ -42,7 +32,6 @@ export async function StudentStatus({nr_crt}:any) {
             }}
             className="py-10"
         >
-            <p>Hello back, {situatie.first_name} {situatie.last_name}</p>
             {situatie.items.map((elev: any, index: number) => (
                 <Dialog key={index}>
                     <DialogTrigger asChild>

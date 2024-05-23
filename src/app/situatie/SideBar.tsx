@@ -1,8 +1,8 @@
-import { Library, Book, FileLineChart } from 'lucide-react';
+import { Library, Notebook, Search } from 'lucide-react';
 import Profile from '../carti/Profile';
 import Link from 'next/link';
 
-const Sidebar = () =>{
+const Sidebar = ({nr_crt}:any) =>{
     return (
         <div className="hidden border-r bg-muted/40 md:block ">
             <div className="flex h-full max-h-screen flex-col gap-2">
@@ -19,18 +19,18 @@ const Sidebar = () =>{
                 <div className="flex-1">
                     <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
                         <Link
-                            href="/carti?page=1"
+                            href={`/situatie?nr_crt=${nr_crt}`}
                             className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary "
                         >
-                            <Book className="h-4 w-4" />
-                            Carti{' '}
+                            <Notebook className="h-4 w-4" />
+                            Situatie{' '}
                         </Link>
                         <Link
-                            href="/situatie"
+                            href={`/search?nr_crt=${nr_crt}&display=false`}
                             className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                         >
-                            <FileLineChart className="h-4 w-4" />
-                            Statistice
+                            <Search className="h-4 w-4" />
+                            Cautare
                         </Link>
                     </nav>
                 </div>
