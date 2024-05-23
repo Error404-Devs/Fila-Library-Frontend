@@ -30,12 +30,20 @@ interface RestituieModalProps {
     bookName: string;
     bookAuthor: string;
     bookCategory: string;
+    available: number;
+    setAvailable: any;
+    borrowed: number;
+    setBorrowed: any;
 }
 const RestituieModal = ({
     bookId,
     bookName,
     bookAuthor,
-    bookCategory
+    bookCategory,
+    available,
+    setAvailable,
+    borrowed,
+    setBorrowed
 }: RestituieModalProps) => {
     const [elevi, setElevi] = useState([]);
     const [chosenElev, setChosenElev] = useState('');
@@ -104,6 +112,8 @@ const RestituieModal = ({
                     title: 'Cartea a fost restituita cu succes!',
                     description: `${nume} ${prenume} a restituit cartea ${bookName}`
                 });
+                setAvailable(available + 1);
+                setBorrowed(borrowed - 1);
             } else {
                 console.error(`Error: ${response.statusText}`);
             }

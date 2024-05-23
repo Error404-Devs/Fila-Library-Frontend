@@ -21,15 +21,19 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 interface InventarProps {
     bookId: string;
     bookName: string;
-    availableCopies: number;
-    totalCopies: number;
+    available: number;
+    setAvailable: any;
+    total: number;
+    setTotal: any;
 }
 
 const Inventar = ({
     bookId,
     bookName,
-    availableCopies,
-    totalCopies
+    available,
+    setAvailable,
+    total,
+    setTotal
 }: InventarProps) => {
     const [quantity, setQuantity] = useState([1]);
     const { toast } = useToast();
@@ -54,7 +58,8 @@ const Inventar = ({
                     title: 'Inventarul a fost modificat cu succes!',
                     description: `Au fost scoase ${quantity} exemplare de: ${bookName}`
                 });
-                console.log(response);
+                setAvailable(available - quantity[0]);
+                setTotal(total - quantity[0]);
             } else {
                 console.error(`Error: ${response.statusText}`);
             }
@@ -83,7 +88,8 @@ const Inventar = ({
                     title: 'Inventarul a fost modificat cu succes!',
                     description: `Au fost adaugate ${quantity} exemplare de: ${bookName}`
                 });
-                console.log(response);
+                setAvailable(available + quantity[0]);
+                setTotal(total + quantity[0]);
             } else {
                 console.error(`Error: ${response.statusText}`);
             }
@@ -99,7 +105,7 @@ const Inventar = ({
                     <Button
                         variant="ghost"
                         className="h-5 w-5 p-0"
-                        disabled={availableCopies == 0}
+                        disabled={available == 0}
                     >
                         <CircleMinus className="h-5 w-5" />
                     </Button>
@@ -112,12 +118,12 @@ const Inventar = ({
                         <AlertDialogDescription className="flex flex-col items-center">
                             <div className="flex flex-col items-center py-4">
                                 <p className="pb-2">{`Vreti sa scoateti ${quantity} exemplare?`}</p>
-                                <p className="pb-1">{`${availableCopies} exemplare disponibile => ${availableCopies - quantity[0]} exemplare disponibile`}</p>
-                                <p className="pb-5">{`${totalCopies} exemplare total => ${totalCopies - quantity[0]} exemplare total`}</p>
+                                <p className="pb-1">{`${available} exemplare disponibile => ${available - quantity[0]} exemplare disponibile`}</p>
+                                <p className="pb-5">{`${total} exemplare total => ${total - quantity[0]} exemplare total`}</p>
                                 <Slider
                                     className=" max-w-[30vh]"
                                     min={1}
-                                    max={availableCopies}
+                                    max={available}
                                     step={1}
                                     value={quantity}
                                     onValueChange={setQuantity}
@@ -133,7 +139,7 @@ const Inventar = ({
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-            {availableCopies} / {totalCopies}
+            {available} / {total}
             <AlertDialog>
                 <AlertDialogTrigger asChild>
                     <Button variant="ghost" className="h-5 w-5 p-0">
@@ -148,8 +154,8 @@ const Inventar = ({
                         <AlertDialogDescription>
                             <div className="flex flex-col items-center py-4">
                                 <p className="pb-2">{`Vreti sa adaugati ${quantity} exemplare?`}</p>
-                                <p className="pb-1">{`${availableCopies} exemplare disponibile => ${availableCopies + quantity[0]} exemplare disponibile`}</p>
-                                <p className="pb-5">{`${totalCopies} exemplare total => ${totalCopies + quantity[0]} exemplare total`}</p>
+                                <p className="pb-1">{`${available} exemplare disponibile => ${available + quantity[0]} exemplare disponibile`}</p>
+                                <p className="pb-5">{`${total} exemplare total => ${total + quantity[0]} exemplare total`}</p>
                                 <Slider
                                     className=" max-w-[30vh]"
                                     min={1}

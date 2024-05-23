@@ -18,7 +18,10 @@ interface ImprumutaProps {
     bookName: string;
     bookAuthor: string;
     bookCategory: string;
-    availableCopies: number;
+    available: number;
+    setAvailable: any;
+    borrowed: number;
+    setBorrowed: any;
 }
 
 const Imprumuta = ({
@@ -26,10 +29,11 @@ const Imprumuta = ({
     bookName,
     bookAuthor,
     bookCategory,
-    availableCopies
+    available,
+    setAvailable,
+    borrowed,
+    setBorrowed
 }: ImprumutaProps) => {
-    const [available, setAvailable] = useState(availableCopies);
-
     return (
         <Dialog>
             <TooltipProvider>
@@ -62,6 +66,10 @@ const Imprumuta = ({
                 bookName={bookName}
                 bookAuthor={bookAuthor}
                 bookCategory={bookCategory}
+                available={available}
+                setAvailable={setAvailable}
+                borrowed={borrowed}
+                setBorrowed={setBorrowed}
             />
         </Dialog>
     );

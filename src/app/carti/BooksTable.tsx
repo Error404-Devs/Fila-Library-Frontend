@@ -8,10 +8,9 @@ import {
     TableHeader,
     TableRow
 } from '@/components/ui/table';
-import Imprumuta from './Imprumuta';
-import Restituie from './Restituie';
-import Inventar from './Inventar';
+
 import { displayNames, useCheckboxContext } from '../context/CheckboxContext';
+import Book from './Book';
 
 interface Book {
     id: string;
@@ -68,65 +67,7 @@ const BooksTable = ({ books }: { books: Book[] }) => {
                                 key={book.id}
                                 className="bg-white hover:bg-gray-100"
                             >
-                                {state.title && (
-                                    <TableCell className="p-[10px]">
-                                        {book.title}
-                                    </TableCell>
-                                )}
-                                {state.author && (
-                                    <TableCell className="p-[10px]">
-                                        {book.author}
-                                    </TableCell>
-                                )}
-                                {state.category && (
-                                    <TableCell className="p-[10px]">
-                                        {book.category}
-                                    </TableCell>
-                                )}
-                                {state.year && (
-                                    <TableCell className="p-[10px]">
-                                        {book.year_of_publication || 'N/A'}
-                                    </TableCell>
-                                )}
-                                {state.place && (
-                                    <TableCell className="p-[10px]">
-                                        {book.place_of_publication || 'N/A'}
-                                    </TableCell>
-                                )}
-                                {state.inventory && (
-                                    <TableCell className="p-[10px]">
-                                        <Inventar
-                                            bookId={book.id}
-                                            bookName={book.title}
-                                            availableCopies={
-                                                book.available_copies
-                                            }
-                                            totalCopies={book.total_copies}
-                                        />
-                                    </TableCell>
-                                )}
-                                {state.borrow && (
-                                    <TableCell className="p-[10px]">
-                                        <Imprumuta
-                                            bookId={book.id}
-                                            bookName={book.title}
-                                            bookAuthor={book.author}
-                                            bookCategory={book.category}
-                                            availableCopies={
-                                                book.available_copies
-                                            }
-                                        />
-                                        <Restituie
-                                            bookId={book.id}
-                                            bookName={book.title}
-                                            bookAuthor={book.author}
-                                            bookCategory={book.category}
-                                            borrowedCopies={
-                                                book.borrowed_copies
-                                            }
-                                        />
-                                    </TableCell>
-                                )}
+                                <Book book={book} />
                             </TableRow>
                         ))}
                 </TableBody>
