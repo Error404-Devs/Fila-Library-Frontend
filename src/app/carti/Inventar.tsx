@@ -15,6 +15,8 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Slider } from '@/components/ui/slider';
 import { useEffect, useState } from 'react';
+import { useToast } from '@/components/ui/use-toast';
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 interface InventarProps {
     bookId: string;
@@ -30,6 +32,66 @@ const Inventar = ({
     totalCopies
 }: InventarProps) => {
     const [quantity, setQuantity] = useState([1]);
+    const { toast } = useToast();
+
+    const handleRemoveInventory = async () => {
+        const inventoryData = {
+            book_id: bookId,
+            quantity: -quantity[0],
+            borrow_id: null
+        };
+        console.log(inventoryData);
+        try {
+            const response = await fetch(`${baseUrl}/inventory`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(inventoryData)
+            });
+            if (response.ok) {
+                toast({
+                    title: 'Inventarul a fost modificat cu succes!',
+                    description: `Au fost scoase ${quantity} exemplare de: ${bookName}`
+                });
+                console.log(response);
+            } else {
+                console.error(`Error: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Error editing inventory:', error);
+        }
+    };
+
+    const handleAddInventory = async () => {
+        const inventoryData = {
+            book_id: bookId,
+            quantity: quantity[0],
+            borrow_id: null
+        };
+        console.log(inventoryData);
+        try {
+            const response = await fetch(`${baseUrl}/inventory`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(inventoryData)
+            });
+            if (response.ok) {
+                toast({
+                    title: 'Inventarul a fost modificat cu succes!',
+                    description: `Au fost adaugate ${quantity} exemplare de: ${bookName}`
+                });
+                console.log(response);
+            } else {
+                console.error(`Error: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Error editing inventory:', error);
+        }
+    };
+
     return (
         <div className="flex gap-1">
             <AlertDialog>
@@ -48,13 +110,26 @@ const Inventar = ({
                             {`Vreti sa scoateti din inventarul cartii: ${bookName}?`}
                         </AlertDialogTitle>
                         <AlertDialogDescription className="flex flex-col items-center">
-                            <p>{`${availableCopies} exemplare disponibile => ${availableCopies - 1} exemplare disponibile`}</p>
-                            <p>{`${totalCopies} exemplare total => ${totalCopies - 1} exemplare total`}</p>
+                            <div className="flex flex-col items-center py-4">
+                                <p className="pb-2">{`Vreti sa scoateti ${quantity} exemplare?`}</p>
+                                <p className="pb-1">{`${availableCopies} exemplare disponibile => ${availableCopies - quantity[0]} exemplare disponibile`}</p>
+                                <p className="pb-5">{`${totalCopies} exemplare total => ${totalCopies - quantity[0]} exemplare total`}</p>
+                                <Slider
+                                    className=" max-w-[30vh]"
+                                    min={1}
+                                    max={availableCopies}
+                                    step={1}
+                                    value={quantity}
+                                    onValueChange={setQuantity}
+                                />
+                            </div>
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Anulare</AlertDialogCancel>
-                        <AlertDialogAction>Continuare</AlertDialogAction>
+                        <AlertDialogAction onClick={handleRemoveInventory}>
+                            Continuare
+                        </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
@@ -72,7 +147,7 @@ const Inventar = ({
                         </AlertDialogTitle>
                         <AlertDialogDescription>
                             <div className="flex flex-col items-center py-4">
-                                <p className="pb-2">{`Vreau sa adaug ${quantity} exemplare`}</p>
+                                <p className="pb-2">{`Vreti sa adaugati ${quantity} exemplare?`}</p>
                                 <p className="pb-1">{`${availableCopies} exemplare disponibile => ${availableCopies + quantity[0]} exemplare disponibile`}</p>
                                 <p className="pb-5">{`${totalCopies} exemplare total => ${totalCopies + quantity[0]} exemplare total`}</p>
                                 <Slider
@@ -88,7 +163,9 @@ const Inventar = ({
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Anulare</AlertDialogCancel>
-                        <AlertDialogAction>Continuare</AlertDialogAction>
+                        <AlertDialogAction onClick={handleAddInventory}>
+                            Continuare
+                        </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
