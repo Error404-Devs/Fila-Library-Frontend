@@ -3,6 +3,7 @@ import MobileSidebar from './MobileSidebar';
 import BooksTable from './BooksTable';
 import SearchArea from './SearchArea';
 import BooksPagination from './BooksPagination';
+import { Button } from '@/components/ui/button';
 const baseUrl = process.env.BASE_URL;
 
 interface Book {
@@ -70,8 +71,6 @@ export default async function Dashboard({
     const currentPage = books_and_pages?.page || 1;
     const books: Book[] = await books_and_pages?.items;
 
-    // const [visibleAuthor, setVisibleAuthor] = useState(true);
-
     return (
         <div className="grid min-h-screen w-full">
             <Sidebar />
@@ -81,10 +80,13 @@ export default async function Dashboard({
                     <SearchArea />
                 </header>
                 <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-between">
                         <h1 className="text-lg font-semibold md:text-2xl">
                             Carti
                         </h1>
+                        <Button variant="outline" className="mr-9">
+                            Add Book
+                        </Button>
                     </div>
 
                     <div>
