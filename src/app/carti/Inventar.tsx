@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { CircleMinus, CirclePlus } from 'lucide-react';
 import {
@@ -11,6 +13,8 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
+import { Slider } from '@/components/ui/slider';
+import { useEffect, useState } from 'react';
 
 interface InventarProps {
     bookId: string;
@@ -25,6 +29,7 @@ const Inventar = ({
     availableCopies,
     totalCopies
 }: InventarProps) => {
+    const [quantity, setQuantity] = useState([1]);
     return (
         <div className="flex gap-1">
             <AlertDialog>
@@ -67,11 +72,17 @@ const Inventar = ({
                         </AlertDialogTitle>
                         <AlertDialogDescription>
                             <div className="flex flex-col items-center py-4">
-                                <p>{`${availableCopies} exemplare disponibile => ${availableCopies + 1} exemplare disponibile`}</p>
-                                <p>{`${totalCopies} exemplare total => ${totalCopies + 1} exemplare total`}</p>
-                            </div>
-                            <div>
-                                <p>Vreau sa adaug mai multe exemplare: </p>
+                                <p className="pb-2">{`Vreau sa adaug ${quantity} exemplare`}</p>
+                                <p className="pb-1">{`${availableCopies} exemplare disponibile => ${availableCopies + quantity[0]} exemplare disponibile`}</p>
+                                <p className="pb-5">{`${totalCopies} exemplare total => ${totalCopies + quantity[0]} exemplare total`}</p>
+                                <Slider
+                                    className=" max-w-[30vh]"
+                                    min={1}
+                                    max={30}
+                                    step={1}
+                                    value={quantity}
+                                    onValueChange={setQuantity}
+                                />
                             </div>
                         </AlertDialogDescription>
                     </AlertDialogHeader>
