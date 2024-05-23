@@ -24,24 +24,7 @@ interface Book {
     borrowed_copies: number;
 }
 
-// const books = [
-//     { id: 1, title: "Book 1", author: "Author 1", category: "Category 1", year_of_publication: 2020, available_copies: 5 },
-//     { id: 2, title: "Book 2", author: "Author 2", category: "Category 2", year_of_publication: 2015, available_copies: 3 },
-//     { id: 3, title: "Book 3", author: "Author 3", category: "Category 1", year_of_publication: 2015, available_copies: 2 },
-// ];
-
 export default function AvalaibleBooks({ books }: { books: Book[] }){
-    // const handleSearchTitle = useDebouncedCallback((title: string) => {
-    //     console.log(`Cautam titlul: ${title}`);
-    //     const params = new URLSearchParams(searchParams);
-    //     params.set('page', '1');
-    //     if (title) {
-    //         params.set('title', title);
-    //     } else {
-    //         params.delete('title');
-    //     }
-    //     replace(`${pathname}?${params.toString()}`);
-    // }, 300);
 
     return(
         <div>
@@ -71,9 +54,6 @@ export default function AvalaibleBooks({ books }: { books: Book[] }){
                                 <TableCell className="p-[10px]">
                                     {book.category}
                                 </TableCell>
-                                {/* <TableCell className="p-[10px]">
-                                    {book.UDC}
-                                </TableCell> */}
                                 <TableCell className="p-[10px]">
                                     {book.year_of_publication || 'N/A'}
                                 </TableCell>
