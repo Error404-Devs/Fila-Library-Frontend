@@ -1,7 +1,7 @@
 'use client';
 
 import { Library, Book, FileLineChart } from 'lucide-react';
-import Profile from '../carti/Profile';
+import Profile from '../carti/components/Profile';
 import Link from 'next/link';
 import Checkboxes from './Checkboxes';
 

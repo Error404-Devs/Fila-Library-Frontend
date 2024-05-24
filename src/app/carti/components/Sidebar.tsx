@@ -8,7 +8,7 @@ import {
     CheckboxKeys,
     displayNames,
     useCheckboxContext
-} from '../context/BookProvider';
+} from '../../context/BookProvider';
 
 interface StateProps {
     title: boolean;

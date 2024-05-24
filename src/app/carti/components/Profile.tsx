@@ -19,7 +19,7 @@ const Profile = () => {
     // const { data: session } = useSession({
     //     required: true,
     //     onUnauthenticated() {
-    //         redirect('/api/auth/signin?callbackUrl=/client');
+    //         redirect('/login/bibliotecara');
     //     }
     // });
 
@@ -38,22 +38,17 @@ const Profile = () => {
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link
-                    href="/settings">
+                <Link href="/settings">
                     <DropdownMenuItem>Settings</DropdownMenuItem>
                 </Link>
-                <Link
-                    href="/support">
+                <Link href="/support">
                     <DropdownMenuItem>Support</DropdownMenuItem>
                 </Link>
                 <DropdownMenuSeparator />
-                <Link
-                    href="/">
+                <Link href="/">
                     <DropdownMenuItem
-                        // onClick={() =>
-                            //     signOut({ callbackUrl: '/login/bibliotecara' })
-                        // }
-                        >
+                        onClick={() => signOut({ callbackUrl: '/' })}
+                    >
                         Logout
                     </DropdownMenuItem>
                 </Link>

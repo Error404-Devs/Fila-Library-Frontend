@@ -1,8 +1,8 @@
 import { Library, Notebook, Search, PieChart } from 'lucide-react';
-import Profile from '../carti/Profile';
+import Profile from '../carti/components/Profile';
 import Link from 'next/link';
 
-const Sidebar = ({nr_crt}:any) =>{
+const Sidebar = ({ nr_crt }: any) => {
     return (
         <div className="hidden border-r bg-muted/40 md:block ">
             <div className="flex h-full max-h-screen flex-col gap-2">
@@ -35,7 +35,6 @@ const Sidebar = ({nr_crt}:any) =>{
                         <Link
                             href={`/studentstats?nr_crt=${nr_crt}`}
                             className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                            
                         >
                             <PieChart className="h-4 w-4" />
                             Statistici
@@ -47,4 +46,3 @@ const Sidebar = ({nr_crt}:any) =>{
     );
 };
 export default Sidebar;
-

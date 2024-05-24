@@ -41,12 +41,12 @@ const StatisticsTable = ({
                         ] as StatisticsColumnKeys;
                         return (
                             state[columnKey] && (
-                                <th
+                                <TableHead
                                     key={index}
-                                    className="w-1/24 border border-gray-300 p-2 text-center bg-gray-100 font-bold vertical-text"
+                                    className="w-1/24 border border-gray-300 p-2 text-center bg-gray-100 font-bold vertical-text h-[11rem]"
                                 >
                                     {column}
-                                </th>
+                                </TableHead>
                             )
                         );
                     })}
@@ -63,6 +63,7 @@ const StatisticsTable = ({
                                 column as keyof typeof columnKeys
                             ] as StatisticsColumnKeys;
                             return (
+                                colIndex != 0 &&
                                 state[columnKey] && (
                                     <TableCell
                                         key={colIndex}
