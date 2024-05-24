@@ -13,6 +13,7 @@ import { CalendarDays, CalendarFold } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import StatisticsTable from './StatisticsTable';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+import { StatisticsType, defaultStatisticsValues } from '../interfaces';
 
 const months = [
     { value: '1', label: 'Ianuarie' },
@@ -39,31 +40,15 @@ const years = [
     { value: '2030', label: '2030' }
 ];
 
-interface StatisticsType {
-    female_readers: number;
-    frequency: number;
-    male_readers: number;
-    over_14: number;
-    total_readers: number;
-    under_14: number;
-}
-
-const defaultValues = {
-    female_readers: 0,
-    frequency: 0,
-    male_readers: 0,
-    over_14: 0,
-    total_readers: 0,
-    under_14: 0
-};
-
 const Statistics = () => {
     const currentDate = new Date();
     const currentMonth = (currentDate.getMonth() + 1).toString(); // getMonth() returns 0-11
     const currentYear = currentDate.getFullYear().toString();
     const [selectedMonth, setSelectedMonth] = useState(currentMonth);
     const [selectedYear, setSelectedYear] = useState(currentYear);
-    const [statistics, setStatistics] = useState<StatisticsType>(defaultValues);
+    const [statistics, setStatistics] = useState<StatisticsType>(
+        defaultStatisticsValues
+    );
 
     useEffect(() => {
         fetchStatistics(selectedMonth, selectedYear);
@@ -78,7 +63,7 @@ const Statistics = () => {
                 const data = await response.json();
                 setStatistics(data);
             } else {
-                setStatistics(defaultValues);
+                setStatistics(defaultStatisticsValues);
             }
         } catch (error) {
             // console.error('Error fetching statistics:', error);

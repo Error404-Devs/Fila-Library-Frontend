@@ -3,6 +3,7 @@
 import { Library, Book, FileLineChart } from 'lucide-react';
 import Profile from '../carti/Profile';
 import Link from 'next/link';
+import Checkboxes from './Checkboxes';
 
 const Sidebar = () => {
     return (
@@ -35,6 +36,9 @@ const Sidebar = () => {
                             Statistice
                         </Link>
                     </nav>
+                    <div className="px-8 pb-8">
+                        <Checkboxes />
+                    </div>
                 </div>
             </div>
         </div>
