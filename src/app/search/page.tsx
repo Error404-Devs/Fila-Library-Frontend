@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Sidebar from '../situatie/SideBar';
+import Sidebar from './SideBar';
 import SearchBar from './SearchArea';
 import AvalaibleBooks from './AvalaibeBooks';
 import AvalaiblePagination from './AvalaiblePagination';
@@ -47,7 +47,8 @@ export default async function Dashboard({
                     </div>
                 </header>
                 <div>
-                    {display !== 'false' ? (
+
+                    {display !== "false" && title? (
                         totalPages ? (
                             <>
                                 <AvalaibleBooks books={books} />

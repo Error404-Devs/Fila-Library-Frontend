@@ -49,9 +49,6 @@ export default function AvalaibleBooks({ books }: { books: BookType[] }) {
                                 <TableCell className="p-[10px]">
                                     {book.category}
                                 </TableCell>
-                                {/* <TableCell className="p-[10px]">
-                                    {book.UDC}
-                                </TableCell> */}
                                 <TableCell className="p-[10px]">
                                     {book.year_of_publication || 'N/A'}
                                 </TableCell>

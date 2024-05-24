@@ -13,6 +13,7 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export function LoginForm() {
@@ -20,6 +21,7 @@ export function LoginForm() {
     const [nr_crt, setNrCrt] = useState('')
     const router = useRouter();
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleNrCrtChange = (e:any) => {
         setNrCrt(e.target.value);
@@ -28,6 +30,7 @@ export function LoginForm() {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault(); 
+        setLoading(true);
     try {
         const response = await fetch(`${baseUrl}/borrows?person_id=${nr_crt}`);
         if (!response.ok) {
@@ -36,7 +39,7 @@ export function LoginForm() {
         router.push(`/situatie?nr_crt=${nr_crt}`);
     } catch (error) {
         setError("Nr. Matricol invalid");
-
+        setLoading(false);
     };
 }
 
@@ -65,7 +68,20 @@ export function LoginForm() {
                                     {error}
                                 </div>
                             )}
-                            <Button className="w-full">Sign in</Button>
+                            <Button
+                                type="submit"
+                                className="w-full"
+                                disabled={loading}
+                            >
+                                {loading ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        Please wait
+                                    </>
+                                ) : (
+                                    'Sign in'
+                                )}
+                            </Button>
                         </div>
                     </CardFooter>
                 </form>
