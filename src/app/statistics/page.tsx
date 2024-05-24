@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/select';
 import { CalendarDays, CalendarFold } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import Number from './Number';
+import StatisticsTable from './StatisticsTable';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const months = [
@@ -141,44 +141,15 @@ const Statistics = () => {
                 <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
                     <div className="flex items-center justify-between">
                         <h1 className="text-lg font-semibold md:text-2xl">
-                            {Object.keys(statistics).length === 0
-                                ? 'Statistice'
-                                : `Statistice: ${getMonthLabel(selectedMonth)} ${selectedYear}`}
+                            {`Statistice: ${getMonthLabel(selectedMonth)} ${selectedYear}`}
                         </h1>
                     </div>
-                    {Object.keys(statistics).length !== 0 && (
-                        <div className="grid grid-rows-3 h-full">
-                            <div className="flex justify-center items-center w-full py-5">
-                                <h1 className="text-4xl font-extrabold w-full text-right">
-                                    Cititori
-                                </h1>
-                                <Number value={statistics.total_readers} />
-                                <h1 className="text-4xl font-extrabold w-full">
-                                    Total
-                                </h1>
-                            </div>
-                            <div className="flex justify-center items-center w-full py-5">
-                                <h1 className="text-4xl font-extrabold w-full text-right">
-                                    Fete
-                                </h1>
-                                <Number value={statistics.female_readers} />
-                                <Number value={statistics.male_readers} />
-                                <h1 className="text-4xl font-extrabold w-full">
-                                    Baieti
-                                </h1>
-                            </div>
-                            <div className="flex justify-center items-center w-full py-5">
-                                <h1 className="text-4xl font-extrabold w-full text-right">
-                                    Sub 14 ani
-                                </h1>
-                                <Number value={statistics.under_14} />
-                                <Number value={statistics.over_14} />
-                                <h1 className="text-4xl font-extrabold w-full">
-                                    14+ ani
-                                </h1>
-                            </div>
-                        </div>
-                    )}
+                    <div className="w-full h-full overflow-auto">
+                        <StatisticsTable
+                            selectedMonth={getMonthLabel(selectedMonth)}
+                            selectedYear={selectedYear}
+                        />
+                    </div>
                 </main>
             </div>
         </div>
