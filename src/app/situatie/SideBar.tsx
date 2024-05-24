@@ -1,4 +1,4 @@
-import { Library, Notebook, Search } from 'lucide-react';
+import { Library, Notebook, Search, PieChart } from 'lucide-react';
 import Profile from '../carti/Profile';
 import Link from 'next/link';
 
@@ -31,6 +31,14 @@ const Sidebar = ({nr_crt}:any) =>{
                         >
                             <Search className="h-4 w-4" />
                             Cautare
+                        </Link>
+                        <Link
+                            href={`/studentstats?nr_crt=${nr_crt}`}
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                            
+                        >
+                            <PieChart className="h-4 w-4" />
+                            Statistici
                         </Link>
                     </nav>
                 </div>
