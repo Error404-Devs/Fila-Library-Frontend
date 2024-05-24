@@ -56,7 +56,7 @@ const CheckboxContext = createContext<CheckboxContextType | undefined>(
     undefined
 );
 
-export const CheckboxProvider = ({ children }: { children: ReactNode }) => {
+export const BookCheckboxProvider = ({ children }: { children: ReactNode }) => {
     const [state, setState] = useState<CheckboxState>(() => {
         const savedState = localStorage.getItem('checkboxState');
         return savedState ? JSON.parse(savedState) : defaultState;

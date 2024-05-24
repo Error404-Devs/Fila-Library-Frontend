@@ -1,7 +1,7 @@
 'use client';
 
 import { TableCell } from '@/components/ui/table';
-import { useCheckboxContext } from '../context/CheckboxContext';
+import { useCheckboxContext } from '../context/BookProvider';
 import Imprumuta from './Imprumuta';
 import Restituie from './Restituie';
 import Inventar from './Inventar';

@@ -1,45 +1,35 @@
 import { Checkbox } from '@/components/ui/checkbox';
-
-const columns = [
-    'Totalul',
-    'Elevi',
-    'Pana la 14 ani',
-    'Peste 14 ani',
-    'Barbati',
-    'Femei',
-    'Frecventa zilnica',
-    'Total documente',
-    'Filozofie',
-    'Stiinte sociala',
-    'Stiinte pure',
-    'Tehnica',
-    'Medicina',
-    'Agrotehnica',
-    'Literatura',
-    'Literatura pentru copii',
-    'Alte materii',
-    'Limba romana',
-    'Alte limbi',
-    'Carti consultate',
-    'Carti intrate',
-    'Valoarea carti intrate',
-    'Donatii U.B.',
-    'Valoare'
-];
+import { columnNames, columnKeys, StatisticsColumnKeys } from '../interfaces';
+import { useStatisticsColumnContext } from '../context/StatisticsProvider';
 
 const Checkboxes = () => {
+    const { state, toggleColumn } = useStatisticsColumnContext();
+
     return (
         <>
-            {columns.map((column, index) => (
-                <div key={index} className="items-top flex space-x-2 py-1">
-                    <Checkbox checked={true} />
-                    <div className="grid gap-1.5 leading-none">
-                        <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                            {column}
-                        </label>
-                    </div>
-                </div>
-            ))}
+            {columnNames.map((column, index) => {
+                const columnKey = columnKeys[
+                    column as keyof typeof columnKeys
+                ] as StatisticsColumnKeys;
+                return (
+                    index != 0 && (
+                        <div
+                            key={index}
+                            className="items-top flex space-x-2 py-1"
+                        >
+                            <Checkbox
+                                checked={state[columnKey]}
+                                onCheckedChange={() => toggleColumn(columnKey)}
+                            />
+                            <div className="grid gap-1.5 leading-none">
+                                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                    {column}
+                                </label>
+                            </div>
+                        </div>
+                    )
+                );
+            })}
         </>
     );
 };
