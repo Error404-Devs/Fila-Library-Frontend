@@ -3,34 +3,9 @@ import MobileSidebar from './MobileSidebar';
 import BooksTable from './BooksTable';
 import SearchArea from './SearchArea';
 import BooksPagination from './BooksPagination';
-import { Button } from '@/components/ui/button';
 import AddBook from './AddBook';
 const baseUrl = process.env.BASE_URL;
-
-interface Book {
-    id: string;
-    title: string;
-    category: string;
-    collection: string;
-    publisher: string;
-    author: string;
-    UDC: string;
-    year_of_publication: string;
-    place_of_publication: string;
-    ISBN: string;
-    price: string;
-    total_copies: number;
-    available_copies: number;
-    borrowed_copies: number;
-}
-
-interface BooksAndPages {
-    items: Book[];
-    total: number;
-    page: number;
-    size: number;
-    pages: number;
-}
+import { BookType, PagesType } from '../interfaces';
 
 export default async function Dashboard({
     searchParams
@@ -67,10 +42,10 @@ export default async function Dashboard({
     const url = `${baseUrl}/books?${queryString}`;
 
     const response = await fetch(url, { cache: 'no-store' });
-    const books_and_pages: BooksAndPages = await response.json();
+    const books_and_pages: PagesType = await response.json();
     const totalPages = books_and_pages?.pages || 0;
     const currentPage = books_and_pages?.page || 1;
-    const books: Book[] = await books_and_pages?.items;
+    const books: BookType[] = await books_and_pages?.items;
 
     return (
         <div className="grid min-h-screen w-full">

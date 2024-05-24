@@ -11,25 +11,9 @@ import {
 
 import { displayNames, useCheckboxContext } from '../context/CheckboxContext';
 import Book from './Book';
+import { BookType } from '../interfaces';
 
-interface Book {
-    id: string;
-    title: string;
-    category: string;
-    collection: string;
-    publisher: string;
-    author: string;
-    UDC: string;
-    year_of_publication: string;
-    place_of_publication: string;
-    ISBN: string;
-    price: string;
-    total_copies: number;
-    available_copies: number;
-    borrowed_copies: number;
-}
-
-const BooksTable = ({ books }: { books: Book[] }) => {
+const BooksTable = ({ books }: { books: BookType[] }) => {
     const { state } = useCheckboxContext();
 
     return (
@@ -62,7 +46,7 @@ const BooksTable = ({ books }: { books: Book[] }) => {
                 </TableHeader>
                 <TableBody>
                     {Array.isArray(books) &&
-                        books.map((book: Book) => (
+                        books.map((book: BookType) => (
                             <TableRow
                                 key={book.id}
                                 className="bg-white hover:bg-gray-100"
