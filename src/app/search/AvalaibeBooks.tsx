@@ -6,27 +6,22 @@ import {
     TableHeader,
     TableRow
 } from '@/components/ui/table';
+import { BookType } from '../interfaces';
 
-interface Book {
-    id: string;
-    title: string;
-    category: string;
-    collection: string;
-    publisher: string;
-    author: string;
-    UDC: string;
-    year_of_publication: string;
-    place_of_publication: string;
-    ISBN: string;
-    price: string;
-    total_copies: number;
-    available_copies: number;
-    borrowed_copies: number;
-}
+export default function AvalaibleBooks({ books }: { books: BookType[] }) {
+    // const handleSearchTitle = useDebouncedCallback((title: string) => {
+    //     console.log(`Cautam titlul: ${title}`);
+    //     const params = new URLSearchParams(searchParams);
+    //     params.set('page', '1');
+    //     if (title) {
+    //         params.set('title', title);
+    //     } else {
+    //         params.delete('title');
+    //     }
+    //     replace(`${pathname}?${params.toString()}`);
+    // }, 300);
 
-export default function AvalaibleBooks({ books }: { books: Book[] }){
-
-    return(
+    return (
         <div>
             <Table>
                 <TableHeader>

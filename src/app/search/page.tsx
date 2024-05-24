@@ -4,45 +4,18 @@ import SearchBar from './SearchArea';
 import AvalaibleBooks from './AvalaibeBooks';
 import AvalaiblePagination from './AvalaiblePagination';
 const baseUrl = process.env.BASE_URL;
+import { BookType, PagesType } from '../interfaces';
 
-export default async function Dashboard(
-    {
-        searchParams
-    }: {
-        searchParams?: {
-            nr_crt?: string;
-            display?:string;
-            page?: number;
-            title?: string;
-        };
-    }
-) {
-
-    interface Book {
-        id: string;
-        title: string;
-        category: string;
-        collection: string;
-        publisher: string;
-        author: string;
-        UDC: string;
-        year_of_publication: string;
-        place_of_publication: string;
-        ISBN: string;
-        price: string;
-        total_copies: number;
-        available_copies: number;
-        borrowed_copies: number;
-    }
-    
-    interface BooksAndPages {
-        items: Book[];
-        total: number;
-        page: number;
-        size: number;
-        pages: number;
-    }
-
+export default async function Dashboard({
+    searchParams
+}: {
+    searchParams?: {
+        nr_crt?: string;
+        display?: string;
+        page?: number;
+        title?: string;
+    };
+}) {
     const params: Record<string, string> = {};
     const page = searchParams?.page || 1;
     const title = searchParams?.title || '';
@@ -55,11 +28,11 @@ export default async function Dashboard(
     const url = `${baseUrl}/books?${queryString}`;
 
     const response = await fetch(url, { cache: 'no-store' });
-    const books_and_pages: BooksAndPages = await response.json();
+    const books_and_pages: PagesType = await response.json();
     const totalPages = books_and_pages?.pages || 0;
     const currentPage = books_and_pages?.page || 1;
-    const books: Book[] = await books_and_pages?.items;
-    
+    const books: BookType[] = await books_and_pages?.items;
+
     return (
         <div className="flex min-h-screen">
             <Sidebar nr_crt={searchParams?.nr_crt} />
@@ -68,34 +41,33 @@ export default async function Dashboard(
                     <Link
                         href="/"
                         className="flex items-center gap-2 font-semibold"
-                    >
-                    </Link>
+                    ></Link>
                     <div className="w-full">
                         <SearchBar />
                     </div>
                 </header>
                 <div>
+
                     {display !== "false" && title? (
                         totalPages ? (
-                        <>
-                            <AvalaibleBooks books={books} />
-                            <AvalaiblePagination
-                            totalPages={totalPages}
-                            currentPage={currentPage}
-                            />
-                        </>
+                            <>
+                                <AvalaibleBooks books={books} />
+                                <AvalaiblePagination
+                                    totalPages={totalPages}
+                                    currentPage={currentPage}
+                                />
+                            </>
                         ) : (
-                        <div className="flex justify-center items-center h-[50vh]">
-                            <p>
-                            Nu există cărți care să îndeplinească
-                            criteriile
-                            </p>
-                        </div>
+                            <div className="flex justify-center items-center h-[50vh]">
+                                <p>
+                                    Nu există cărți care să îndeplinească
+                                    criteriile
+                                </p>
+                            </div>
                         )
                     ) : null}
-                    </div>
+                </div>
             </div>
         </div>
-
     );
-};
+}
