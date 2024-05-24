@@ -1,9 +1,9 @@
-import Sidebar from './Sidebar';
-import MobileSidebar from './MobileSidebar';
-import BooksTable from './BooksTable';
-import SearchArea from './SearchArea';
-import BooksPagination from './BooksPagination';
-import AddBook from './AddBook';
+import Sidebar from './components/Sidebar';
+import MobileSidebar from './components/MobileSidebar';
+import BooksTable from './bookTable/BooksTable';
+import SearchArea from './components/SearchArea';
+import BooksPagination from './bookTable/BooksPagination';
+import AddBook from './components/AddBook';
 const baseUrl = process.env.BASE_URL;
 import { BookType, PagesType } from '../interfaces';
 

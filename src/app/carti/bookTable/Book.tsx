@@ -1,12 +1,12 @@
 'use client';
 
 import { TableCell } from '@/components/ui/table';
-import { useCheckboxContext } from '../context/CheckboxContext';
-import Imprumuta from './Imprumuta';
-import Restituie from './Restituie';
+import { useCheckboxContext } from '../../context/BookProvider';
+import Imprumuta from '../imprumuta/Imprumuta';
+import Restituie from '../restituie/Restituie';
 import Inventar from './Inventar';
 import { useState } from 'react';
-import { BookType } from '../interfaces';
+import { BookType } from '../../interfaces';
 
 const Book = ({ book }: { book: BookType }) => {
     const { state } = useCheckboxContext();
@@ -36,7 +36,7 @@ const Book = ({ book }: { book: BookType }) => {
                 </TableCell>
             )}
             {state.inventory && (
-                <TableCell className="p-[10px]">
+                <TableCell className="p-[10px] min-w-[97px]">
                     <Inventar
                         bookId={book.id}
                         bookName={book.title}
@@ -48,7 +48,7 @@ const Book = ({ book }: { book: BookType }) => {
                 </TableCell>
             )}
             {state.borrow && (
-                <TableCell className="p-[10px]">
+                <TableCell className="p-[10px] min-w-[213px]">
                     <Imprumuta
                         bookId={book.id}
                         bookName={book.title}

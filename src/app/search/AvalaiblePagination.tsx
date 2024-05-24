@@ -9,8 +9,10 @@ interface AvalaiblePaginationProps {
     currentPage: number;
 }
 
-const AvalaiblePagination = ({ totalPages, currentPage }: AvalaiblePaginationProps) => {
-
+const AvalaiblePagination = ({
+    totalPages,
+    currentPage
+}: AvalaiblePaginationProps) => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 

@@ -9,9 +9,9 @@ import {
     TableRow
 } from '@/components/ui/table';
 
-import { displayNames, useCheckboxContext } from '../context/CheckboxContext';
+import { displayNames, useCheckboxContext } from '../../context/BookProvider';
 import Book from './Book';
-import { BookType } from '../interfaces';
+import { BookType } from '../../interfaces';
 
 const BooksTable = ({ books }: { books: BookType[] }) => {
     const { state } = useCheckboxContext();

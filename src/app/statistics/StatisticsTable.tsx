@@ -7,39 +7,12 @@ import {
     TableHeader,
     TableRow
 } from '@/components/ui/table';
-
-const columns = [
-    'Zilele lunii',
-    'Totalul cititorilor inscrisi',
-    'Dintre acestia elevi',
-    'Pana la 14 ani',
-    'Peste 14 ani',
-    'Barbati',
-    'Femei',
-    'Frecventa zilnica',
-    'Total documente difuzate',
-    'Filozofie',
-    'Stiinte sociala',
-    'Stiinte pure',
-    'Tehnica',
-    'Medicina',
-    'Agrotehnica',
-    'Literatura',
-    'Literatura pentru copii',
-    'Alte materii',
-    'Limba romana',
-    'Alte limbi',
-    'Carti consultate in biblioteca',
-    'Carti intrate in cursul anului',
-    'Valoarea carti intrate',
-    'Donatii U.B.',
-    'Valoare'
-];
-
+import { useStatisticsColumnContext } from '../context/StatisticsProvider';
+import { columnKeys, columnNames, StatisticsColumnKeys } from '../interfaces';
 const rows = [
-    'Raport',
+    'R',
     ...Array.from({ length: 31 }, (_, i) => (i + 1).toString()),
-    'Total'
+    'T.'
 ];
 
 interface StatisticsTableProps {
@@ -51,6 +24,7 @@ const StatisticsTable = ({
     selectedMonth,
     selectedYear
 }: StatisticsTableProps) => {
+    const { state } = useStatisticsColumnContext();
     return (
         <Table>
             <TableCaption>
@@ -61,14 +35,21 @@ const StatisticsTable = ({
             </TableCaption>
             <TableHeader>
                 <TableRow>
-                    {columns.map((column, index) => (
-                        <th
-                            key={index}
-                            className="w-1/24 border border-gray-300 p-2 text-center bg-gray-100 font-bold vertical-text"
-                        >
-                            {column}
-                        </th>
-                    ))}
+                    {columnNames.map((column, index) => {
+                        const columnKey = columnKeys[
+                            column as keyof typeof columnKeys
+                        ] as StatisticsColumnKeys;
+                        return (
+                            state[columnKey] && (
+                                <TableHead
+                                    key={index}
+                                    className="w-1/24 border border-gray-300 p-2 text-center bg-gray-100 font-bold vertical-text h-[11rem]"
+                                >
+                                    {column}
+                                </TableHead>
+                            )
+                        );
+                    })}
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -77,14 +58,22 @@ const StatisticsTable = ({
                         <TableCell className="border border-gray-300 p-2 text-center font-bold">
                             {row}
                         </TableCell>
-                        {columns.slice(1).map((_, colIndex) => (
-                            <TableCell
-                                key={colIndex}
-                                className="border border-gray-300 p-2 text-center"
-                            >
-                                {/* to be populated */}
-                            </TableCell>
-                        ))}
+                        {columnNames.map((column, colIndex) => {
+                            const columnKey = columnKeys[
+                                column as keyof typeof columnKeys
+                            ] as StatisticsColumnKeys;
+                            return (
+                                colIndex != 0 &&
+                                state[columnKey] && (
+                                    <TableCell
+                                        key={colIndex}
+                                        className="border border-gray-300 p-2 text-center"
+                                    >
+                                        {/* to be populated */}
+                                    </TableCell>
+                                )
+                            );
+                        })}
                     </TableRow>
                 ))}
             </TableBody>
