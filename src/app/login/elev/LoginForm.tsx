@@ -39,9 +39,8 @@ export function LoginForm() {
         router.push(`/situatie?nr_crt=${nr_crt}`);
     } catch (error) {
         setError("Nr. Matricol invalid");
-        
+        setLoading(false);
     };
-    setLoading(false);
 }
 
     return (
