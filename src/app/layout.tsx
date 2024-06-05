@@ -5,6 +5,7 @@ import AuthProvider from './context/AuthProvider';
 import { Toaster } from '@/components/ui/toaster';
 import { BookCheckboxProvider } from './context/BookProvider';
 import { StatisticsColumnProvider } from './context/StatisticsProvider';
+import { ThemeProvider } from '@/components/ui/theme_provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,14 +22,21 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <AuthProvider>
-                    <BookCheckboxProvider>
-                        <StatisticsColumnProvider>
-                            {children}
-                        </StatisticsColumnProvider>
-                    </BookCheckboxProvider>
-                </AuthProvider>
-                <Toaster />
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <AuthProvider>
+                        <BookCheckboxProvider>
+                            <StatisticsColumnProvider>
+                                {children}
+                            </StatisticsColumnProvider>
+                        </BookCheckboxProvider>
+                    </AuthProvider>
+                    <Toaster />
+                </ThemeProvider>
             </body>
         </html>
     );
