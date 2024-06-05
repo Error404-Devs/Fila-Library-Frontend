@@ -53,7 +53,7 @@ export function LoginForm() {
         if (!response.ok) {
             throw new Error('Utilizator not found');
         }
-        router.push(`/situatie?nr_crt=${name}`);
+        router.push(`/situatie?name=${name}&lastname=${prenume}`);
     } catch (error) {
         setError("Utilizator invalid");
         setLoading(false);
