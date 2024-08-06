@@ -11,12 +11,37 @@ import {
     SelectValue,
     SelectGroup
 } from '@/components/ui/select';
-import { useEffect, useState } from 'react';
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandItem,
+    CommandList,
+    CommandSeparator,
+    CommandShortcut
+} from '@/components/ui/command';
+import { cn } from '@/lib/utils';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger
+} from '@/components/ui/popover';
+
+import { useEffect, useRef, useState } from 'react';
+import {
+    Calculator,
+    Calendar,
+    Check,
+    CreditCard,
+    Settings,
+    Smile,
+    User
+} from 'lucide-react';
+import { CommandInput } from 'cmdk';
+import { Button } from '@/components/ui/button';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const ImprumutaModalElev = ({
-    nrMatricol,
-    setNrMatricol,
     error,
     setError,
     nume,
@@ -36,13 +61,15 @@ const ImprumutaModalElev = ({
     changed,
     setChanged
 }: any) => {
-    useEffect(() => {
-        if (nrMatricol === '') {
-            setError(0);
-        } else if (!changed) {
-            fetchElev();
-        }
-    }, [nrMatricol, changed]);
+    // useEffect(() => {
+    //     if (nume === '' && prenume === '') {
+    //         setError(0);
+    //     } else if (!changed) {
+    //         fetchElev();
+    //     }
+    // }, [nume, prenume, changed]);
+
+    const [elevi, setElevi] = useState([]);
 
     const [fetchedNume, setFetchedNume] = useState('');
     const [fetchedPrenume, setFetchedPrenume] = useState('');
@@ -64,7 +91,7 @@ const ImprumutaModalElev = ({
     const fetchElev = async () => {
         try {
             const response = await fetch(
-                `${baseUrl}/borrows?person_id=${nrMatricol}`
+                `${baseUrl}/persons?first_name=${prenume}&last_name=${nume}`
             );
             if (response.ok) {
                 const result = await response.json();
@@ -113,20 +140,63 @@ const ImprumutaModalElev = ({
         }
     };
 
+    const fetchElevi = async () => {
+        try {
+            const response = await fetch(
+                `${baseUrl}/persons?first_name=${prenume}&last_name=${nume}`
+            );
+            if (response.ok) {
+                const result = await response.json();
+                console.log(
+                    `${baseUrl}/persons?first_name=${prenume}&last_name=${nume}`
+                );
+                console.log(result);
+
+                const formattedElevi = Object.keys(result).map((id) => {
+                    const student = result[id];
+                    return {
+                        label: `${student.last_name} ${student.first_name}`,
+                        value: id,
+                        first_name: student.first_name,
+                        last_name: student.last_name
+                    };
+                });
+
+                if (response) {
+                    setElevi(formattedElevi);
+                } else {
+                    setElevi([]);
+                }
+            }
+        } catch (err: any) {
+            console.error('Fetching elevi error:', err);
+        }
+    };
+
+    useEffect(() => {
+        if (nume || prenume) fetchElevi();
+        else setElevi([]);
+    }, [nume, prenume]);
+
+    const handleNumeChange = (e: any) => {
+        setNume(e.target.value);
+    };
+
+    const handleSelect = (elev: any) => {
+        console.log('ello');
+        setNume(elev.last_name);
+        setPrenume(elev.first_name);
+        setFound(true);
+    };
+
+    const [found, setFound] = useState(false);
+
     return (
         <div className="w-full">
             <h4 className="mb-6 text-xl font-semibold tracking-tight">
                 Date despre{' '}
                 <span className="underline underline-offset-4">elev</span>
             </h4>
-            <div className="grid grid-cols-4 items-center gap-4 py-2">
-                <Label className="text-right">Nr matricol{'\n'}</Label>
-                <Input
-                    value={nrMatricol}
-                    className="col-span-3"
-                    onChange={(e) => setNrMatricol(e.target.value)}
-                />
-            </div>
             <div className="grid grid-cols-4 items-center gap-4 pb-1">
                 {error == 401 && (
                     <p className="text-xs col-start-2 col-span-3 text-red-600">
@@ -141,11 +211,26 @@ const ImprumutaModalElev = ({
             </div>
             <div className="grid grid-cols-4 items-center gap-4 py-1">
                 <Label className="text-right">Nume</Label>
-                <Input
-                    className="col-span-3"
-                    value={nume}
-                    onChange={(e) => setNume(e.target.value)}
-                />
+                <Command className=" col-span-3">
+                    <Input
+                        type="email"
+                        value={nume}
+                        onChange={handleNumeChange}
+                        className="w-full mb-2"
+                    />
+                    {!found && (
+                        <CommandList>
+                            {elevi.map((elev) => (
+                                <CommandItem
+                                    key={elev.value}
+                                    onSelect={() => handleSelect(elev)}
+                                >
+                                    {elev.label}
+                                </CommandItem>
+                            ))}
+                        </CommandList>
+                    )}
+                </Command>
             </div>
             <div className="grid grid-cols-4 items-center gap-4 py-1">
                 <Label className="text-right">Prenume</Label>

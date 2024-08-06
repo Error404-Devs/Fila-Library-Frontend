@@ -1,5 +1,6 @@
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions, SessionStrategy } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+
 const baseUrl = process.env.BASE_URL;
 
 async function refreshAccessToken(token: any) {
@@ -15,7 +16,7 @@ async function refreshAccessToken(token: any) {
             ...token,
             accessToken: refreshedToken.access_token,
             accessTokenExpires: Date.now() + 1000 * refreshedToken.expires_in,
-            refreshToken: refreshedToken.refresh_token ?? token.refresh_token // Fall back to old refresh token
+            refreshToken: refreshedToken.refresh_token ?? token.refresh_token
         };
     } catch (error) {
         console.error('Error refreshing access token:', error);
@@ -27,13 +28,13 @@ async function refreshAccessToken(token: any) {
     }
 }
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
             name: 'Credentials',
             credentials: {
                 email: {
-                    label: 'admin@email.com',
+                    label: 'Email',
                     type: 'text',
                     placeholder: 'Email...'
                 },
@@ -61,7 +62,7 @@ const handler = NextAuth({
         })
     ],
     session: {
-        strategy: 'jwt'
+        strategy: 'jwt' as SessionStrategy
     },
     callbacks: {
         async jwt({ token, user }) {
@@ -72,6 +73,7 @@ const handler = NextAuth({
                 token.email = user.email;
             }
             if (Date.now() < (token.expires_in as number)) {
+                // or token.expires_in
                 return token;
             }
             return await refreshAccessToken(token);
@@ -89,6 +91,8 @@ const handler = NextAuth({
         error: '/error'
     },
     secret: process.env.NEXTAUTH_SECRET
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

@@ -6,6 +6,7 @@ import BooksPagination from './bookTable/BooksPagination';
 import AddBook from './components/AddBook';
 const baseUrl = process.env.BASE_URL;
 import { BookType, PagesType } from '../interfaces';
+import { auth } from '../api/auth/[...nextauth]/auth';
 
 export default async function Dashboard({
     searchParams
@@ -41,7 +42,17 @@ export default async function Dashboard({
     const queryString = new URLSearchParams(params).toString();
     const url = `${baseUrl}/books?${queryString}`;
 
-    const response = await fetch(url, { cache: 'no-store' });
+    const session = await auth();
+
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+            'Content-Type': 'application/json'
+        },
+        cache: 'no-store'
+    });
+
     const books_and_pages: PagesType = await response.json();
     const totalPages = books_and_pages?.pages || 0;
     const currentPage = books_and_pages?.page || 1;
@@ -77,7 +88,7 @@ export default async function Dashboard({
                             <div className="flex justify-center items-center h-[50vh]">
                                 <p>
                                     Nu există cărți care să îndeplinească
-                                    criteriile
+                                    criteriile {session?.access_token}
                                 </p>
                             </div>
                         )}
