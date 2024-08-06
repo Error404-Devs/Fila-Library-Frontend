@@ -44,7 +44,15 @@ export default async function Dashboard({
 
     const session = await auth();
 
-    const response = await fetch(url, { cache: 'no-store' });
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+            'Content-Type': 'application/json'
+        },
+        cache: 'no-store'
+    });
+
     const books_and_pages: PagesType = await response.json();
     const totalPages = books_and_pages?.pages || 0;
     const currentPage = books_and_pages?.page || 1;
