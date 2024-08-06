@@ -39,7 +39,6 @@ const ImprumutaModal = ({
     setBorrowed
 }: ImprumutaModalProps) => {
     const [dueDate, setDueDate] = useState<Date>();
-    const [nrMatricol, setNrMatricol] = useState('');
     const [error, setError] = useState(0);
     const [nume, setNume] = useState('');
     const [prenume, setPrenume] = useState('');
@@ -53,7 +52,6 @@ const ImprumutaModal = ({
 
     const isFormValid = () => {
         return (
-            nrMatricol.trim() !== '' &&
             nume.trim() !== '' &&
             prenume.trim() !== '' &&
             gender.trim() !== '' &&
@@ -67,7 +65,6 @@ const ImprumutaModal = ({
 
     const isElevValid = () => {
         return (
-            nrMatricol.trim() !== '' &&
             nume.trim() !== '' &&
             prenume.trim() !== '' &&
             gender.trim() !== '' &&
@@ -83,7 +80,6 @@ const ImprumutaModal = ({
             return;
         }
         const borrowData = {
-            person_id: nrMatricol,
             first_name: prenume,
             last_name: nume,
             gender: gender,
@@ -122,7 +118,6 @@ const ImprumutaModal = ({
             return;
         }
         const elevData = {
-            id: nrMatricol,
             first_name: prenume,
             last_name: nume,
             gender: gender,
@@ -172,8 +167,6 @@ const ImprumutaModal = ({
                 </div>
                 <Separator orientation="vertical" />
                 <ImprumutaModalElev
-                    nrMatricol={nrMatricol}
-                    setNrMatricol={setNrMatricol}
                     error={error}
                     setError={setError}
                     nume={nume}
