@@ -88,7 +88,7 @@ export default async function Dashboard({
                             <div className="flex justify-center items-center h-[50vh]">
                                 <p>
                                     Nu există cărți care să îndeplinească
-                                    criteriile {session?.access_token}
+                                    criteriile
                                 </p>
                             </div>
                         )}

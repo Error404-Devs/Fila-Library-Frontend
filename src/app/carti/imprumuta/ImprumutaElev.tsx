@@ -61,14 +61,6 @@ const ImprumutaModalElev = ({
     changed,
     setChanged
 }: any) => {
-    // useEffect(() => {
-    //     if (nume === '' && prenume === '') {
-    //         setError(0);
-    //     } else if (!changed) {
-    //         fetchElev();
-    //     }
-    // }, [nume, prenume, changed]);
-
     const [elevi, setElevi] = useState([]);
 
     const [fetchedNume, setFetchedNume] = useState('');
@@ -158,7 +150,13 @@ const ImprumutaModalElev = ({
                         label: `${student.last_name} ${student.first_name}`,
                         value: id,
                         first_name: student.first_name,
-                        last_name: student.last_name
+                        last_name: student.last_name,
+                        location: student.location,
+                        phone_number: student.phone_number,
+                        address: student.address,
+                        gender: student.gender,
+                        group: student.group,
+                        year: student.year
                     };
                 });
 
@@ -182,10 +180,19 @@ const ImprumutaModalElev = ({
         setNume(e.target.value);
     };
 
+    const handlePrenumeChange = (e: any) => {
+        setPrenume(e.target.value);
+    };
+
     const handleSelect = (elev: any) => {
         console.log('ello');
         setNume(elev.last_name);
         setPrenume(elev.first_name);
+        setGender(elev.gender);
+        setYear(elev.year.toString());
+        setGroup(elev.group);
+        setMediu(elev.address);
+        setPhone(elev.phone_number);
         setFound(true);
     };
 
@@ -211,26 +218,12 @@ const ImprumutaModalElev = ({
             </div>
             <div className="grid grid-cols-4 items-center gap-4 py-1">
                 <Label className="text-right">Nume</Label>
-                <Command className=" col-span-3">
-                    <Input
-                        type="email"
-                        value={nume}
-                        onChange={handleNumeChange}
-                        className="w-full mb-2"
-                    />
-                    {!found && (
-                        <CommandList>
-                            {elevi.map((elev) => (
-                                <CommandItem
-                                    key={elev.value}
-                                    onSelect={() => handleSelect(elev)}
-                                >
-                                    {elev.label}
-                                </CommandItem>
-                            ))}
-                        </CommandList>
-                    )}
-                </Command>
+                <Input
+                    type="email"
+                    value={nume}
+                    onChange={handleNumeChange}
+                    className="col-span-3 w-full mb-2"
+                />
             </div>
             <div className="grid grid-cols-4 items-center gap-4 py-1">
                 <Label className="text-right">Prenume</Label>
@@ -241,8 +234,28 @@ const ImprumutaModalElev = ({
                 />
             </div>
             <div className="grid grid-cols-4 items-center gap-4 py-1">
+                {!found && (
+                    <Command className="col-start-2 col-span-3">
+                        <CommandList>
+                            {elevi.map((elev) => (
+                                <CommandItem
+                                    key={elev.value}
+                                    onSelect={() => handleSelect(elev)}
+                                >
+                                    {elev.label}
+                                </CommandItem>
+                            ))}
+                        </CommandList>
+                    </Command>
+                )}
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4 py-1">
                 <Label className="text-right">Gen</Label>
-                <Select value={gender} onValueChange={setGender}>
+                <Select
+                    value={gender}
+                    onValueChange={setGender}
+                    disabled={found}
+                >
                     <SelectTrigger className="col-span-3">
                         <SelectValue />
                     </SelectTrigger>
@@ -256,7 +269,7 @@ const ImprumutaModalElev = ({
             </div>
             <div className="grid grid-cols-8 items-center gap-4 py-1">
                 <Label className="text-right col-span-2">Clasa</Label>
-                <Select value={year} onValueChange={setYear}>
+                <Select value={year} onValueChange={setYear} disabled={found}>
                     <SelectTrigger className="col-span-3">
                         <SelectValue placeholder="An" />
                     </SelectTrigger>
@@ -284,7 +297,7 @@ const ImprumutaModalElev = ({
                         </SelectGroup>
                     </SelectContent>
                 </Select>
-                <Select value={group} onValueChange={setGroup}>
+                <Select value={group} onValueChange={setGroup} disabled={found}>
                     <SelectTrigger className="col-span-3">
                         <SelectValue placeholder="Grupa" />
                     </SelectTrigger>
@@ -301,7 +314,7 @@ const ImprumutaModalElev = ({
             </div>
             <div className="grid grid-cols-4 items-center gap-4 py-1">
                 <Label className="text-right">Mediu</Label>
-                <Select value={mediu} onValueChange={setMediu}>
+                <Select value={mediu} onValueChange={setMediu} disabled={found}>
                     <SelectTrigger className="col-span-3">
                         <SelectValue />
                     </SelectTrigger>
@@ -319,6 +332,7 @@ const ImprumutaModalElev = ({
                     className="col-span-3"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
+                    disabled={found}
                 />
             </div>
         </div>
