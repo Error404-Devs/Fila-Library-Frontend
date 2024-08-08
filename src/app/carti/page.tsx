@@ -40,11 +40,9 @@ export default async function Dashboard({
     if (location) params.location = location;
 
     const queryString = new URLSearchParams(params).toString();
-    const url = `${baseUrl}/books?${queryString}`;
-
     const session = await auth();
 
-    const response = await fetch(url, {
+    const response = await fetch(`${baseUrl}/books?${queryString}`, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${session?.access_token}`,

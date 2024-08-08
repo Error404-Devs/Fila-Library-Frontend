@@ -161,9 +161,7 @@ const ImprumutaModal = ({
         if (!isElevValid()) {
             return;
         }
-
         setEditing(false);
-
         const elevData = {
             id: id,
             first_name: prenume,
@@ -174,9 +172,6 @@ const ImprumutaModal = ({
             address: mediu,
             phone_number: phone
         };
-
-        console.log(elevData);
-
         try {
             const response = await fetch(`${baseUrl}/persons`, {
                 method: 'PUT',

@@ -15,6 +15,19 @@ import { Command, CommandItem, CommandList } from '@/components/ui/command';
 import { useEffect, useState } from 'react';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
+interface Elev {
+    label: string;
+    value: string;
+    first_name: string;
+    last_name: string;
+    location: string;
+    phone_number: string;
+    address: string;
+    gender: string;
+    group: string;
+    year: string;
+}
+
 const ImprumutaModalElev = ({
     error,
     setError,
@@ -41,8 +54,7 @@ const ImprumutaModalElev = ({
     editing,
     setEditing
 }: any) => {
-    const [elevi, setElevi] = useState([]);
-
+    const [elevi, setElevi] = useState<Elev[]>([]);
     const [fetchedNume, setFetchedNume] = useState('');
     const [fetchedPrenume, setFetchedPrenume] = useState('');
     const [fetchedGender, setFetchedGender] = useState('');
