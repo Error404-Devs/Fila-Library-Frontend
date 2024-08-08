@@ -80,17 +80,7 @@ const RestituieModal = ({
             );
             if (response.ok) {
                 const result = await response.json();
-
-                const updatedData = result.map((student: any) => {
-                    return {
-                        ...student,
-                        label: `${student.last_name} ${student.first_name}`,
-                        value: `${student.last_name} ${student.first_name}`
-                    };
-                });
-
-                console.log(updatedData);
-                setElevi(updatedData);
+                setElevi(result);
             }
         } catch (err: any) {
             console.error('Fetching elev error:', err);
@@ -122,7 +112,9 @@ const RestituieModal = ({
             const response = await fetch(`${baseUrl}/return`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
                 },
                 body: JSON.stringify(returnData)
             });
@@ -133,6 +125,16 @@ const RestituieModal = ({
                 });
                 setAvailable(available + 1);
                 setBorrowed(borrowed - 1);
+                setNume('');
+                setPrenume('');
+                setGender('');
+                setYear('');
+                setGroup('');
+                setMediu('');
+                setPhone('');
+                setBorrowedDate('');
+                setDueDate('');
+                setBorrowId('');
             } else {
                 console.error(`Error: ${response.statusText}`);
             }
@@ -170,7 +172,7 @@ const RestituieModal = ({
                         </span>
                     </h4>
                     <div className="grid grid-cols-4 items-center gap-4 py-2">
-                        <Label className="text-right">Nr matricol{'\n'}</Label>
+                        <Label className="text-right">Nume</Label>
                         <Select onValueChange={handleSelectChange}>
                             <SelectTrigger className="col-span-3">
                                 <SelectValue placeholder="Alege un elev" />
@@ -182,28 +184,12 @@ const RestituieModal = ({
                                             key={elev.id}
                                             value={elev.id}
                                         >
-                                            {elev.id}
+                                            {`${elev.first_name} ${elev.last_name} (${elev.year}${elev.group})`}
                                         </SelectItem>
                                     ))}
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4 py-1">
-                        <Label className="text-right">Nume</Label>
-                        <Input
-                            className="col-span-3"
-                            value={nume}
-                            disabled={true}
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4 py-1">
-                        <Label className="text-right">Prenume</Label>
-                        <Input
-                            className="col-span-3"
-                            value={prenume}
-                            disabled={true}
-                        />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4 py-1">
                         <Label className="text-right">Gen</Label>

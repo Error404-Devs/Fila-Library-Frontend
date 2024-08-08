@@ -148,6 +148,18 @@ const ImprumutaModalElev = ({
         setPhone(elev.phone_number);
     };
 
+    const highlightText = (text: string, search: string) => {
+        if (!search.trim()) return text;
+        const parts = text.split(new RegExp(`(${search})`, 'gi'));
+        return parts.map((part, index) =>
+            part.toLowerCase() === search.toLowerCase() ? (
+                <b key={index}>{part}</b>
+            ) : (
+                part
+            )
+        );
+    };
+
     return (
         <div className="w-full">
             <h4 className="mb-6 text-xl font-semibold tracking-tight">
@@ -189,13 +201,18 @@ const ImprumutaModalElev = ({
                 {!selected && (
                     <Command className="col-start-2 col-span-3">
                         <CommandList>
-                            {elevi.map((elev) => (
+                            {elevi.slice(0, 3).map((elev) => (
                                 <CommandItem
                                     key={elev.value}
                                     onSelect={() => handleSelect(elev)}
                                     className="flex justify-between px-3"
                                 >
-                                    <span>{elev.label}</span>
+                                    <span>
+                                        {highlightText(
+                                            elev.label,
+                                            nume || prenume
+                                        )}
+                                    </span>
                                     <span>
                                         {elev.year}
                                         {elev.group}
