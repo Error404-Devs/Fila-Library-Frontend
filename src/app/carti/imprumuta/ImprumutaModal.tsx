@@ -38,6 +38,7 @@ const ImprumutaModal = ({
     borrowed,
     setBorrowed
 }: ImprumutaModalProps) => {
+    // states for the form
     const [dueDate, setDueDate] = useState<Date>();
     const [error, setError] = useState(0);
     const [nume, setNume] = useState('');
@@ -47,7 +48,10 @@ const ImprumutaModal = ({
     const [group, setGroup] = useState('');
     const [mediu, setMediu] = useState('');
     const [phone, setPhone] = useState('');
+    // the 3 states that determine which buttons to display
     const [changed, setChanged] = useState(false);
+    const [selected, setSelected] = useState(false);
+    const [editing, setEditing] = useState(false);
     const { toast } = useToast();
 
     const isFormValid = () => {
@@ -113,7 +117,7 @@ const ImprumutaModal = ({
         }
     };
 
-    const handleSave = async () => {
+    const handleAdd = async () => {
         if (!isElevValid()) {
             return;
         }
@@ -137,15 +141,23 @@ const ImprumutaModal = ({
             if (response.ok) {
                 setChanged(false);
                 toast({
-                    title: 'Elevul a fost salvat cu succes!',
-                    description: `${nume} ${prenume} a fost actualizat`
+                    title: 'Elevul a fost adaugat cu succes!',
+                    description: `${nume} ${prenume} a fost adaugat`
                 });
             } else {
                 console.error(`Error: ${response.statusText}`);
             }
         } catch (error) {
-            console.error('Error updating student:', error);
+            console.error('Error adding student:', error);
         }
+    };
+
+    const handleEdit = () => {
+        setEditing(true);
+    };
+
+    const handleSave = () => {
+        setEditing(false);
     };
 
     return (
@@ -185,12 +197,38 @@ const ImprumutaModal = ({
                     setPhone={setPhone}
                     changed={changed}
                     setChanged={setChanged}
+                    selected={selected}
+                    setSelected={setSelected}
+                    editing={editing}
+                    setEditing={setEditing}
                 />
             </div>
             <DialogFooter>
+                {selected && editing && (
+                    <Button
+                        className="mr-[9rem]"
+                        onClick={handleSave}
+                        disabled={!isElevValid()}
+                    >
+                        Salveaza Elev
+                    </Button>
+                )}
+                {selected && !editing && (
+                    <Button
+                        className="mr-[9rem]"
+                        onClick={handleEdit}
+                        disabled={!isElevValid()}
+                    >
+                        Edita Elev
+                    </Button>
+                )}
                 {changed && (
-                    <Button className="mr-[9rem]" onClick={handleSave}>
-                        Salveaza
+                    <Button
+                        className="mr-[9rem]"
+                        onClick={handleAdd}
+                        disabled={!isElevValid()}
+                    >
+                        Adauga Elev
                     </Button>
                 )}
                 <DialogClose asChild>
