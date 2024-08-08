@@ -18,6 +18,8 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const ImprumutaModalElev = ({
     error,
     setError,
+    id,
+    setId,
     nume,
     setNume,
     prenume,
@@ -62,6 +64,7 @@ const ImprumutaModalElev = ({
             setSelected(false);
             setChanged(true);
 
+            setId('');
             setFetchedGender('');
             setFetchedYear('');
             setFetchedGroup('');
@@ -83,11 +86,6 @@ const ImprumutaModalElev = ({
             );
             if (response.ok) {
                 const result = await response.json();
-                console.log(
-                    `${baseUrl}/persons?first_name=${prenume}&last_name=${nume}`
-                );
-                console.log(result);
-
                 const formattedElevi = Object.keys(result).map((id) => {
                     const student = result[id];
                     return {
@@ -120,6 +118,7 @@ const ImprumutaModalElev = ({
         setSelected(true);
         setChanged(false);
 
+        setId(elev.value);
         setFetchedNume(elev.last_name);
         setFetchedPrenume(elev.first_name);
         setFetchedGender(elev.gender);
@@ -182,8 +181,13 @@ const ImprumutaModalElev = ({
                                 <CommandItem
                                     key={elev.value}
                                     onSelect={() => handleSelect(elev)}
+                                    className="flex justify-between px-3"
                                 >
-                                    {elev.label}
+                                    <span>{elev.label}</span>
+                                    <span>
+                                        {elev.year}
+                                        {elev.group}
+                                    </span>
                                 </CommandItem>
                             ))}
                         </CommandList>
