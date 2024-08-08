@@ -88,13 +88,7 @@ const ImprumutaModal = ({
             return;
         }
         const borrowData = {
-            first_name: prenume,
-            last_name: nume,
-            gender: gender,
-            year: year,
-            group: group,
-            address: mediu,
-            phone_number: phone,
+            id: id,
             book_id: bookId,
             due_date: dueDate?.toISOString()
         };
@@ -182,7 +176,7 @@ const ImprumutaModal = ({
         };
 
         console.log(elevData);
-        
+
         try {
             const response = await fetch(`${baseUrl}/persons`, {
                 method: 'PUT',
