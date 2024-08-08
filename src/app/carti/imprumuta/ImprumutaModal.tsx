@@ -132,7 +132,7 @@ const ImprumutaModal = ({
         };
         try {
             const response = await fetch(`${baseUrl}/persons`, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },

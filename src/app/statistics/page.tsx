@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import StatisticsTable from './StatisticsTable';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 import { StatisticsType, defaultStatisticsValues } from '../interfaces';
+import { useSession } from 'next-auth/react';
 
 const months = [
     { value: '1', label: 'Ianuarie' },
@@ -50,23 +51,39 @@ const Statistics = () => {
         defaultStatisticsValues
     );
 
-    useEffect(() => {
-        fetchStatistics(selectedMonth, selectedYear);
-    }, [selectedMonth, selectedYear]);
+    const { data: session, status } = useSession();
 
-    const fetchStatistics = async (month: string, year: string) => {
+    useEffect(() => {
+        if (session?.access_token)
+            fetchStatistics(selectedMonth, selectedYear, session?.access_token);
+    }, [selectedMonth, selectedYear, status, session]);
+
+    const fetchStatistics = async (
+        month: string,
+        year: string,
+        accessToken: string
+    ) => {
         try {
             const response = await fetch(
-                `${baseUrl}/statistics?month=${month}&year=${year}`
+                `${baseUrl}/statistics?month=${month}&year=${year}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                }
             );
             if (response.ok) {
                 const data = await response.json();
+                console.log(data);
                 setStatistics(data);
             } else {
                 setStatistics(defaultStatisticsValues);
             }
         } catch (error) {
-            // console.error('Error fetching statistics:', error);
+            console.error('Error fetching statistics:', error);
+            setStatistics(defaultStatisticsValues);
         }
     };
 
@@ -133,6 +150,7 @@ const Statistics = () => {
                         <StatisticsTable
                             selectedMonth={getMonthLabel(selectedMonth)}
                             selectedYear={selectedYear}
+                            statistics={statistics}
                         />
                     </div>
                 </main>
