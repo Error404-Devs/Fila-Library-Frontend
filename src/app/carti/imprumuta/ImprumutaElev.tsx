@@ -189,7 +189,7 @@ const ImprumutaModalElev = ({
                 {!selected && (
                     <Command className="col-start-2 col-span-3">
                         <CommandList>
-                            {elevi.map((elev) => (
+                            {elevi.slice(0, 3).map((elev) => (
                                 <CommandItem
                                     key={elev.value}
                                     onSelect={() => handleSelect(elev)}

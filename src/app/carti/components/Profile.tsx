@@ -16,12 +16,12 @@ import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 
 const Profile = () => {
-    // const { data: session } = useSession({
-    //     required: true,
-    //     onUnauthenticated() {
-    //         redirect('/login/bibliotecara');
-    //     }
-    // });
+    const { data: session } = useSession({
+        required: true,
+        onUnauthenticated() {
+            redirect('/login/bibliotecara');
+        }
+    });
 
     return (
         <DropdownMenu>
