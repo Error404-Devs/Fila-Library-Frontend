@@ -24,6 +24,7 @@ import RestituieCarte from './RestituieCarte';
 import RestituieCalendar from './RestituieCalendar';
 import { useToast } from '@/components/ui/use-toast';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+import { useSession } from 'next-auth/react';
 
 interface RestituieModalProps {
     bookId: string;
@@ -58,6 +59,8 @@ const RestituieModal = ({
     const [dueDate, setDueDate] = useState('');
     const [borrowId, setBorrowId] = useState('');
     const { toast } = useToast();
+    const { data: session, status } = useSession();
+    const accessToken = session?.access_token;
 
     useEffect(() => {
         fetchElevi();
@@ -66,12 +69,28 @@ const RestituieModal = ({
     const fetchElevi = async () => {
         try {
             const response = await fetch(
-                `${baseUrl}/borrows/book?book_id=${bookId}`
+                `${baseUrl}/borrows/book?book_id=${bookId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                }
             );
             if (response.ok) {
                 const result = await response.json();
-                console.log(result);
-                setElevi(result);
+
+                const updatedData = result.map((student: any) => {
+                    return {
+                        ...student,
+                        label: `${student.last_name} ${student.first_name}`,
+                        value: `${student.last_name} ${student.first_name}`
+                    };
+                });
+
+                console.log(updatedData);
+                setElevi(updatedData);
             }
         } catch (err: any) {
             console.error('Fetching elev error:', err);
