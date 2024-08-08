@@ -58,12 +58,15 @@ const CheckboxContext = createContext<CheckboxContextType | undefined>(
 
 export const BookCheckboxProvider = ({ children }: { children: ReactNode }) => {
     const [state, setState] = useState<CheckboxState>(() => {
-        const savedState = localStorage.getItem('checkboxState');
+        const savedState =
+            typeof window !== 'undefined' &&
+            localStorage.getItem('checkboxState');
         return savedState ? JSON.parse(savedState) : defaultState;
     });
 
     useEffect(() => {
-        localStorage.setItem('checkboxState', JSON.stringify(state));
+        typeof window !== 'undefined' &&
+            localStorage.setItem('checkboxState', JSON.stringify(state));
     }, [state]);
 
     const toggleCheckbox = (name: CheckboxKeys) => {
