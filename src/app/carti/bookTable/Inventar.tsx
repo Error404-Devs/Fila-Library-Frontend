@@ -13,12 +13,10 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
-import * as Slider from '@radix-ui/react-slider';
+import { Slider } from '@/components/ui/slider';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import { useSession } from 'next-auth/react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 interface InventarProps {
@@ -41,8 +39,6 @@ const Inventar = ({
     const [quantity, setQuantity] = useState([1]);
     const { toast } = useToast();
     const { data: session, status } = useSession();
-    const [inputValue, setInputValue] = useState('');
-    const [nrDeInventar, setNrDeInventar] = useState([]);
     const accessToken = session?.access_token;
 
     const handleRemoveInventory = async () => {
@@ -80,9 +76,8 @@ const Inventar = ({
     const handleAddInventory = async () => {
         const inventoryData = {
             book_id: bookId,
-            quantity: nrDeInventar.length,
-            borrow_id: null,
-            inventory_numbers: nrDeInventar
+            quantity: quantity[0],
+            borrow_id: null
         };
         console.log(inventoryData);
         try {
@@ -110,24 +105,6 @@ const Inventar = ({
         }
     };
 
-    const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            handleAddNrDeInventar();
-        }
-    };
-
-    const handleAddNrDeInventar = () => {
-        if (inputValue.trim() !== '') {
-            setNrDeInventar([...nrDeInventar, inputValue.trim()]);
-            setInputValue('');
-        }
-    };
-
-    const handleRemovePill = (index) => {
-        const newNrDeInventar = nrDeInventar.filter((_, i) => i !== index);
-        setNrDeInventar(newNrDeInventar);
-    };
-
     return (
         <div className="flex gap-1">
             <AlertDialog>
@@ -150,16 +127,14 @@ const Inventar = ({
                                 <p className="pb-2">{`Vreti sa scoateti ${quantity} exemplare?`}</p>
                                 <p className="pb-1">{`${available} exemplare disponibile => ${available - quantity[0]} exemplare disponibile`}</p>
                                 <p className="pb-5">{`${total} exemplare total => ${total - quantity[0]} exemplare total`}</p>
-                                <Slider.Root
-                                    className="SliderRoot"
-                                    defaultValue={[50]}
-                                    orientation="vertical"
-                                >
-                                    <Slider.Track className="SliderTrack">
-                                        <Slider.Range className="SliderRange" />
-                                    </Slider.Track>
-                                    <Slider.Thumb className="SliderThumb" />
-                                </Slider.Root>
+                                <Slider
+                                    className=" max-w-[30vh]"
+                                    min={1}
+                                    max={available}
+                                    step={1}
+                                    value={quantity}
+                                    onValueChange={setQuantity}
+                                />
                             </div>
                         </AlertDialogDescription>
                     </AlertDialogHeader>
@@ -184,55 +159,25 @@ const Inventar = ({
                             {`Vreti sa adaugati la inventarul cartii: ${bookName}?`}
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                            <div className="p-4">
-                                <div className="flex flex-wrap mt-4">
-                                    {nrDeInventar.map((pill, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex items-center bg-secondary rounded-full px-4 py-2 m-1"
-                                        >
-                                            <span>{pill}</span>
-                                            <button
-                                                onClick={() =>
-                                                    handleRemovePill(index)
-                                                }
-                                                className="ml-2 text-primary"
-                                            >
-                                                ×
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="flex items-center space-x-2 pt-5">
-                                    <Input
-                                        type="text"
-                                        value={inputValue}
-                                        onChange={(e) => {
-                                            setInputValue(e.target.value);
-                                        }}
-                                        onKeyDown={handleKeyDown}
-                                        placeholder="Introduceti numarul de inventar"
-                                        className="border rounded p-2 flex-grow"
-                                    />
-                                    <button
-                                        onClick={handleAddNrDeInventar}
-                                        className="bg-primary text-white p-2 rounded"
-                                    >
-                                        Adauga
-                                    </button>
-                                </div>
+                            <div className="flex flex-col items-center py-4">
+                                <p className="pb-2">{`Vreti sa adaugati ${quantity} exemplare?`}</p>
+                                <p className="pb-1">{`${available} exemplare disponibile => ${available + quantity[0]} exemplare disponibile`}</p>
+                                <p className="pb-5">{`${total} exemplare total => ${total + quantity[0]} exemplare total`}</p>
+                                <Slider
+                                    className=" max-w-[30vh]"
+                                    min={1}
+                                    max={30}
+                                    step={1}
+                                    value={quantity}
+                                    onValueChange={setQuantity}
+                                />
                             </div>
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Anulare</AlertDialogCancel>
-                        <AlertDialogAction
-                            onClick={handleAddInventory}
-                            disabled={nrDeInventar.length == 0}
-                        >
-                            {nrDeInventar.length == 1
-                                ? 'Adauga o carte'
-                                : `Adauaga ${nrDeInventar.length} carti`}
+                        <AlertDialogAction onClick={handleAddInventory}>
+                            Continuare
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
