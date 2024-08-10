@@ -62,3 +62,57 @@
     writing-mode: vertical-rl;
     transform: rotate(180deg);
 }
+
+.SliderRoot {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.SliderRoot[data-orientation='vertical'] {
+    flex-direction: column;
+    width: 20px;
+    height: 300px;
+}
+
+.SliderTrack {
+    position: relative;
+    flex-grow: 1;
+    width: 100%;
+    border-radius: 9999px;
+    background-color: hsl(var(--primary));
+    overflow: hidden;
+}
+.SliderTrack[data-orientation='vertical'] {
+    width: 8px;
+}
+
+.SliderRange {
+    position: absolute;
+    background-color: hsl(var(--secondary));
+    height: 100%;
+}
+.SliderRange[data-orientation='vertical'] {
+    width: 100%;
+}
+
+.SliderThumb {
+    display: block;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    border: 2px solid hsl(var(--primary));
+    background-color: hsl(var(--secondary));
+    transition: background-color 0.2s ease;
+    outline: none;
+    cursor: pointer;
+    box-shadow: 0 0 0 2px transparent;
+}
+
+.SliderThumb:focus-visible {
+    box-shadow: 0 0 0 2px hsl(var(--ring)); /* Assume ring color is defined */
+}
+
+.SliderThumb:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
