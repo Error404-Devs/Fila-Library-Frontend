@@ -96,7 +96,9 @@ const ImprumutaModal = ({
             const response = await fetch(`${baseUrl}/borrows`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
                 },
                 body: JSON.stringify(borrowData)
             });
