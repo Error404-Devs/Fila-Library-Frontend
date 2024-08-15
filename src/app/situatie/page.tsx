@@ -16,7 +16,7 @@ export default async function Dashboard(
     }
 ) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-    const url = `${baseUrl}/borrows?name=${searchParams?.name}&lastname=${searchParams?.lastname}`;
+    const url = `${baseUrl}/borrows?first_name=${searchParams?.name}&last_name=${searchParams?.lastname}`;
     const response = await fetch(url, { cache: 'no-store' });
     const situatie = await response.json();
     
