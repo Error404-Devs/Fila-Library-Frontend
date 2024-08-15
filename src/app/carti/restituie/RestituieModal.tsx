@@ -24,6 +24,7 @@ import RestituieCarte from './RestituieCarte';
 import RestituieCalendar from './RestituieCalendar';
 import { useToast } from '@/components/ui/use-toast';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+import { useSession } from 'next-auth/react';
 
 interface RestituieModalProps {
     bookId: string;
@@ -58,6 +59,8 @@ const RestituieModal = ({
     const [dueDate, setDueDate] = useState('');
     const [borrowId, setBorrowId] = useState('');
     const { toast } = useToast();
+    const { data: session, status } = useSession();
+    const accessToken = session?.access_token;
 
     useEffect(() => {
         fetchElevi();
@@ -66,11 +69,17 @@ const RestituieModal = ({
     const fetchElevi = async () => {
         try {
             const response = await fetch(
-                `${baseUrl}/borrows/book?book_id=${bookId}`
+                `${baseUrl}/borrows/book?book_id=${bookId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                }
             );
             if (response.ok) {
                 const result = await response.json();
-                console.log(result);
                 setElevi(result);
             }
         } catch (err: any) {
@@ -103,7 +112,9 @@ const RestituieModal = ({
             const response = await fetch(`${baseUrl}/return`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
                 },
                 body: JSON.stringify(returnData)
             });
@@ -114,6 +125,16 @@ const RestituieModal = ({
                 });
                 setAvailable(available + 1);
                 setBorrowed(borrowed - 1);
+                setNume('');
+                setPrenume('');
+                setGender('');
+                setYear('');
+                setGroup('');
+                setMediu('');
+                setPhone('');
+                setBorrowedDate('');
+                setDueDate('');
+                setBorrowId('');
             } else {
                 console.error(`Error: ${response.statusText}`);
             }
@@ -151,7 +172,7 @@ const RestituieModal = ({
                         </span>
                     </h4>
                     <div className="grid grid-cols-4 items-center gap-4 py-2">
-                        <Label className="text-right">Nr matricol{'\n'}</Label>
+                        <Label className="text-right">Nume</Label>
                         <Select onValueChange={handleSelectChange}>
                             <SelectTrigger className="col-span-3">
                                 <SelectValue placeholder="Alege un elev" />
@@ -163,28 +184,12 @@ const RestituieModal = ({
                                             key={elev.id}
                                             value={elev.id}
                                         >
-                                            {elev.id}
+                                            {`${elev.first_name} ${elev.last_name} (${elev.year}${elev.group})`}
                                         </SelectItem>
                                     ))}
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4 py-1">
-                        <Label className="text-right">Nume</Label>
-                        <Input
-                            className="col-span-3"
-                            value={nume}
-                            disabled={true}
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4 py-1">
-                        <Label className="text-right">Prenume</Label>
-                        <Input
-                            className="col-span-3"
-                            value={prenume}
-                            disabled={true}
-                        />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4 py-1">
                         <Label className="text-right">Gen</Label>

@@ -29,13 +29,16 @@ export const StatisticsColumnProvider: React.FC<{
 }> = ({ children }) => {
     const [state, setState] = useState<Record<StatisticsColumnKeys, boolean>>(
         () => {
-            const savedState = localStorage.getItem('columnVisibility');
+            const savedState =
+                typeof window !== 'undefined' &&
+                localStorage.getItem('columnVisibility');
             return savedState ? JSON.parse(savedState) : initialState;
         }
     );
 
     useEffect(() => {
-        localStorage.setItem('columnVisibility', JSON.stringify(state));
+        typeof window !== 'undefined' &&
+            localStorage.setItem('columnVisibility', JSON.stringify(state));
     }, [state]);
 
     const toggleColumn = (key: StatisticsColumnKeys) => {

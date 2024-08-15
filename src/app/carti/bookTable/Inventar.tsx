@@ -16,6 +16,7 @@ import {
 import { Slider } from '@/components/ui/slider';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
+import { useSession } from 'next-auth/react';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 interface InventarProps {
@@ -37,6 +38,8 @@ const Inventar = ({
 }: InventarProps) => {
     const [quantity, setQuantity] = useState([1]);
     const { toast } = useToast();
+    const { data: session, status } = useSession();
+    const accessToken = session?.access_token;
 
     const handleRemoveInventory = async () => {
         const inventoryData = {
@@ -49,7 +52,9 @@ const Inventar = ({
             const response = await fetch(`${baseUrl}/inventory`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
                 },
                 body: JSON.stringify(inventoryData)
             });
@@ -79,7 +84,9 @@ const Inventar = ({
             const response = await fetch(`${baseUrl}/inventory`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
                 },
                 body: JSON.stringify(inventoryData)
             });

@@ -16,6 +16,7 @@ import { useToast } from '@/components/ui/use-toast';
 import ImprumutaModalElev from './ImprumutaElev';
 import ImprumutaCarte from './ImprumutaCarte';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+import { useSession } from 'next-auth/react';
 
 interface ImprumutaModalProps {
     bookId: string;
@@ -38,9 +39,10 @@ const ImprumutaModal = ({
     borrowed,
     setBorrowed
 }: ImprumutaModalProps) => {
+    // states for the form
     const [dueDate, setDueDate] = useState<Date>();
-    const [nrMatricol, setNrMatricol] = useState('');
     const [error, setError] = useState(0);
+    const [id, setId] = useState('');
     const [nume, setNume] = useState('');
     const [prenume, setPrenume] = useState('');
     const [gender, setGender] = useState('');
@@ -48,12 +50,16 @@ const ImprumutaModal = ({
     const [group, setGroup] = useState('');
     const [mediu, setMediu] = useState('');
     const [phone, setPhone] = useState('');
+    // the 3 states that determine which buttons to display
     const [changed, setChanged] = useState(false);
+    const [selected, setSelected] = useState(false);
+    const [editing, setEditing] = useState(false);
     const { toast } = useToast();
+    const { data: session, status } = useSession();
+    const accessToken = session?.access_token;
 
     const isFormValid = () => {
         return (
-            nrMatricol.trim() !== '' &&
             nume.trim() !== '' &&
             prenume.trim() !== '' &&
             gender.trim() !== '' &&
@@ -67,7 +73,6 @@ const ImprumutaModal = ({
 
     const isElevValid = () => {
         return (
-            nrMatricol.trim() !== '' &&
             nume.trim() !== '' &&
             prenume.trim() !== '' &&
             gender.trim() !== '' &&
@@ -83,14 +88,7 @@ const ImprumutaModal = ({
             return;
         }
         const borrowData = {
-            person_id: nrMatricol,
-            first_name: prenume,
-            last_name: nume,
-            gender: gender,
-            year: year,
-            group: group,
-            address: mediu,
-            phone_number: phone,
+            id: id,
             book_id: bookId,
             due_date: dueDate?.toISOString()
         };
@@ -98,7 +96,9 @@ const ImprumutaModal = ({
             const response = await fetch(`${baseUrl}/borrows`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
                 },
                 body: JSON.stringify(borrowData)
             });
@@ -117,12 +117,55 @@ const ImprumutaModal = ({
         }
     };
 
-    const handleSave = async () => {
+    const handleAdd = async () => {
         if (!isElevValid()) {
             return;
         }
         const elevData = {
-            id: nrMatricol,
+            first_name: prenume,
+            last_name: nume,
+            gender: gender,
+            year: year,
+            group: group,
+            address: mediu,
+            phone_number: phone
+        };
+        try {
+            const response = await fetch(`${baseUrl}/persons`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify(elevData)
+            });
+            if (response.ok) {
+                setChanged(false);
+                setSelected(true);
+                toast({
+                    title: 'Elevul a fost adaugat cu succes!',
+                    description: `${nume} ${prenume} a fost adaugat`
+                });
+            } else {
+                console.error(`Error: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Error adding student:', error);
+        }
+    };
+
+    const handleEdit = () => {
+        setEditing(true);
+    };
+
+    const handleSave = async () => {
+        if (!isElevValid()) {
+            return;
+        }
+        setEditing(false);
+        const elevData = {
+            id: id,
             first_name: prenume,
             last_name: nume,
             gender: gender,
@@ -135,15 +178,18 @@ const ImprumutaModal = ({
             const response = await fetch(`${baseUrl}/persons`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
                 },
                 body: JSON.stringify(elevData)
             });
             if (response.ok) {
                 setChanged(false);
+                setSelected(true);
                 toast({
-                    title: 'Elevul a fost salvat cu succes!',
-                    description: `${nume} ${prenume} a fost actualizat`
+                    title: 'Elevul a fost actualizat cu succes!',
+                    description: `${nume} ${prenume} a fost actualizat/a`
                 });
             } else {
                 console.error(`Error: ${response.statusText}`);
@@ -172,10 +218,10 @@ const ImprumutaModal = ({
                 </div>
                 <Separator orientation="vertical" />
                 <ImprumutaModalElev
-                    nrMatricol={nrMatricol}
-                    setNrMatricol={setNrMatricol}
                     error={error}
                     setError={setError}
+                    id={id}
+                    setId={setId}
                     nume={nume}
                     setNume={setNume}
                     prenume={prenume}
@@ -192,18 +238,44 @@ const ImprumutaModal = ({
                     setPhone={setPhone}
                     changed={changed}
                     setChanged={setChanged}
+                    selected={selected}
+                    setSelected={setSelected}
+                    editing={editing}
+                    setEditing={setEditing}
                 />
             </div>
             <DialogFooter>
+                {selected && editing && (
+                    <Button
+                        className="mr-[9rem]"
+                        onClick={handleSave}
+                        disabled={!isElevValid()}
+                    >
+                        Actualizeaza Elev
+                    </Button>
+                )}
+                {selected && !editing && (
+                    <Button
+                        className="mr-[9rem]"
+                        onClick={handleEdit}
+                        disabled={!isElevValid()}
+                    >
+                        Editeaza Elev
+                    </Button>
+                )}
                 {changed && (
-                    <Button className="mr-[9rem]" onClick={handleSave}>
-                        Salveaza
+                    <Button
+                        className="mr-[9rem]"
+                        onClick={handleAdd}
+                        disabled={!isElevValid()}
+                    >
+                        Adauga Elev
                     </Button>
                 )}
                 <DialogClose asChild>
                     <Button
                         type="submit"
-                        disabled={!isFormValid()}
+                        disabled={!isFormValid() || !selected || editing}
                         onClick={handleImprumuta}
                     >
                         Imprumuta
