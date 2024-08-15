@@ -17,16 +17,18 @@ export default async function Dashboard({
         title?: string;
     };
 }) {
-    const params: Record<string, string> = {};
     const page = searchParams?.page || 1;
     const title = searchParams?.title || '';
     const display = searchParams?.display || '';
-
+    
+    const params: Record<string, string> = {};
+    
     if (page) params.page = String(page);
     if (title) params.title = title;
 
     const queryString = new URLSearchParams(params).toString();
-    const url = `${baseUrl}/books?${queryString}`;
+    const url = `${baseUrl}/books/student?${queryString}`;
+    console.log(url)
 
     const response = await fetch(url, { cache: 'no-store' });
     const books_and_pages: PagesType = await response.json();

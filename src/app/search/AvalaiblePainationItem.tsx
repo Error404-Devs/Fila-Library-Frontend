@@ -3,7 +3,7 @@ import {
     PaginationItem,
     PaginationLink
 } from '@/components/ui/pagination';
-import { usePathname, useSearchParams, redirect } from 'next/navigation';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 
 const AvalaiblePaginationItem = ({
     page,
@@ -14,23 +14,33 @@ const AvalaiblePaginationItem = ({
 }) => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
+    const { replace } = useRouter();
 
     const createPageURL = (pageNumber: number) => {
         const params = new URLSearchParams(searchParams);
         params.set('page', pageNumber.toString());
-        return `${pathname}?${params.toString()}`;
+        replace(`${pathname}?${params.toString()}`);
     };
 
     if (page) {
         if (page == activePage) {
             return (
-                <PaginationLink href={createPageURL(page)} isActive>
+                <PaginationLink
+                    onClick={() => {
+                        createPageURL(page);
+                    }}
+                    isActive
+                >
                     {page}
                 </PaginationLink>
             );
         } else {
             return (
-                <PaginationLink href={createPageURL(page)}>
+                <PaginationLink
+                    onClick={() => {
+                        createPageURL(page);
+                    }}
+                >
                     {page}
                 </PaginationLink>
             );
