@@ -47,7 +47,7 @@ const Imprumuta = ({
                             >
                                 <div className="relative h-7 w-7">
                                     <Book className="static h-6 w-6 mt-1 mr-1" />
-                                    <Badge className="absolute top-0 right-0 flex h-4 w-4 p-1 shrink-0 items-center justify-center rounded-full bg-black">
+                                    <Badge className=" dark:bg-white bg-black absolute top-0 right-0 flex h-4 w-4 p-1 shrink-0 items-center justify-center rounded-full">
                                         {available}
                                     </Badge>
                                 </div>
