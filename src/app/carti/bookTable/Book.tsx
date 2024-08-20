@@ -8,7 +8,7 @@ import Inventar from './Inventar';
 import { useState } from 'react';
 import { BookType } from '../../interfaces';
 
-const Book = ({ book }: { book: BookType }) => {
+const   Book = ({ book }: { book: BookType }) => {
     const { state } = useCheckboxContext();
     const [total, setTotal] = useState(book.total_copies);
     const [available, setAvailable] = useState(book.available_copies);
@@ -48,7 +48,7 @@ const Book = ({ book }: { book: BookType }) => {
                 </TableCell>
             )}
             {state.borrow && (
-                <TableCell className="p-[10px] min-w-[213px]">
+                <TableCell className="p-[10px] min-w-[213px] ">
                     <Imprumuta
                         bookId={book.id}
                         bookName={book.title}
