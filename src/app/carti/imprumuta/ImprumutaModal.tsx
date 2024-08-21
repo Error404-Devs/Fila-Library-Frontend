@@ -92,7 +92,6 @@ const ImprumutaModal = ({
             id: id,
             book_id: bookId,
             due_date: dueDate?.toISOString(),
-            personId:personId
         };
         try {
             const response = await fetch(`${baseUrl}/borrows`, {
@@ -131,7 +130,6 @@ const ImprumutaModal = ({
             group: group,
             address: mediu,
             phone_number: phone,
-            personId:personId
         };
         try {
             const response = await fetch(`${baseUrl}/persons`, {
@@ -150,6 +148,7 @@ const ImprumutaModal = ({
                     title: 'Elevul a fost adaugat cu succes!',
                     description: `${nume} ${prenume} a fost adaugat`
                 });
+                document.dispatchEvent(new Event('close-dialog'));
             } else {
                 console.error(`Error: ${response.statusText}`);
             }
@@ -175,7 +174,7 @@ const ImprumutaModal = ({
             year: year,
             group: group,
             address: mediu,
-            phone_number: phone
+            phone_number: phone,
         };
         try {
             const response = await fetch(`${baseUrl}/persons`, {
@@ -267,13 +266,15 @@ const ImprumutaModal = ({
                     </Button>
                 )}
                 {changed && (
-                    <Button
-                        className="mr-[9rem]"
-                        onClick={handleAdd}
-                        disabled={!isElevValid()}
-                    >
-                        Adauga Elev
-                    </Button>
+                    <DialogClose asChild>
+                        <Button
+                            className="mr-[9rem]"
+                            onClick={handleAdd}
+                            disabled={!isElevValid()}
+                        >
+                            Adauga Elev
+                        </Button>
+                    </DialogClose>
                 )}
                 <DialogClose asChild>
                     <Button
