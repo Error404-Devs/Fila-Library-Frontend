@@ -43,6 +43,7 @@ const ImprumutaModal = ({
     const [dueDate, setDueDate] = useState<Date>();
     const [error, setError] = useState(0);
     const [id, setId] = useState('');
+    const [personId, setPersonId] = useState('')
     const [nume, setNume] = useState('');
     const [prenume, setPrenume] = useState('');
     const [gender, setGender] = useState('');
@@ -129,7 +130,7 @@ const ImprumutaModal = ({
             group: group,
             address: mediu,
             phone_number: phone,
-            id: id
+            personId:personId
         };
         try {
             const response = await fetch(`${baseUrl}/persons`, {
