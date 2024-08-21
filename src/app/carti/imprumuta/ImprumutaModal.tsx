@@ -128,7 +128,8 @@ const ImprumutaModal = ({
             year: year,
             group: group,
             address: mediu,
-            phone_number: phone
+            phone_number: phone,
+            id: id
         };
         try {
             const response = await fetch(`${baseUrl}/persons`, {
