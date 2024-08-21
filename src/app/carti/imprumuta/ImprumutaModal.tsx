@@ -91,7 +91,8 @@ const ImprumutaModal = ({
         const borrowData = {
             id: id,
             book_id: bookId,
-            due_date: dueDate?.toISOString()
+            due_date: dueDate?.toISOString(),
+            personId:personId
         };
         try {
             const response = await fetch(`${baseUrl}/borrows`, {
