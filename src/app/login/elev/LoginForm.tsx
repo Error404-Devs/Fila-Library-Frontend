@@ -24,11 +24,13 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
+import { UserRound } from 'lucide-react';
+import { LockKeyhole } from 'lucide-react';
 
 export function LoginForm() {
 
     const [name, setName] = useState('')
-    const [prenume, setPrenume] = useState('')
+    const [studentID, setStudentID] = useState('')
 
     const router = useRouter();
     const [error, setError] = useState('');
@@ -40,22 +42,22 @@ export function LoginForm() {
         setName(e.target.value);
         console.log(name)
     };
-    const handlePrenumeChange = (e:any) => {
-        setPrenume(e.target.value);
-        console.log(prenume)
+    const handleStudentIDChange = (e:any) => {
+        setStudentID(e.target.value);
+        console.log(studentID)
     };
 
     const handleSubmit = async (e: any) => {
         e.preventDefault(); 
         setLoading(true);
     try {
-        const response = await fetch(`${baseUrl}/borrows?first_name=${name}&last_name=${prenume}`);
+        const response = await fetch(`${baseUrl}/borrows?first_name=${name}&last_name=${studentID}`);
         if (!response.ok) {
             throw new Error('Utilizator not found');
         }
         const raspuns = await response.json();
         console.log(raspuns)
-        router.push(`/situatie?name=${name}&lastname=${prenume}`);
+        router.push(`/situatie?name=${name}&lastname=${studentID}`);
     } catch (error) {
         setError("Utilizator invalid");
         setLoading(false);
@@ -94,25 +96,29 @@ export function LoginForm() {
                     <form onSubmit={handleSubmit} className="grid gap-4">
                         <div className="grid gap-2">
                             <Label htmlFor="nrmatricol">Nume</Label>
-                            <Input
-                                id="nrmatricol"
-                                type="text"
-                                placeholder="Nume"
-                                required
-                                value={name}
-                                onChange={handleNameChange}
-                            />
+                            <div className="flex flex-row items-center justify-center space-x-4">
+                                    <Input
+                                    id="nrmatricol"
+                                    type="text"
+                                    placeholder="Elev"
+                                    required
+                                    value={name}
+                                    onChange={handleNameChange}
+                                />
+                            </div>
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="nrmatricol">Prenume</Label>
-                            <Input
-                                id="nrmatricol"
-                                type="text"
-                                placeholder="Prenume"
-                                required
-                                value={prenume}
-                                onChange={handlePrenumeChange}
-                            />
+                            <Label htmlFor="nrmatricol">Student ID</Label>
+                            <div className="flex flex-row items-center justify-center space-x-4">
+                                <Input
+                                    id="nrmatricol"
+                                    type="text"
+                                    placeholder="••••"
+                                    required
+                                    value={studentID}
+                                    onChange={handleStudentIDChange}
+                                />
+                            </div>
                         </div>
                         <CardFooter>
                             <div className='flex flex-col w-full'>
