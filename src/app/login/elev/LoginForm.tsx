@@ -50,18 +50,19 @@ export function LoginForm() {
     const handleSubmit = async (e: any) => {
         e.preventDefault(); 
         setLoading(true);
-    try {
-        const response = await fetch(`${baseUrl}/borrows?first_name=${name}&last_name=${studentID}`);
-        if (!response.ok) {
-            throw new Error('Utilizator not found');
-        }
-        const raspuns = await response.json();
-        console.log(raspuns)
-        router.push(`/situatie?name=${name}&lastname=${studentID}`);
-    } catch (error) {
-        setError("Utilizator invalid");
-        setLoading(false);
-    };
+        const login_id = name + studentID;
+        try {
+            const response = await fetch(`${baseUrl}/borrows?login_id=${login_id}`);
+            if (!response.ok) {
+                throw new Error('Utilizator not found');
+            }
+            const raspuns = await response.json();
+            console.log(raspuns)
+            router.push(`/situatie?login_id=${login_id}&name=${raspuns.first_name}&lastname=${raspuns.last_name}`);
+        } catch (error) {
+            setError("Utilizator invalid");
+            setLoading(false);
+        };
 }
     
     return (
