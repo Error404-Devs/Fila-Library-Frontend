@@ -12,6 +12,7 @@ import {
 import { displayNames, useCheckboxContext } from '../../context/BookProvider';
 import Book from './Book';
 import { BookType } from '../../interfaces';
+import React from 'react';
 
 const BooksTable = ({ books }: { books: BookType[] }) => {
     const { state } = useCheckboxContext();
