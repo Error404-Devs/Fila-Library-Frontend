@@ -10,11 +10,12 @@ import {
     SelectGroup
 } from '@/components/ui/select';
 import { CalendarDays, CalendarFold } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import StatisticsTable from './StatisticsTable';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 import { StatisticsType, defaultStatisticsValues } from '../interfaces';
 import { useSession } from 'next-auth/react';
+import { Button } from '@/components/ui/button';
 
 const months = [
     { value: '1', label: 'Ianuarie' },
@@ -92,6 +93,50 @@ const Statistics = () => {
         return month ? month.label : '';
     };
 
+    const tableRef = useRef(null);
+
+    const handlePrint = () => {
+        if (tableRef.current == null) return;
+
+        const originalContent = document.body.innerHTML; // Save the original body content
+        const printContent = tableRef.current.innerHTML;
+
+        const printWindow = window.open('', '_blank'); // Open a new window or tab
+        printWindow.document.write(`
+        <html>
+            <head>
+                <title>${getMonthLabel(selectedMonth)} ${selectedYear}</title>
+                <style>
+                    /* Add styles for the print window, if needed */
+                    body {
+                        font-family: Arial, sans-serif;
+                        padding: 20px;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+                    table, th, td {
+                        border: 1px solid black;
+                    }
+                    th, td {
+                        padding: 8px;
+                        text-align: left;
+                    }
+                </style>
+            </head>
+            <body>
+                ${printContent}
+            </body>
+        </html>
+    `);
+
+        printWindow.document.close(); // Close the document to finish writing
+        printWindow.focus(); // Focus on the new window
+        printWindow.print(); // Trigger the print dialog
+        printWindow.onafterprint = () => printWindow.close(); // Close the window after printing
+    };
+
     return (
         <div className="grid min-h-screen w-full">
             <Sidebar />
@@ -145,8 +190,15 @@ const Statistics = () => {
                         <h1 className="text-lg font-semibold md:text-2xl">
                             {`Statistice: ${getMonthLabel(selectedMonth)} ${selectedYear}`}
                         </h1>
+                        <Button
+                            onClick={handlePrint}
+                            variant="outline"
+                            className="mr-4"
+                        >
+                            Print Table
+                        </Button>
                     </div>
-                    <div className="w-full h-full overflow-auto">
+                    <div className="w-full h-full overflow-auto" ref={tableRef}>
                         <StatisticsTable
                             selectedMonth={getMonthLabel(selectedMonth)}
                             selectedYear={selectedYear}

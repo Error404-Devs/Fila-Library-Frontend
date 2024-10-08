@@ -7,6 +7,7 @@ import AddBook from './components/AddBook';
 const baseUrl = process.env.BASE_URL;
 import { BookType, PagesType } from '../interfaces';
 import { auth } from '../api/auth/[...nextauth]/auth';
+import React from 'react';
 
 export default async function Dashboard({
     searchParams
