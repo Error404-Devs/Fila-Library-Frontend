@@ -22,10 +22,30 @@ import { Button } from '@/components/ui/button';
 import { Brain } from 'lucide-react';
 import { useState } from 'react';
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
 
 export function StudentStatus({ situatie }:any) {
     
+    console.log('situatie:',situatie)
     const [showAiRecommended, setShowAiRecommended] = useState(false);
+
+    const showAiRecommendations = async (id: string) => {
+        try {
+            console.log(`id:${id}`)
+            const response = await fetch(`${baseUrl}/books/recommended?book_id=${id}`);
+    
+            if (response.ok) {
+                const data = await response.json(); 
+                console.log('Recommended books:', data);
+            } else {
+                console.error(`Error: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Error submitting AI recommended request:', error);
+        }
+    };
+    
 
     return (
         <div
@@ -153,7 +173,7 @@ export function StudentStatus({ situatie }:any) {
                                 </Label>
                                 <p className="text-left col-span-3">{elev.due_date}</p>
                             </div>
-                            <Button className='hover:bg-[#74AA9C] bg-[#2eb893] mt-4' onClick={() => setShowAiRecommended(true)}>
+                            <Button className='hover:bg-[#74AA9C] bg-[#2eb893] mt-4' onClick={() => showAiRecommendations(elev.id)}>
                                 <Brain className="mr-2 h-4 w-4" />  Recommend similar books with AI
                             </Button>
                             {showAiRecommended && (
