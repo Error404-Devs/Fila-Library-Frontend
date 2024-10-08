@@ -1,4 +1,4 @@
-import { Library, Notebook, Search, BarChart3, PieChart } from 'lucide-react';
+import { Library, Notebook, Search, BarChart3, BookHeart } from 'lucide-react';
 import Profile from '../situatie/studentProfile';
 import Link from 'next/link';
 
@@ -33,11 +33,11 @@ const Sidebar = ({ name, lastname, login_id }: any) => {
                             Cautare
                         </Link>
                         <Link
-                            href={`/studentstats?login_id=${login_id}&name=${name}&lastname=${lastname}`}
+                            href={`/wishlist?login_id=${login_id}&name=${name}&lastname=${lastname}`}
                             className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary "
                         >
-                            <PieChart className="h-4 w-4" />
-                            Statistici
+                            <BookHeart className="h-4 w-4" />
+                            Wishlist
                         </Link>
                     </nav>
                 </div>

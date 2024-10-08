@@ -25,7 +25,7 @@ export default async function Dashboard(
                     >
                     </Link>
                 </header>
-                <p>STATS</p>
+                <p>WISHLIST HERE</p>
             </div>
         </div>
 
