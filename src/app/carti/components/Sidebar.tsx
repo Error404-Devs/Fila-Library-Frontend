@@ -1,7 +1,7 @@
 'use client';
 
-import { Library, Book, FileLineChart } from 'lucide-react';
-import Profile from './Profile';
+import { Library, Book, FileLineChart, Users } from 'lucide-react';
+import Profile from '../../elevi/Profile';
 import Link from 'next/link';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -50,6 +50,13 @@ const Sidebar = () => {
                         >
                             <FileLineChart className="h-4 w-4" />
                             Statistice
+                        </Link>
+                        <Link
+                            href="/elevi"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                        >
+                            <Users className="h-4 w-4" />
+                            Elevi
                         </Link>
                     </nav>
                     <div className="px-4 pb-8">

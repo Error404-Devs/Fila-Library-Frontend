@@ -1,9 +1,8 @@
 'use client';
 
 import { Library, Book, FileLineChart, Users } from 'lucide-react';
-import Profile from '../elevi/Profile';
+import Profile from './Profile';
 import Link from 'next/link';
-import Checkboxes from './Checkboxes';
 
 const Sidebar = () => {
     return (
@@ -30,22 +29,19 @@ const Sidebar = () => {
                         </Link>
                         <Link
                             href="/statistics"
-                            className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                         >
                             <FileLineChart className="h-4 w-4" />
                             Statistice
                         </Link>
                         <Link
                             href="/elevi"
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                            className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
                         >
                             <Users className="h-4 w-4" />
                             Elevi
                         </Link>
                     </nav>
-                    <div className="px-8 pb-8">
-                        <Checkboxes />
-                    </div>
                 </div>
             </div>
         </div>

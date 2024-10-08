@@ -184,7 +184,8 @@ const RestituieModal = ({
                                             key={elev.id}
                                             value={elev.id}
                                         >
-                                            {`${elev.first_name} ${elev.last_name} (${elev.year}${elev.group})`}
+                                            {/* {`${elev.first_name} ${elev.last_name} (${elev.year}${elev.group})`} */}
+                                            {`${elev.first_name} ${elev.last_name} (${elev.login_id})`}
                                         </SelectItem>
                                     ))}
                                 </SelectGroup>
