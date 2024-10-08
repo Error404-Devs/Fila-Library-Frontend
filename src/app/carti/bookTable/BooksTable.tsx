@@ -50,7 +50,7 @@ const BooksTable = ({ books }: { books: BookType[] }) => {
                         books.map((book: BookType) => (
                             <TableRow
                                 key={book.id}
-                                className="bg-white hover:bg-gray-100"
+                                className="bg-white dark:bg-gray-800 hover:bg-gray-100"
                             >
                                 <Book book={book} />
                             </TableRow>

@@ -32,6 +32,9 @@ export async function StudentStatus({ situatie }:any) {
             }}
             className="py-10"
         >
+            {situatie.items.length === 0 && (
+                <p>Nu aveti carti imprumutate</p>
+            )}
             {situatie.items.map((elev: any, index: number) => (
                 <Dialog key={index}>
                     <DialogTrigger asChild>

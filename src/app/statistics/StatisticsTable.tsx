@@ -73,15 +73,15 @@ const StatisticsTable = ({
     };
 
     return (
-        <Table>
+        <Table className='bg-white dark:bg-gray-800'>
             <TableCaption>
                 Statisticile pentru
                 <span className="font-semibold">
                     {` ${selectedMonth.toLowerCase()} ${selectedYear}`}
                 </span>
             </TableCaption>
-            <TableHeader>
-                <TableRow>
+            <TableHeader >
+                <TableRow >
                     {columnNames.map((column, index) => {
                         const columnKey = columnKeys[
                             column as keyof typeof columnKeys
@@ -90,7 +90,7 @@ const StatisticsTable = ({
                             state[columnKey] && (
                                 <TableHead
                                     key={index}
-                                    className="w-1/24 border border-gray-300 p-2 text-center bg-gray-100 font-bold vertical-text h-[11rem]"
+                                    className="w-1/24 border border-gray-300 p-2 text-center font-bold vertical-text h-[11rem]"
                                 >
                                     {column}
                                 </TableHead>
@@ -101,8 +101,8 @@ const StatisticsTable = ({
             </TableHeader>
             <TableBody>
                 {rows.map((row, rowIndex) => (
-                    <TableRow key={rowIndex} className="even:bg-gray-50">
-                        <TableCell className="border border-gray-300 p-2 text-center font-bold">
+                    <TableRow key={rowIndex} className="even:bg-gray-50 bg-white dark:bg-gray-800">
+                        <TableCell className="bg-white dark:bg-gray-800 border border-gray-300 p-2 text-center font-bold">
                             {row}
                         </TableCell>
                         {columnNames.map((column, colIndex) => {

@@ -12,11 +12,12 @@ export default async function Dashboard(
         searchParams?: {
             name?: string;
             lastname?: string;
+            login_id?: string;
         };
     }
 ) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-    const url = `${baseUrl}/borrows?name=${searchParams?.name}&lastname=${searchParams?.lastname}`;
+    const url = `${baseUrl}/borrows?login_id=${searchParams?.login_id}`;
     const response = await fetch(url, { cache: 'no-store' });
     const situatie = await response.json();
     
@@ -26,7 +27,7 @@ export default async function Dashboard(
 
     return (
         <div className="flex min-h-screen">
-            <Sidebar name={searchParams?.name} lastname={searchParams?.lastname} />
+            <Sidebar name={searchParams?.name} lastname={searchParams?.lastname} login_id={searchParams?.login_id}/>
             <div className="flex flex-col flex-1 min-w-0">
                 <header className="flex h-6 items-center gap-4 border-b bg-muted/40 px-4 md:h-[6rem] lg:h-[6rem] lg:px-6">
                     <Link
