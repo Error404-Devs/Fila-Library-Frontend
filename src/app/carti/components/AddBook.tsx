@@ -18,31 +18,25 @@ import { useSession } from 'next-auth/react';
 
 const AddBook = () => {
     const [title, setTitle] = useState('');
-    const [author, setAuthor] = useState('');
-    const [quote, setQuote] = useState('');
-    const [year, setYear] = useState('');
-    const [location, setLocation] = useState('');
-    const [inventory, setInventory] = useState('');
+    const [category, setCategory] = useState('');
+    const [yearOfPublication, setYearOfPublication] = useState<number | ''>(''); // number or empty string
+    const [placeOfPublication, setPlaceOfPublication] = useState('');
+    const [price, setPrice] = useState<number | ''>(''); // number or empty string
+    const [copies, setCopies] = useState<number | ''>(''); // number or empty string
     const { toast } = useToast();
     const { data: session } = useSession();
     const accessToken = session?.access_token;
 
     const isFormValid = () => {
-        return (
-            title.trim() !== '' &&
-            author.trim() !== '' &&
-            quote.trim() !== '' &&
-            year.trim() !== '' &&
-            location.trim() !== '' &&
-            inventory.trim() !== ''
-        );
+        return title.trim() !== '' && copies !== '' && !isNaN(copies); // Ensure copies is a number
     };
 
     const handleSubmit = async () => {
         if (!isFormValid()) {
             toast({
                 title: 'Error',
-                description: 'All fields are required!',
+                description:
+                    'Title and copies are required, and copies must be a number!',
                 status: 'error'
             });
             return;
@@ -50,14 +44,19 @@ const AddBook = () => {
 
         const bookData = {
             title: title,
-            author: author,
-            quote: quote,
-            year: year,
-            location: location,
-            inventory: inventory
-        };
+            category: category || null,
+            year_of_publication:
+                yearOfPublication !== '' ? yearOfPublication : null,
+            place_of_publication: placeOfPublication || null,
+            price: price !== '' ? price : null,
+            copies: copies,
 
-        console.log(bookData);
+            collection_id: null,
+            publisher_id: null,
+            author_id: null,
+            UDC: null,
+            ISBN: null
+        };
 
         try {
             const response = await fetch(`${baseUrl}/books`, {
@@ -70,6 +69,8 @@ const AddBook = () => {
                 body: JSON.stringify(bookData)
             });
 
+            console.log(bookData);
+
             if (response.ok) {
                 toast({
                     title: 'Success',
@@ -77,11 +78,11 @@ const AddBook = () => {
                     status: 'success'
                 });
                 setTitle('');
-                setAuthor('');
-                setQuote('');
-                setYear('');
-                setLocation('');
-                setInventory('');
+                setCategory('');
+                setYearOfPublication('');
+                setPlaceOfPublication('');
+                setPrice('');
+                setCopies('');
             } else {
                 console.error(`Error: ${response.statusText}`);
                 toast({
@@ -104,12 +105,12 @@ const AddBook = () => {
         <Dialog>
             <DialogTrigger asChild>
                 <Button variant="outline" className="mr-9">
-                    Adauga o carte
+                    Add a Book
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Adauga o carte</DialogTitle>
+                    <DialogTitle>Add a Book</DialogTitle>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
@@ -124,57 +125,86 @@ const AddBook = () => {
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="author" className="text-right">
-                            Autor
-                        </Label>
-                        <Input
-                            id="author"
-                            value={author}
-                            onChange={(e) => setAuthor(e.target.value)}
-                            className="col-span-3"
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="quote" className="text-right">
+                        <Label htmlFor="category" className="text-right">
                             Cota
                         </Label>
                         <Input
-                            id="quote"
-                            value={quote}
-                            onChange={(e) => setQuote(e.target.value)}
+                            id="category"
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
                             className="col-span-3"
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="year" className="text-right">
-                            An Aparitie
+                        <Label
+                            htmlFor="yearOfPublication"
+                            className="text-right"
+                        >
+                            An
                         </Label>
                         <Input
-                            id="year"
-                            value={year}
-                            onChange={(e) => setYear(e.target.value)}
+                            id="yearOfPublication"
+                            type="number" // Set input type to number
+                            value={yearOfPublication}
+                            onChange={(e) =>
+                                setYearOfPublication(
+                                    e.target.value !== ''
+                                        ? parseInt(e.target.value)
+                                        : ''
+                                )
+                            }
                             className="col-span-3"
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="location" className="text-right">
-                            Loc Aparitie
+                        <Label
+                            htmlFor="placeOfPublication"
+                            className="text-right"
+                        >
+                            Loc
                         </Label>
                         <Input
-                            id="location"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
+                            id="placeOfPublication"
+                            value={placeOfPublication}
+                            onChange={(e) =>
+                                setPlaceOfPublication(e.target.value)
+                            }
                             className="col-span-3"
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="inventory" className="text-right">
+                        <Label htmlFor="price" className="text-right">
+                            Pret
+                        </Label>
+                        <Input
+                            id="price"
+                            type="number" // Set input type to number
+                            value={price}
+                            onChange={(e) =>
+                                setPrice(
+                                    e.target.value !== ''
+                                        ? parseFloat(e.target.value)
+                                        : ''
+                                )
+                            }
+                            className="col-span-3"
+                        />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="copies" className="text-right">
                             Inventar
                         </Label>
                         <Input
-                            id="inventory"
-                            value={inventory}
-                            onChange={(e) => setInventory(e.target.value)}
+                            id="copies"
+                            type="number" // Set input type to number
+                            value={copies}
+                            onChange={(e) =>
+                                setCopies(
+                                    e.target.value !== ''
+                                        ? parseInt(e.target.value)
+                                        : ''
+                                )
+                            }
                             className="col-span-3"
                         />
                     </div>
@@ -185,7 +215,7 @@ const AddBook = () => {
                         onClick={handleSubmit}
                         disabled={!isFormValid()}
                     >
-                        Adauga Carte
+                        Add Book
                     </Button>
                 </DialogFooter>
             </DialogContent>
