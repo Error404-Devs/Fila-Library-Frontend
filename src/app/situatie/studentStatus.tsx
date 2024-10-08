@@ -1,3 +1,4 @@
+'use client'
 import {
     Dialog,
     DialogContent,
@@ -17,10 +18,14 @@ import {
 } from '@/components/ui/card';
 
 import { Label } from "@/components/ui/label";
+import { Button } from '@/components/ui/button';
+import { Brain } from 'lucide-react';
+import { useState } from 'react';
 
 
-export async function StudentStatus({ situatie }:any) {
+export function StudentStatus({ situatie }:any) {
     
+    const [showAiRecommended, setShowAiRecommended] = useState(false);
 
     return (
         <div
@@ -36,7 +41,7 @@ export async function StudentStatus({ situatie }:any) {
                 <p>Nu aveti carti imprumutate</p>
             )}
             {situatie.items.map((elev: any, index: number) => (
-                <Dialog key={index}>
+                <Dialog key={index} onOpenChange={() => setShowAiRecommended(false)}>
                     <DialogTrigger asChild>
                         <Card
                             className="w-[20rem]"
@@ -49,7 +54,7 @@ export async function StudentStatus({ situatie }:any) {
                                         textOverflow: 'ellipsis',
                                         whiteSpace: 'nowrap'
                                     }}
-                                    className="py-1"
+                                    className="py-1 my-3"
                                 >
                                     {elev.book_name}
                                 </CardTitle>
@@ -117,17 +122,43 @@ export async function StudentStatus({ situatie }:any) {
                                 >
                                     Status:
                                 </Label>
-                                <p>{elev.status}</p>
+                                {!elev.status && (
+                                    <p
+                                        style={{
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap',
+                                            width: '200px'
+                                        }}
+                                    >
+                                        Restituit
+                                    </p>
+                                )}
+                                {elev.status && (
+                                    <p
+                                        style={{
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap',
+                                            width: '200px'
+                                        }}
+                                    >
+                                        Imprumutat
+                                    </p>
+                                )}
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
-                                <Label
-                                    htmlFor="name"
-                                    className="text-left text-md"
-                                >
+                                <Label htmlFor="name" className="text-left text-md">
                                     Data:
                                 </Label>
-                                <p>{elev.due_date}</p>
+                                <p className="text-left col-span-3">{elev.due_date}</p>
                             </div>
+                            <Button className='hover:bg-[#74AA9C] bg-[#2eb893] mt-4' onClick={() => setShowAiRecommended(true)}>
+                                <Brain className="mr-2 h-4 w-4" />  Recommend similar books with AI
+                            </Button>
+                            {showAiRecommended && (
+                                <p>carti cu AI</p>
+                            )}
                         </div>
                     </DialogContent>
                 </Dialog>
