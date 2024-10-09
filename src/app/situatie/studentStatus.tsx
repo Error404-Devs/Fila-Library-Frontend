@@ -32,9 +32,7 @@ export function StudentStatus({ situatie }:any) {
 
     const showAiRecommendations = async (id: string) => {
         try {
-            console.log(`id:${id}`)
-            const response = await fetch(`${baseUrl}/books/recommended?book_id=${id}`);
-    
+            const response = await fetch(`${baseUrl}/books/recommended?book_id=${id}`)
             if (response.ok) {
                 const data = await response.json(); 
                 console.log('Recommended books:', data);
@@ -45,7 +43,6 @@ export function StudentStatus({ situatie }:any) {
             console.error('Error submitting AI recommended request:', error);
         }
     };
-    
 
     return (
         <div

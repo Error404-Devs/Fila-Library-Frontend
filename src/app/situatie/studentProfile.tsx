@@ -15,7 +15,7 @@ import { redirect } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 
-const Profile = () => {
+const Profile = ({login_id, name, lastname}: any) => {
 
     return (
         <DropdownMenu>
@@ -32,7 +32,7 @@ const Profile = () => {
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link href="/settings">
+                <Link href={`/settings?login_id=${login_id}&name=${name}&lastname=${lastname}`}>
                     <DropdownMenuItem>Settings</DropdownMenuItem>
                 </Link>
                 <Link href="/support">
