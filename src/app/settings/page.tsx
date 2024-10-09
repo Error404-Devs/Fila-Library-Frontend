@@ -25,7 +25,7 @@ export default async function Dashboard(
                 <h1>DARK MODE</h1>
                 <div className="mt-2">
                     <Label htmlFor="email">Email-ul asociat contului tau:</Label>
-                    <EmailForm/>
+                    <EmailForm login_id={searchParams?.login_id}/>
                 </div>
                 <div className="flex items-center space-x-2 mt-3">
                     <Switch id="airplane-mode" />
