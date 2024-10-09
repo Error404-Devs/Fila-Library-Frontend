@@ -14,7 +14,7 @@ const Sidebar = ({ name, lastname, login_id }: any) => {
                         <Library className="h-6 w-6" />
                         <span className="">Filadelfia</span>
                     </Link>
-                    <Profile />
+                    <Profile login_id ={login_id} name={name} lastname={lastname}/>
                 </div>
                 <div className="flex-1">
                     <nav className="grid items-start px-2 text-sm font-medium lg:px-4">

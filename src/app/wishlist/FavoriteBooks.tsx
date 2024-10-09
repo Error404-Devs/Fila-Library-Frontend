@@ -9,7 +9,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
 
-export default function FavoriteBooks() {
+export default function     FavoriteBooks() {
 
     return (
         <div>
