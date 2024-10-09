@@ -7,7 +7,7 @@ import Checkboxes from './Checkboxes';
 
 const Sidebar = () => {
     return (
-        <div className="fixed top-0 left-0 h-full w-60 border-r bg-muted/40 flex flex-col">
+        <div className="fixed top-0 left-0 h-full w-60 border-r bg-muted flex flex-col z-10">
             <div className="flex flex-col gap-2 flex-1">
                 <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
                     <Link

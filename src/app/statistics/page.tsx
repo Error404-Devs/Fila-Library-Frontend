@@ -98,16 +98,13 @@ const Statistics = () => {
     const handlePrint = () => {
         if (tableRef.current == null) return;
 
-        const originalContent = document.body.innerHTML; // Save the original body content
-        const printContent = tableRef.current.innerHTML;
-
+        // Use a CSS class to split the content
         const printWindow = window.open('', '_blank'); // Open a new window or tab
         printWindow.document.write(`
         <html>
             <head>
                 <title>${getMonthLabel(selectedMonth)} ${selectedYear}</title>
                 <style>
-                    /* Add styles for the print window, if needed */
                     body {
                         font-family: Arial, sans-serif;
                         padding: 20px;
@@ -121,12 +118,37 @@ const Statistics = () => {
                     }
                     th, td {
                         padding: 8px;
-                        text-align: left;
+                        text-align: center;
+                    }
+                    .vertical-text {
+                        writing-mode: vertical-lr;
+                        transform: rotate(180deg);
+                        white-space: nowrap;
+                        width: 20px;
+                    }
+                    @media print {
+                        .page-break {
+                            page-break-before: always;
+                        }
                     }
                 </style>
             </head>
             <body>
-                ${printContent}
+                <div>
+                    <!-- First table section -->
+                    <h2>${getMonthLabel(selectedMonth)} ${selectedYear} - Page 1</h2>
+                    <table>
+                        ${document.querySelector('#firstTableSection').innerHTML}
+                    </table>
+                </div>
+
+                <div class="page-break">
+                    <!-- Second table section -->
+                    <h2>${getMonthLabel(selectedMonth)} ${selectedYear} - Page 2</h2>
+                    <table>
+                        ${document.querySelector('#secondTableSection').innerHTML}
+                    </table>
+                </div>
             </body>
         </html>
     `);
