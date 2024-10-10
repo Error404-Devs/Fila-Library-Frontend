@@ -151,7 +151,6 @@ const ImprumutaModal = ({
                     title: `${nume} ${prenume} a fost adaugat cu succes!`,
                     description: `Id-ul ${gender == 'male' ? 'lui' : 'ei'} este ${data.login_id}`
                 });
-                document.dispatchEvent(new Event('close-dialog'));
             } else {
                 console.error(`Error: ${response.statusText}`);
             }

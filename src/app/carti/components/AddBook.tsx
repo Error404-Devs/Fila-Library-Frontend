@@ -36,8 +36,7 @@ const AddBook = () => {
             toast({
                 title: 'Error',
                 description:
-                    'Title and copies are required, and copies must be a number!',
-                status: 'error'
+                    'Title and copies are required, and copies must be a number!'
             });
             return;
         }
@@ -74,8 +73,7 @@ const AddBook = () => {
             if (response.ok) {
                 toast({
                     title: 'Success',
-                    description: `Book "${title}" has been added successfully!`,
-                    status: 'success'
+                    description: `Book "${title}" has been added successfully!`
                 });
                 setTitle('');
                 setCategory('');
@@ -87,16 +85,14 @@ const AddBook = () => {
                 console.error(`Error: ${response.statusText}`);
                 toast({
                     title: 'Error',
-                    description: 'Failed to add the book!',
-                    status: 'error'
+                    description: 'Failed to add the book!'
                 });
             }
         } catch (error) {
             console.error('Error adding book:', error);
             toast({
                 title: 'Error',
-                description: 'An unexpected error occurred.',
-                status: 'error'
+                description: 'An unexpected error occurred.'
             });
         }
     };
