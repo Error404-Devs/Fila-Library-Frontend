@@ -1,5 +1,5 @@
 import { Library, Notebook, Search } from 'lucide-react';
-import Profile from '../carti/components/Profile';
+import Profile from '../situatie/studentProfile';
 import Link from 'next/link';
 
 const Sidebar = () => {

@@ -100,63 +100,76 @@ const Statistics = () => {
 
         // Use a CSS class to split the content
         const printWindow = window.open('', '_blank'); // Open a new window or tab
-        printWindow.document.write(`
-        <html>
-            <head>
-                <title>${getMonthLabel(selectedMonth)} ${selectedYear}</title>
-                <style>
-                    body {
-                        font-family: Arial, sans-serif;
-                        padding: 20px;
-                    }
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                    }
-                    table, th, td {
-                        border: 1px solid black;
-                    }
-                    th, td {
-                        padding: 8px;
-                        text-align: center;
-                    }
-                    .vertical-text {
-                        writing-mode: vertical-lr;
-                        transform: rotate(180deg);
-                        white-space: nowrap;
-                        width: 20px;
-                    }
-                    @media print {
-                        .page-break {
-                            page-break-before: always;
-                        }
-                    }
-                </style>
-            </head>
-            <body>
-                <div>
-                    <!-- First table section -->
-                    <h2>${getMonthLabel(selectedMonth)} ${selectedYear} - Page 1</h2>
-                    <table>
-                        ${document.querySelector('#firstTableSection').innerHTML}
-                    </table>
-                </div>
+        const firstTableSection = document.querySelector('#firstTableSection');
+        const firstTableHTML = firstTableSection
+            ? firstTableSection.innerHTML
+            : '';
 
-                <div class="page-break">
-                    <!-- Second table section -->
-                    <h2>${getMonthLabel(selectedMonth)} ${selectedYear} - Page 2</h2>
-                    <table>
-                        ${document.querySelector('#secondTableSection').innerHTML}
-                    </table>
-                </div>
-            </body>
-        </html>
-    `);
+        const secondTableSection = document.querySelector(
+            '#secondTableSection'
+        );
+        const secondTableHTML = secondTableSection
+            ? secondTableSection.innerHTML
+            : '';
 
-        printWindow.document.close(); // Close the document to finish writing
-        printWindow.focus(); // Focus on the new window
-        printWindow.print(); // Trigger the print dialog
-        printWindow.onafterprint = () => printWindow.close(); // Close the window after printing
+        printWindow?.document.write(`
+<html>
+    <head>
+        <title>${getMonthLabel(selectedMonth)} ${selectedYear}</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                padding: 20px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            table, th, td {
+                border: 1px solid black;
+            }
+            th, td {
+                padding: 8px;
+                text-align: center;
+            }
+            .vertical-text {
+                writing-mode: vertical-lr;
+                transform: rotate(180deg);
+                white-space: nowrap;
+                width: 20px;
+            }
+            @media print {
+                .page-break {
+                    page-break-before: always;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <!-- First table section -->
+            <h2>${getMonthLabel(selectedMonth)} ${selectedYear} - Page 1</h2>
+            <table>
+                ${firstTableHTML}
+            </table>
+        </div>
+
+        <div class="page-break">
+            <!-- Second table section -->
+            <h2>${getMonthLabel(selectedMonth)} ${selectedYear} - Page 2</h2>
+            <table>
+                ${secondTableHTML}
+            </table>
+        </div>
+    </body>
+</html>
+`);
+        printWindow?.document.close(); // Close the document to finish writing
+        printWindow?.focus(); // Focus on the new window
+        printWindow?.print(); // Trigger the print dialog
+        if (printWindow != null) {
+            printWindow.onafterprint = () => printWindow?.close(); // Close the window after printing
+        }
     };
 
     return (
