@@ -268,15 +268,13 @@ const ImprumutaModal = ({
                     </Button>
                 )}
                 {changed && (
-                    <DialogClose asChild>
-                        <Button
-                            className="mr-[9rem]"
-                            onClick={handleAdd}
-                            disabled={!isElevValid()}
-                        >
-                            Adauga Elev
-                        </Button>
-                    </DialogClose>
+                    <Button
+                        className="mr-[9rem]"
+                        onClick={handleAdd}
+                        disabled={!isElevValid()}
+                    >
+                        Adauga Elev
+                    </Button>
                 )}
                 <DialogClose asChild>
                     <Button

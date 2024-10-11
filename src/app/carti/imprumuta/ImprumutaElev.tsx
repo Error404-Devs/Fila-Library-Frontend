@@ -168,13 +168,13 @@ const ImprumutaModalElev = ({
             </h4>
             <div className="grid grid-cols-4 items-center gap-4 pb-1">
                 {error == 401 && (
-                    <p className="text-xs col-start-2 col-span-3 text-red-600">
+                    <p className="text-xs col-start-2 col-span-3 text-black">
                         *Nu exista elevul
                     </p>
                 )}
                 {error == 200 && (
-                    <p className="text-xs col-start-2 col-span-3 text-green-600">
-                        Elevul este deja registrat
+                    <p className="text-xs col-start-2 col-span-3 text-black">
+                        *Elevul este deja registrat
                     </p>
                 )}
             </div>
