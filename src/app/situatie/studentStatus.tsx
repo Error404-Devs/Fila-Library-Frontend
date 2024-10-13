@@ -21,6 +21,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from '@/components/ui/button';
 import { Brain } from 'lucide-react';
 import { useState } from 'react';
+import { AIcard } from './AIcard';
+import { useEffect } from 'react';
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -29,6 +31,7 @@ export function StudentStatus({ situatie }:any) {
     
     console.log('situatie:',situatie)
     const [showAiRecommended, setShowAiRecommended] = useState(false);
+    const [AIbooks, setAIbooks] = useState([])
 
     const showAiRecommendations = async (id: string) => {
         try {
@@ -36,9 +39,11 @@ export function StudentStatus({ situatie }:any) {
             if (response.ok) {
                 const data = await response.json(); 
                 console.log('Recommended books:', data);
+                setAIbooks(data)
             } else {
                 console.error(`Error: ${response.statusText}`);
             }
+            setShowAiRecommended(true)
         } catch (error) {
             console.error('Error submitting AI recommended request:', error);
         }
@@ -58,7 +63,7 @@ export function StudentStatus({ situatie }:any) {
                 <p>Nu aveti carti imprumutate</p>
             )}
             {situatie.items.map((elev: any, index: number) => (
-                <Dialog key={index} onOpenChange={() => setShowAiRecommended(false)}>
+                <Dialog key={index} onOpenChange={() => setShowAiRecommended(false)} >
                     <DialogTrigger asChild>
                         <Card
                             className="w-[20rem]"
@@ -122,7 +127,12 @@ export function StudentStatus({ situatie }:any) {
                             </CardFooter>
                         </Card>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
+                    <DialogContent 
+                        className="sm:max-w-[425px]" 
+                        style={{
+                            maxHeight: '80vh',
+                            overflowY: 'auto'    
+                        }}>
                         <DialogHeader>
                             <DialogTitle className="text-xl">
                                 {elev.book_name}
@@ -174,7 +184,7 @@ export function StudentStatus({ situatie }:any) {
                                 <Brain className="mr-2 h-4 w-4" />  Recommend similar books with AI
                             </Button>
                             {showAiRecommended && (
-                                <p>carti cu AI</p>
+                                <AIcard AIbooks={AIbooks}/>
                             )}
                         </div>
                     </DialogContent>
