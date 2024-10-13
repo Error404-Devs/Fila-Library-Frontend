@@ -14,6 +14,13 @@ export default async function Dashboard(
         };
     }
 ) {
+    const urlPerson = `${baseUrl}/persons?first_name=${searchParams?.name}&last_name=${searchParams?.lastname}`
+
+    const responsePerson = await fetch(urlPerson, {cache: 'no-store'});
+    const personData = await responsePerson.json();
+    const keys = Object.keys(personData);
+    const student_id = keys[0];
+
 
     return (
         <div className="flex min-h-screen">
@@ -22,7 +29,7 @@ export default async function Dashboard(
                 <header className="flex h-3 items-center gap-4 border-b bg-muted/40 px-4 md:h-[3.8rem] lg:h-[3.8rem] lg:px-6">
                     <h1 className='font-bold text-xl'>Favorite: 1 </h1>
                 </header>
-                <FavoriteBooks/>
+                <FavoriteBooks student_id={student_id}/>
             </div>
         </div>
 
