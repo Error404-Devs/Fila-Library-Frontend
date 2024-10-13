@@ -11,15 +11,55 @@ import { BookType } from '../interfaces';
 import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
 import { useState } from 'react';
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-export default function AvailableBooks({ books }: { books: BookType[] }) {
-
+export default function AvailableBooks({ books, student_id } : { books: BookType[], student_id : any })
+{
     const [favorites, setFavorites] = useState<boolean[]>(books.map(() => false));
-
     const toggleFavorite = (index: number) => {
         const updatedFavorites = [...favorites];
         updatedFavorites[index] = !updatedFavorites[index];
         setFavorites(updatedFavorites);
+    };
+
+    const addToWishlist = async (index:any, book_id:any) => {
+        const data = {
+            book_id: book_id,
+            student_id: student_id
+        };
+        console.log("Data:", data)
+        try {
+          const response = await fetch(`${baseUrl}/books/wishlist`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        console.error(response);
+        toggleFavorite(index)
+        } catch (error) {
+          console.error('An error occurred:', error);
+        }
+      };
+
+    const deleteFromWishlist = async (index:any, book_id: any) => {
+    try {
+        const data = {
+            book_id: book_id,
+            student_id: student_id
+        };
+        const response = await fetch(`${baseUrl}/books/wishlist`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    });
+    toggleFavorite(index)
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
     };
 
     return (
@@ -50,7 +90,7 @@ export default function AvailableBooks({ books }: { books: BookType[] }) {
                                 <TableCell className="p-[10px] text-black dark:text-white">
                                     <Button
                                         className='bg-transparent rounded-full hover:bg-transparent'
-                                        onClick={() => toggleFavorite(index)}
+                                        onClick={() => favorites[index] ? deleteFromWishlist(index, book.id) : addToWishlist(index, book.id)}
                                     >
                                         <Heart
                                             className={favorites[index] ? 'text-red-400 fill-red-400' : 'text-black'}
