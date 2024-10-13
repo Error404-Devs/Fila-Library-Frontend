@@ -1,6 +1,6 @@
 import { Library, Notebook, Search } from 'lucide-react';
-import Profile from '../situatie/studentProfile';
 import Link from 'next/link';
+import Profile from '../situatie/studentProfile';
 
 const Sidebar = () => {
     return (
