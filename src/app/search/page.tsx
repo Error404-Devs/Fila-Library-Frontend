@@ -38,7 +38,7 @@ export default async function Dashboard({
     const books_and_pages: PagesType = await responseBooks.json();
     const responsePerson = await fetch(urlPerson, {cache: 'no-store'});
     const personData = await responsePerson.json();
-    const keys =Object.keys(personData);
+    const keys = Object.keys(personData);
     const person_id = keys[0];
 
     const totalPages = books_and_pages?.pages || 0;

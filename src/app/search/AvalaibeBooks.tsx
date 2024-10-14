@@ -10,57 +10,100 @@ import {
 import { BookType } from '../interfaces';
 import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useToast } from '@/components/ui/use-toast';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-export default function AvailableBooks({ books, student_id } : { books: BookType[], student_id : any })
-{
+export default function AvailableBooks({ books, student_id } : { books: BookType[], student_id : any }) {
+
     const [favorites, setFavorites] = useState<boolean[]>(books.map(() => false));
+    const [wishlist, setWishlist] = useState<any[]>([]);
+    const { toast } = useToast();
+
     const toggleFavorite = (index: number) => {
         const updatedFavorites = [...favorites];
         updatedFavorites[index] = !updatedFavorites[index];
         setFavorites(updatedFavorites);
     };
 
-    const addToWishlist = async (index:any, book_id:any) => {
-        const data = {
-            book_id: book_id,
-            student_id: student_id
-        };
-        console.log("Data:", data)
+    const getWishList = async () => {
         try {
-          const response = await fetch(`${baseUrl}/books/wishlist`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        });
-        console.error(response);
-        toggleFavorite(index)
+            const response = await fetch(`${baseUrl}/books/wishlist?student_id=${student_id}`)
+            if (response.ok) {
+                const data = await response.json(); 
+                setWishlist(data);
+            } else {
+                console.error(`Error: ${response.statusText}`);
+            }
         } catch (error) {
-          console.error('An error occurred:', error);
+            console.error('Error fetching wishlist:', error);
         }
-      };
+    };
 
-    const deleteFromWishlist = async (index:any, book_id: any) => {
-    try {
+    // Check if a book is in the wishlist
+    const isBookInWishlist = (bookId: any) => {
+        return wishlist.some(item => item.book_id === bookId);
+    };
+
+    useEffect(() => {
+        // Fetch wishlist on mount
+        getWishList();
+    }, []); 
+
+    useEffect(() => {
+        // Once the wishlist is fetched, update the favorites state
+        const updatedFavorites = books.map(book => isBookInWishlist(book.id));
+        setFavorites(updatedFavorites);
+    }, [wishlist, books]);
+
+    const addToWishlist = async (index: any, book_id: any) => {
         const data = {
             book_id: book_id,
             student_id: student_id
         };
-        const response = await fetch(`${baseUrl}/books/wishlist`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    });
-    toggleFavorite(index)
-    } catch (error) {
-        console.error('An error occurred:', error);
-    }
+        try {
+            const response = await fetch(`${baseUrl}/books/wishlist`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            if (response.ok) {
+                toast({
+                    title: 'Cartea a fost adaugata la favorite',
+                })
+                toggleFavorite(index);
+            } else {
+                console.error(`Error adding to wishlist: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('An error occurred:', error);
+        }
     };
+
+    // const deleteFromWishlist = async (index: any, book_id: any) => {
+    //     const data = {
+    //         book_id: book_id,
+    //         student_id: student_id
+    //     };
+    //     try {
+    //         const response = await fetch(`${baseUrl}/books/wishlist`, {
+    //             method: 'DELETE',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(data)
+    //         });
+    //         if (response.ok) {
+    //             toggleFavorite(index);
+    //         } else {
+    //             console.error(`Error removing from wishlist: ${response.statusText}`);
+    //         }
+    //     } catch (error) {
+    //         console.error('An error occurred:', error);
+    //     }
+    // };
 
     return (
         <div>
@@ -90,7 +133,9 @@ export default function AvailableBooks({ books, student_id } : { books: BookType
                                 <TableCell className="p-[10px] text-black dark:text-white">
                                     <Button
                                         className='bg-transparent rounded-full hover:bg-transparent'
-                                        onClick={() => favorites[index] ? deleteFromWishlist(index, book.id) : addToWishlist(index, book.id)}
+                                        onClick={() => favorites[index] ? toast({
+                                            title: 'Cartea este deja adaugata la favorite',
+                                        }) : addToWishlist(index, book.id)}
                                     >
                                         <Heart
                                             className={favorites[index] ? 'text-red-400 fill-red-400' : 'text-black'}

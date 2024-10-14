@@ -37,6 +37,7 @@ export default function FavoriteBooks({student_id}: any) {
             const data = {
                 wish_id: book_id,
             };
+            console.log("DELETE data:", data)
             const response = await fetch(`${baseUrl}/books/wishlist`, {
             method: 'DELETE',
             headers: {
@@ -44,6 +45,9 @@ export default function FavoriteBooks({student_id}: any) {
             },
             body: JSON.stringify(data)
         });
+        if(response.ok){
+            getWishList();
+        }
         } catch (error) {
             console.error('An error occurred:', error);
         }
@@ -68,6 +72,7 @@ export default function FavoriteBooks({student_id}: any) {
                 {Array.isArray(wishlist) &&
                         wishlist.map((wish:any, index: number) => (
                     <TableRow
+                        key={wish.id}
                         className="bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-600"
                     >
                         <TableCell className="p-[10px] text-black dark:text-white">
