@@ -75,6 +75,7 @@ export function AIcard({ AIbooks }:any) {
                 <>
                     {AIbooksLess.map((book: any, index: number) => (
                         <Card
+                        key={book.id}
                         className="w-[22rem] h-auto py-1"  
                         style={{ overflow: 'hidden' }}
                     >
