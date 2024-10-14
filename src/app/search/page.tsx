@@ -21,6 +21,9 @@ export default async function Dashboard({
     const page = searchParams?.page || 1;
     const title = searchParams?.title || '';
     const display = searchParams?.display || '';
+    const login_id = searchParams?.login_id || '';
+    const name = searchParams?.name || '';
+    const last_name = searchParams?.lastname || '';
     
     const params: Record<string, string> = {};
     
@@ -28,11 +31,16 @@ export default async function Dashboard({
     if (title) params.title = title;
 
     const queryString = new URLSearchParams(params).toString();
-    const url = `${baseUrl}/books/student?${queryString}`;
-    console.log(url)
+    const urlBooks = `${baseUrl}/books/student?${queryString}`;
+    const urlPerson = `${baseUrl}/persons?first_name=${name}&last_name=${last_name}`
 
-    const response = await fetch(url, { cache: 'no-store' });
-    const books_and_pages: PagesType = await response.json();
+    const responseBooks = await fetch(urlBooks, { cache: 'no-store' });
+    const books_and_pages: PagesType = await responseBooks.json();
+    const responsePerson = await fetch(urlPerson, {cache: 'no-store'});
+    const personData = await responsePerson.json();
+    const keys = Object.keys(personData);
+    const person_id = keys[0];
+
     const totalPages = books_and_pages?.pages || 0;
     const currentPage = books_and_pages?.page || 1;
     const books: BookType[] = await books_and_pages?.items;
@@ -55,7 +63,7 @@ export default async function Dashboard({
                     {display !== "false" && title? (
                         totalPages ? (
                             <div>
-                                <AvalaibleBooks books={books} />
+                                <AvalaibleBooks books={books} student_id={person_id}/>
                                 <AvalaiblePagination
                                     totalPages={totalPages}
                                     currentPage={currentPage}
@@ -66,6 +74,7 @@ export default async function Dashboard({
                                 <p>
                                     Nu există cărți care să îndeplinească
                                     criteriile
+                                    <p>{person_id}</p>
                                 </p>
                             </div>
                         )
