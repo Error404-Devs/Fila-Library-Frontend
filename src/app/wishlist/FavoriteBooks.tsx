@@ -10,12 +10,14 @@ import {
 import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useToast } from '@/components/ui/use-toast'; 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 
 export default function FavoriteBooks({student_id}: any) {
 
     const [wishlist, setWishlist] = useState([])
+    const {toast} = useToast()
 
     const getWishList = async () => {
         try {
@@ -23,6 +25,9 @@ export default function FavoriteBooks({student_id}: any) {
             if (response.ok) {
                 const data = await response.json(); 
                 console.log('Wishlist books:', data);
+                toast({
+                    title: 'Cartea a fost stearsa din favorite.',
+                })
                 setWishlist(data)
             } else {
                 console.error(`Error: ${response.statusText}`);
