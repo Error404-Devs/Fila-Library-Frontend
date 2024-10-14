@@ -16,6 +16,8 @@ import {
 import { Badge, Book } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import EleviModal from './EleviModal';
+import { useState } from 'react';
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 interface Student {
     id: string;
@@ -36,6 +38,32 @@ interface EleviTableInterface {
 }
 
 export default function EleviTable({ students }: EleviTableInterface) {
+    const [books, setBooks] = useState([]);
+
+    const handleGetBooks = async (student: Student) => {
+        try {
+            const response = await fetch(
+                `${baseUrl}/borrows?login_id=${student.first_name}${student.login_id}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                }
+            );
+            if (response.ok) {
+                const result = await response.json();
+                setBooks(result.items);
+                console.log(result.items);
+            } else {
+                console.error(`Error: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Error getting books:', error);
+        }
+    };
+
     return (
         <Table>
             <TableHeader>
@@ -73,11 +101,16 @@ export default function EleviTable({ students }: EleviTableInterface) {
                                                     <Button
                                                         variant="outline"
                                                         className="h-[40px] w-[40px] p-1 mx-2"
+                                                        onClick={() => {
+                                                            handleGetBooks(
+                                                                student
+                                                            );
+                                                        }}
                                                     >
                                                         <div className="relative h-7 w-7">
                                                             <Book className="static h-6 w-6 mt-1 mr-1" />
                                                             <Badge className=" dark:bg-white bg-black absolute top-0 right-0 flex h-4 w-4 p-1 shrink-0 items-center justify-center rounded-full">
-                                                                3
+                                                                32
                                                             </Badge>
                                                         </div>
                                                     </Button>
@@ -88,7 +121,7 @@ export default function EleviTable({ students }: EleviTableInterface) {
                                             </TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
-                                    <EleviModal />
+                                    <EleviModal books={books} />
                                 </Dialog>
                             </TableCell>
                         </TableRow>
