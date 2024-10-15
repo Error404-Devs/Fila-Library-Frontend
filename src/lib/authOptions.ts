@@ -4,7 +4,6 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 const baseUrl = process.env.BASE_URL;
 
 async function refreshAccessToken(token: any) {
-    console.log('called function');
     try {
         const url = `${baseUrl}/auth/refresh_token?refresh_token=${token.refresh_token}`;
         const response = await fetch(url);
@@ -52,11 +51,8 @@ export const authOptions: NextAuthOptions = {
                 const user = await res.json();
 
                 if (!res.ok) {
-                    console.log('Error in authentication:', user);
                     return null;
                 }
-
-                console.log('User authenticated:', user);
                 return user;
             }
         })

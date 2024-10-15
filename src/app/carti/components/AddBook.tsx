@@ -67,9 +67,6 @@ const AddBook = () => {
                 },
                 body: JSON.stringify(bookData)
             });
-
-            console.log(bookData);
-
             if (response.ok) {
                 toast({
                     title: 'Success',

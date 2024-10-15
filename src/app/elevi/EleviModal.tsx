@@ -79,7 +79,7 @@ export default function EleviModal({ books }: any) {
                                 >
                                     Status: Restituit
                                 </p>
-                            )}~
+                            )}
                         </CardContent>
                         <CardFooter>
                             <p

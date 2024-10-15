@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import {
     Dialog,
     DialogContent,
@@ -17,7 +17,7 @@ import {
     CardTitle
 } from '@/components/ui/card';
 
-import { Label } from "@/components/ui/label";
+import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Brain } from 'lucide-react';
 import { useState } from 'react';
@@ -26,24 +26,22 @@ import { useEffect } from 'react';
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-
-export function StudentStatus({ situatie }:any) {
-    
-    console.log('situatie:',situatie)
+export function StudentStatus({ situatie }: any) {
     const [showAiRecommended, setShowAiRecommended] = useState(false);
-    const [AIbooks, setAIbooks] = useState([])
+    const [AIbooks, setAIbooks] = useState([]);
 
     const showAiRecommendations = async (id: string) => {
         try {
-            const response = await fetch(`${baseUrl}/books/recommended?book_id=${id}`)
+            const response = await fetch(
+                `${baseUrl}/books/recommended?book_id=${id}`
+            );
             if (response.ok) {
-                const data = await response.json(); 
-                console.log('Recommended books:', data);
-                setAIbooks(data)
+                const data = await response.json();
+                setAIbooks(data);
             } else {
                 console.error(`Error: ${response.statusText}`);
             }
-            setShowAiRecommended(true)
+            setShowAiRecommended(true);
         } catch (error) {
             console.error('Error submitting AI recommended request:', error);
         }
@@ -59,11 +57,12 @@ export function StudentStatus({ situatie }:any) {
             }}
             className="py-10"
         >
-            {situatie.items.length === 0 && (
-                <p>Nu aveti carti imprumutate</p>
-            )}
+            {situatie.items.length === 0 && <p>Nu aveti carti imprumutate</p>}
             {situatie.items.map((elev: any, index: number) => (
-                <Dialog key={index} onOpenChange={() => setShowAiRecommended(false)} >
+                <Dialog
+                    key={index}
+                    onOpenChange={() => setShowAiRecommended(false)}
+                >
                     <DialogTrigger asChild>
                         <Card
                             className="w-[20rem]"
@@ -127,12 +126,13 @@ export function StudentStatus({ situatie }:any) {
                             </CardFooter>
                         </Card>
                     </DialogTrigger>
-                    <DialogContent 
-                        className="sm:max-w-[425px]" 
+                    <DialogContent
+                        className="sm:max-w-[425px]"
                         style={{
                             maxHeight: '80vh',
-                            overflowY: 'auto'    
-                        }}>
+                            overflowY: 'auto'
+                        }}
+                    >
                         <DialogHeader>
                             <DialogTitle className="text-xl">
                                 {elev.book_name}
@@ -175,17 +175,24 @@ export function StudentStatus({ situatie }:any) {
                                 )}
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="name" className="text-left text-md">
+                                <Label
+                                    htmlFor="name"
+                                    className="text-left text-md"
+                                >
                                     Data:
                                 </Label>
-                                <p className="text-left col-span-3">{elev.due_date}</p>
+                                <p className="text-left col-span-3">
+                                    {elev.due_date}
+                                </p>
                             </div>
-                            <Button className='hover:bg-[#74AA9C] bg-[#2eb893] mt-4' onClick={() => showAiRecommendations(elev.id)}>
-                                <Brain className="mr-2 h-4 w-4" />  Recommend similar books with AI
+                            <Button
+                                className="hover:bg-[#74AA9C] bg-[#2eb893] mt-4"
+                                onClick={() => showAiRecommendations(elev.id)}
+                            >
+                                <Brain className="mr-2 h-4 w-4" /> Recommend
+                                similar books with AI
                             </Button>
-                            {showAiRecommended && (
-                                <AIcard AIbooks={AIbooks}/>
-                            )}
+                            {showAiRecommended && <AIcard AIbooks={AIbooks} />}
                         </div>
                     </DialogContent>
                 </Dialog>

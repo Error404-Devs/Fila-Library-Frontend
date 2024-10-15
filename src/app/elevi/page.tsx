@@ -21,6 +21,7 @@ interface Student {
     phone_number: string;
     location: string;
     created_at: string;
+    books_borrowed: [];
 }
 
 const Statistics = () => {
@@ -55,6 +56,7 @@ const Statistics = () => {
             });
             if (response.ok) {
                 const data = await response.json();
+                console.log(Object.values(data));
                 setStudents(Object.values(data));
             }
         } catch (error) {
@@ -62,7 +64,9 @@ const Statistics = () => {
         }
     };
 
-    fetchElevi();
+    useEffect(() => {
+        fetchElevi();
+    }, []);
 
     return (
         <div className="grid min-h-screen w-full">
