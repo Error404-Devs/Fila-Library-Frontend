@@ -26,7 +26,6 @@ export default function EmailForm({ login_id }: any) {
             });
             if (response.ok) {
                 setSaveButton(false);
-                console.log(emailData);
                 toast({
                     title: 'Email saved',
                     description: `Check ${email} for confirmation. `

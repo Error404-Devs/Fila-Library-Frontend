@@ -4,17 +4,10 @@ import Sidebar from './Sidebar';
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 import { useSession } from 'next-auth/react';
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow
-} from '@/components/ui/table';
+
 import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
+import EleviTable from './EleviTable';
 
 interface Student {
     id: string;
@@ -28,6 +21,7 @@ interface Student {
     phone_number: string;
     location: string;
     created_at: string;
+    books_borrowed: [];
 }
 
 const Statistics = () => {
@@ -62,6 +56,7 @@ const Statistics = () => {
             });
             if (response.ok) {
                 const data = await response.json();
+                console.log(Object.values(data));
                 setStudents(Object.values(data));
             }
         } catch (error) {
@@ -69,7 +64,9 @@ const Statistics = () => {
         }
     };
 
-    fetchElevi();
+    useEffect(() => {
+        fetchElevi();
+    }, []);
 
     return (
         <div className="grid min-h-screen w-full">
@@ -89,54 +86,7 @@ const Statistics = () => {
                         {`Elevi`}
                         <div className="flex items-center justify-between"></div>
                     </h1>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Prenume</TableHead>
-                                <TableHead>Nume</TableHead>
-                                <TableHead>Gen</TableHead>
-                                <TableHead>Clasa</TableHead>
-                                <TableHead>Mediu</TableHead>
-                                <TableHead>Telefon</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {filteredStudents.length > 0 ? (
-                                filteredStudents.map((student) => (
-                                    <TableRow key={student.id}>
-                                        <TableCell>
-                                            {student.first_name}
-                                        </TableCell>
-                                        <TableCell>
-                                            {student.last_name}
-                                        </TableCell>
-                                        <TableCell>
-                                            {student.gender === 'male'
-                                                ? 'M'
-                                                : 'F'}
-                                        </TableCell>
-                                        <TableCell>
-                                            {student.year}
-                                            {student.group}
-                                        </TableCell>
-                                        <TableCell>{student.address}</TableCell>
-                                        <TableCell>
-                                            {student.phone_number}
-                                        </TableCell>
-                                    </TableRow>
-                                ))
-                            ) : (
-                                <TableRow>
-                                    <TableCell
-                                        colSpan={6}
-                                        className="text-center"
-                                    >
-                                        No students found
-                                    </TableCell>
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
+                    <EleviTable students={filteredStudents} />
                     <div className="w-full h-full overflow-auto"></div>
                 </main>
             </div>

@@ -16,6 +16,7 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 import { StatisticsType, defaultStatisticsValues } from '../interfaces';
 import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
+import * as XLSX from 'xlsx';
 
 const months = [
     { value: '1', label: 'Ianuarie' },
@@ -77,7 +78,6 @@ const Statistics = () => {
             );
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 setStatistics(data);
             } else {
                 setStatistics(defaultStatisticsValues);
@@ -95,80 +95,41 @@ const Statistics = () => {
 
     const tableRef = useRef(null);
 
-    const handlePrint = () => {
-        if (tableRef.current == null) return;
-
-        // Use a CSS class to split the content
-        const printWindow = window.open('', '_blank'); // Open a new window or tab
-        const firstTableSection = document.querySelector('#firstTableSection');
-        const firstTableHTML = firstTableSection
-            ? firstTableSection.innerHTML
-            : '';
-
-        const secondTableSection = document.querySelector(
-            '#secondTableSection'
-        );
-        const secondTableHTML = secondTableSection
-            ? secondTableSection.innerHTML
-            : '';
-
-        printWindow?.document.write(`
-<html>
-    <head>
-        <title>${getMonthLabel(selectedMonth)} ${selectedYear}</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                padding: 20px;
-            }
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            table, th, td {
-                border: 1px solid black;
-            }
-            th, td {
-                padding: 8px;
-                text-align: center;
-            }
-            .vertical-text {
-                writing-mode: vertical-lr;
-                transform: rotate(180deg);
-                white-space: nowrap;
-                width: 20px;
-            }
-            @media print {
-                .page-break {
-                    page-break-before: always;
+    const handlePrint = async () => {
+        try {
+            const response = await fetch(
+                `${baseUrl}/statistics/download?month=${selectedMonth}&year=${selectedYear}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${session?.access_token}`
+                    }
                 }
-            }
-        </style>
-    </head>
-    <body>
-        <div>
-            <!-- First table section -->
-            <h2>${getMonthLabel(selectedMonth)} ${selectedYear} - Page 1</h2>
-            <table>
-                ${firstTableHTML}
-            </table>
-        </div>
+            );
 
-        <div class="page-break">
-            <!-- Second table section -->
-            <h2>${getMonthLabel(selectedMonth)} ${selectedYear} - Page 2</h2>
-            <table>
-                ${secondTableHTML}
-            </table>
-        </div>
-    </body>
-</html>
-`);
-        printWindow?.document.close(); // Close the document to finish writing
-        printWindow?.focus(); // Focus on the new window
-        printWindow?.print(); // Trigger the print dialog
-        if (printWindow != null) {
-            printWindow.onafterprint = () => printWindow?.close(); // Close the window after printing
+            if (!response.ok) {
+                console.error('Failed to fetch the .xlsx file.');
+                return;
+            }
+
+            const blob = await response.blob();
+
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `statistics_${selectedMonth}_${selectedYear}.xlsx`; // Suggested filename
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up by revoking the object URL after the download
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+
+            // Optionally, you can provide instructions for printing the file
+            alert(
+                'File downloaded! Please open it in Excel or another spreadsheet application and print it from there.'
+            );
+        } catch (error) {
+            console.error('Error during file download:', error);
         }
     };
 
