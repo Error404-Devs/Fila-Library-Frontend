@@ -143,7 +143,6 @@ const ImprumutaModal = ({
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 setId(data.id);
                 setChanged(false);
                 setSelected(true);
@@ -268,15 +267,13 @@ const ImprumutaModal = ({
                     </Button>
                 )}
                 {changed && (
-                    <DialogClose asChild>
-                        <Button
-                            className="mr-[9rem]"
-                            onClick={handleAdd}
-                            disabled={!isElevValid()}
-                        >
-                            Adauga Elev
-                        </Button>
-                    </DialogClose>
+                    <Button
+                        className="mr-[9rem]"
+                        onClick={handleAdd}
+                        disabled={!isElevValid()}
+                    >
+                        Adauga Elev
+                    </Button>
                 )}
                 <DialogClose asChild>
                     <Button

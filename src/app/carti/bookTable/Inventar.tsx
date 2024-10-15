@@ -47,7 +47,6 @@ const Inventar = ({
             quantity: -quantity[0],
             borrow_id: null
         };
-        console.log(inventoryData);
         try {
             const response = await fetch(`${baseUrl}/inventory`, {
                 method: 'POST',
@@ -79,7 +78,6 @@ const Inventar = ({
             quantity: quantity[0],
             borrow_id: null
         };
-        console.log(inventoryData);
         try {
             const response = await fetch(`${baseUrl}/inventory`, {
                 method: 'POST',

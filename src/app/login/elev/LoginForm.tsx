@@ -1,6 +1,6 @@
-'use client'
-import * as React from "react"
-import { Moon, Sun } from "lucide-react"
+'use client';
+import * as React from 'react';
+import { Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -22,73 +22,80 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
+    DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 import { UserRound } from 'lucide-react';
 import { LockKeyhole } from 'lucide-react';
 
 export function LoginForm() {
-
-    const [name, setName] = useState('')
-    const [studentID, setStudentID] = useState('')
+    const [name, setName] = useState('');
+    const [studentID, setStudentID] = useState('');
 
     const router = useRouter();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const { setTheme } = useTheme()
+    const { setTheme } = useTheme();
 
-    const handleNameChange = (e:any) => {
+    const handleNameChange = (e: any) => {
         setName(e.target.value);
-        console.log(name)
     };
-    const handleStudentIDChange = (e:any) => {
+    const handleStudentIDChange = (e: any) => {
         setStudentID(e.target.value);
-        console.log(studentID)
     };
 
     const handleSubmit = async (e: any) => {
-        e.preventDefault(); 
+        e.preventDefault();
         setLoading(true);
         const login_id = name + studentID;
         try {
-            const response = await fetch(`${baseUrl}/borrows?login_id=${login_id}`);
+            const response = await fetch(
+                `${baseUrl}/borrows?login_id=${login_id}`
+            );
             if (!response.ok) {
                 throw new Error('Utilizator not found');
             }
             const raspuns = await response.json();
-            console.log(raspuns)
-            router.push(`/situatie?login_id=${login_id}&name=${raspuns.first_name}&lastname=${raspuns.last_name}`);
+            router.push(
+                `/situatie?login_id=${login_id}&name=${raspuns.first_name}&lastname=${raspuns.last_name}`
+            );
         } catch (error) {
-            setError("Utilizator invalid");
+            setError('Utilizator invalid');
             setLoading(false);
-        };
-}
-    
+        }
+    };
+
     return (
         <>
-                <div style={{ position: 'absolute', top: 0, right: 0, margin: '10px' }}>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="icon">
+            <div
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    margin: '10px'
+                }}
+            >
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="icon">
                             <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                             <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                             <span className="sr-only">Toggle theme</span>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => setTheme("light")}>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => setTheme('light')}>
                             Light
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => setTheme("dark")}>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTheme('dark')}>
                             Dark
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => setTheme("system")}>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTheme('system')}>
                             System
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
             <Card className="w-full max-w-sm">
                 <CardHeader>
                     <CardTitle className="text-2xl">Login Elev</CardTitle>
@@ -98,7 +105,7 @@ export function LoginForm() {
                         <div className="grid gap-2">
                             <Label htmlFor="nrmatricol">Nume</Label>
                             <div className="flex flex-row items-center justify-center space-x-4">
-                                    <Input
+                                <Input
                                     id="nrmatricol"
                                     type="text"
                                     placeholder="Elev"
@@ -122,7 +129,7 @@ export function LoginForm() {
                             </div>
                         </div>
                         <CardFooter>
-                            <div className='flex flex-col w-full'>
+                            <div className="flex flex-col w-full">
                                 {error && (
                                     <div className="text-red-500 text-sm text-center my-2">
                                         {error}
@@ -130,7 +137,7 @@ export function LoginForm() {
                                 )}
                                 <Button
                                     type="submit"
-                                    className="w-full"
+                                    className="w-full bg-[#2b3167]"
                                     disabled={loading}
                                 >
                                     {loading ? (

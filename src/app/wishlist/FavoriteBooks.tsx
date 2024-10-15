@@ -24,10 +24,10 @@ export default function FavoriteBooks({student_id}: any) {
             const response = await fetch(`${baseUrl}/books/wishlist?student_id=${student_id}`)
             if (response.ok) {
                 const data = await response.json(); 
-                console.log('Wishlist books:', data);
                 toast({
                     title: 'Cartea a fost stearsa din favorite.',
                 })
+
                 setWishlist(data)
             } else {
                 console.error(`Error: ${response.statusText}`);
@@ -42,7 +42,6 @@ export default function FavoriteBooks({student_id}: any) {
             const data = {
                 wish_id: book_id,
             };
-            console.log("DELETE data:", data)
             const response = await fetch(`${baseUrl}/books/wishlist`, {
             method: 'DELETE',
             headers: {
