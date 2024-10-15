@@ -11,7 +11,6 @@ const SearchArea = () => {
     const { replace } = useRouter();
 
     const handleSearchTitle = useDebouncedCallback((title: string) => {
-        console.log(`Cautam titlul: ${title}`);
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
         if (title) {
@@ -22,7 +21,6 @@ const SearchArea = () => {
         replace(`${pathname}?${params.toString()}`);
     }, 300);
     const handleSearchAuthor = useDebouncedCallback((author: string) => {
-        console.log(`Cautam autorul: ${author}`);
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
         if (author) {
@@ -33,7 +31,6 @@ const SearchArea = () => {
         replace(`${pathname}?${params.toString()}`);
     }, 300);
     const handleSearchCategory = useDebouncedCallback((category: string) => {
-        console.log(`Cautam cota: ${category}`);
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
         if (category) {
@@ -44,7 +41,6 @@ const SearchArea = () => {
         replace(`${pathname}?${params.toString()}`);
     }, 300);
     const handleSearchPublisher = useDebouncedCallback((publisher: string) => {
-        console.log(`Cautam editura: ${publisher}`);
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
         if (publisher) {
@@ -55,7 +51,6 @@ const SearchArea = () => {
         replace(`${pathname}?${params.toString()}`);
     }, 300);
     const handleSearchYear = useDebouncedCallback((year: string) => {
-        console.log(`Cautam anul: ${year}`);
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
         if (year) {
@@ -66,7 +61,6 @@ const SearchArea = () => {
         replace(`${pathname}?${params.toString()}`);
     }, 300);
     const handleSearchLocation = useDebouncedCallback((location: string) => {
-        console.log(`Cautam locul: ${location}`);
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
         if (location) {

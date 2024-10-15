@@ -143,7 +143,6 @@ const ImprumutaModal = ({
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 setId(data.id);
                 setChanged(false);
                 setSelected(true);

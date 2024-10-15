@@ -86,7 +86,7 @@ export function LoginForm() {
                     <CardFooter>
                         <Button
                             type="submit"
-                            className="w-full"
+                            className="w-full bg-[#2b3167]"
                             disabled={loading}
                         >
                             {loading ? (
