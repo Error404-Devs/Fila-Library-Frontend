@@ -56,7 +56,7 @@ export default function FavoriteBooks({student_id}: any) {
         } catch (error) {
             console.error('An error occurred:', error);
         }
-        };
+    };
 
     useEffect(() => {
         getWishList();

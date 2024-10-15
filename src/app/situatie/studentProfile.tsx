@@ -14,6 +14,7 @@ import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
+import { DarkModeSwitch } from '../elevi/darkModeSwitch';
 
 const Profile = ({login_id, name, lastname}: any) => {
 
@@ -35,9 +36,7 @@ const Profile = ({login_id, name, lastname}: any) => {
                 <Link href={`/settings?login_id=${login_id}&name=${name}&lastname=${lastname}`}>
                     <DropdownMenuItem>Settings</DropdownMenuItem>
                 </Link>
-                <Link href="/support">
-                    <DropdownMenuItem>Support</DropdownMenuItem>
-                </Link>
+                <DarkModeSwitch/>
                 <DropdownMenuSeparator />
                 <Link href="/">
                     <DropdownMenuItem

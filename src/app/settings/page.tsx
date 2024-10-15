@@ -28,8 +28,8 @@ export default async function Dashboard(
                     <EmailForm login_id={searchParams?.login_id}/>
                 </div>
                 <div className="flex items-center space-x-2 mt-3">
-                    <Switch id="airplane-mode" />
-                    <Label htmlFor="airplane-mode">Activeaza notificarile</Label>
+                    <Switch id="notifications" />
+                    <Label htmlFor="notifications">Activeaza notificarile</Label>
                 </div>
             </div>
         </div>
