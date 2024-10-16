@@ -14,6 +14,7 @@ import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
+import DarkModeSwitch from './darkModeSwitch';
 
 const Profile = () => {
     const { data: session } = useSession({
@@ -38,12 +39,9 @@ const Profile = () => {
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link href="/settings">
-                    <DropdownMenuItem>Settings</DropdownMenuItem>
-                </Link>
-                <Link href="/support">
-                    <DropdownMenuItem>Support</DropdownMenuItem>
-                </Link>
+                <DropdownMenuLabel>
+                    <DarkModeSwitch/>
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <Link href="/">
                     <DropdownMenuItem
